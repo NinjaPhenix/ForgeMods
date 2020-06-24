@@ -27,6 +27,10 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    sourceSets {
+        main.resources.srcDirs += file('src/generated/resources')
+    }
+
     minecraft {
         mappings channel: "${mappings_channel}", version: "${mappings_version}"
         // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
