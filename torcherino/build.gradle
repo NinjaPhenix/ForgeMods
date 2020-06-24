@@ -1,0 +1,21 @@
+repositories {
+    jcenter()
+}
+
+configurations {
+    shade {}
+    compile.extendsFrom(shade)
+}
+
+dependencies {
+    compile ("blue.endless:jankson:1.2.0")
+    shade ("blue.endless:jankson:1.2.0")
+}
+
+jar {
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)) {
+            exclude 'META-INF', 'META-INF/**'
+        }
+    }
+}
