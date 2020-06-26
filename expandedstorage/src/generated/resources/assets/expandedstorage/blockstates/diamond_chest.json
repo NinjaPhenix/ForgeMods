@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "type=single": {
+      "model": "expandedstorage:block/diamond_chest"
+    },
+    "type=top": {
+      "model": "expandedstorage:block/diamond_chest"
+    },
+    "type=back": {
+      "model": "expandedstorage:block/diamond_chest"
+    },
+    "type=right": {
+      "model": "expandedstorage:block/diamond_chest"
+    },
+    "type=bottom": {
+      "model": "expandedstorage:block/diamond_chest"
+    },
+    "type=front": {
+      "model": "expandedstorage:block/diamond_chest"
+    },
+    "type=left": {
+      "model": "expandedstorage:block/diamond_chest"
+    }
+  }
+}
