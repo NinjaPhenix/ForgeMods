@@ -8,7 +8,7 @@ import net.minecraft.world.storage.loot.LootParameterSet;
 import net.minecraft.world.storage.loot.LootParameterSets;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.ValidationTracker;
-import ninjaphenix.expandedstorage.data.loot.Blocks;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class LootTables extends LootTableProvider
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables()
     {
         ArrayList<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> rv = new ArrayList<>();
-        rv.add(new Pair<>(Blocks::new, LootParameterSets.BLOCK));
+        rv.add(new Pair<>(BlockLoot::new, LootParameterSets.BLOCK));
         return rv;
     }
 
@@ -33,5 +33,5 @@ public class LootTables extends LootTableProvider
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) { }
 
     @Override
-    public String getName() { return "Expanded Storage - Loot Tables"; }
+    public @NotNull String getName() { return "Expanded Storage - Loot Tables"; }
 }

@@ -4,6 +4,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.ModContent;
+import org.jetbrains.annotations.NotNull;
 
 public class Language extends LanguageProvider
 {
@@ -65,5 +66,5 @@ public class Language extends LanguageProvider
     }
 
     @Override
-    public String getName() { return "Expanded Storage - Language"; }
+    public @NotNull String getName() { return "Expanded Storage - Language"; }
 }

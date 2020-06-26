@@ -4,6 +4,7 @@ import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.Tags;
 import ninjaphenix.expandedstorage.ModContent;
+import org.jetbrains.annotations.NotNull;
 
 public class BlockTags extends BlockTagsProvider
 {
@@ -16,5 +17,5 @@ public class BlockTags extends BlockTagsProvider
     }
 
     @Override
-    public String getName() { return "Expanded Storage - Block Tags"; }
+    public @NotNull String getName() { return "Expanded Storage - Block Tags"; }
 }

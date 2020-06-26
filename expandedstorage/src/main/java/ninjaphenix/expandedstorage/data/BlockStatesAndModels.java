@@ -1,6 +1,7 @@
 package ninjaphenix.expandedstorage.data;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.item.Item;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.*;
 import ninjaphenix.expandedstorage.ModContent;
@@ -10,15 +11,15 @@ import ninjaphenix.expandedstorage.api.block.OldChestBlock;
 import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public class BlockStatesAndModels extends BlockStateProvider
 {
     private ModelFile OLD_CHEST_HORIZONTAL;
     private ModelFile OLD_CHEST_VERTICAL;
+    public static HashMap<Item, ModelFile> SINGLE_OLD_MODELS = new HashMap<>();
 
-    public BlockStatesAndModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper)
-    {
-        super(generator, modId, fileHelper);
-    }
+    public BlockStatesAndModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper) { super(generator, modId, fileHelper); }
 
     @Override
     protected void registerStatesAndModels()
@@ -39,12 +40,12 @@ public class BlockStatesAndModels extends BlockStateProvider
                                        .texture("east", "#left")
                                        .texture("south", "#back")
                                        .texture("west", "#right");
+        // todo: display first person transform
         OLD_CHEST_VERTICAL = models().getBuilder("block/old_chest/vertical")
                                      .parent(OLD_CHEST_HORIZONTAL)
                                      .texture("east", "#side")
                                      .texture("west", "#side")
                                      .texture("south", "#side");
-
         oldChestBlock(ModContent.OLD_WOOD_CHEST.getFirst());
         oldChestBlock(ModContent.OLD_IRON_CHEST.getFirst());
         oldChestBlock(ModContent.OLD_GOLD_CHEST.getFirst());
@@ -60,11 +61,15 @@ public class BlockStatesAndModels extends BlockStateProvider
         getVariantBuilder(block).forAllStatesExcept(state -> {
             final String blockPath = block.getRegistryName().getPath();
             final CursedChestType chestType = state.get(AbstractChestBlock.TYPE);
-            return ConfiguredModel
+            final ConfiguredModel[] result = ConfiguredModel
                     .builder()
                     .rotationY(((state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalIndex() + 2) % 4) * 90)
                     .modelFile(oldChestGetModel(blockPath, chestType))
                     .build();
+            if(chestType == CursedChestType.SINGLE) {
+                SINGLE_OLD_MODELS.put(block.asItem(), result[0].model);
+            }
+            return result;
         }, BlockStateProperties.WATERLOGGED);
     }
 

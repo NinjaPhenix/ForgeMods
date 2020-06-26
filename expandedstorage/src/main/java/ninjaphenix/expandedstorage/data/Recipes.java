@@ -218,5 +218,5 @@ public class Recipes extends RecipeProvider
     }
 
     @Override
-    public String getName() { return "Expanded Storage - Recipes"; }
+    public @NotNull String getName() { return "Expanded Storage - Recipes"; }
 }

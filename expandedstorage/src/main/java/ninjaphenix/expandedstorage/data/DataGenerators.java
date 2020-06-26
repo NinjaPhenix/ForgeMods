@@ -21,5 +21,6 @@ public class DataGenerators
         generator.addProvider(new LootTables(generator));
         generator.addProvider(new Language(generator, ExpandedStorage.MOD_ID, "en_us"));
         generator.addProvider(new BlockStatesAndModels(generator, ExpandedStorage.MOD_ID, fileHelper));
+        generator.addProvider(new ItemModels(generator, ExpandedStorage.MOD_ID, fileHelper));
     }
 }
