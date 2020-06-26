@@ -41,7 +41,7 @@ public class ScrollableContainer extends Container
 		inventory.openInventory(playerInventory.player);
 		for (int y = 0; y < realRows; ++y)
 		{
-			int yPos = y < rows ? 18 + y * 18 : -2000;
+			int yPos = y < rows ? 18 + y * 18 : 2000;
 			for (int x = 0; x < 9; ++x)
 			{
 				int slot = x + 9 * y;
@@ -93,7 +93,7 @@ public class ScrollableContainer extends Container
 			final Slot slot = inventorySlots.get(unsortedToSortedSlotMap[i]);
 			final int y = (i / 9) - offset;
 			slot.xPos = 8 + 18 * (i % 9);
-			slot.yPos = (y >= rows || y < 0) ? -2000 : 18 + 18 * y;
+			slot.yPos = (y >= rows || y < 0) ? 2000 : 18 + 18 * y;
 		}
 	}
 
