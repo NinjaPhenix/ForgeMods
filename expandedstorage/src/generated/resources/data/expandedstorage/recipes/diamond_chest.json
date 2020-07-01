@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "DCD",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "C": {
+      "item": "expandedstorage:gold_chest"
+    }
+  },
+  "result": {
+    "item": "expandedstorage:diamond_chest"
+  }
+}

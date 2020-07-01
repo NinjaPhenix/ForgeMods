@@ -1,3 +1,15 @@
 minecraft {
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 }
+
+repositories {
+    maven {
+        name 'DVS1 Maven FS'
+        url 'https://dvs1.progwml6.com/files/maven'
+    }
+}
+
+dependencies {
+    compileOnly fg.deobf('mezz.jei:jei-1.15.2:6.0.0.2:api')
+    runtimeOnly fg.deobf('mezz.jei:jei-1.15.2:6.0.0.2')
+}

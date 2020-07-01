@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "type=single": {
+      "model": "expandedstorage:block/iron_chest"
+    },
+    "type=top": {
+      "model": "expandedstorage:block/iron_chest"
+    },
+    "type=back": {
+      "model": "expandedstorage:block/iron_chest"
+    },
+    "type=right": {
+      "model": "expandedstorage:block/iron_chest"
+    },
+    "type=bottom": {
+      "model": "expandedstorage:block/iron_chest"
+    },
+    "type=front": {
+      "model": "expandedstorage:block/iron_chest"
+    },
+    "type=left": {
+      "model": "expandedstorage:block/iron_chest"
+    }
+  }
+}

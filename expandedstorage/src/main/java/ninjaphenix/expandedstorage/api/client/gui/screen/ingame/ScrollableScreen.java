@@ -101,9 +101,9 @@ public class ScrollableScreen extends ContainerScreen<ScrollableContainer>
 		if (hasScrollbar())
 		{
 			minecraft.getTextureManager().bindTexture(WIDGETS_TEXTURE);
-			blit(x + 172, y, 0, 0, 22, 132);
-			blit(x + 174, (int) (y + 18 + 91 * progress), 22, 0, 12, 15);
-			blit(x + 79, y + 126, 34, 0, 90, 11);
+			blit(x + 172, y, 0, 0, 29, 132);
+			blit(x + 181, (int) (y + 18 + 91 * progress), 29, 0, 12, 15);
+			blit(x + 81, y + 126, 43, 0, 90, 11);
 		}
 		searchBox.ifPresent(searchTextFieldWidget -> searchTextFieldWidget.render(mouseX, mouseY, lastFrameDuration));
 	}
@@ -150,7 +150,7 @@ public class ScrollableScreen extends ContainerScreen<ScrollableContainer>
 				this.setFocused(null);
 			}
 		}
-		if (button == 0 && guiLeft + 172 < mouseX && mouseX < guiLeft + 184 && guiTop + 18 < mouseY && mouseY < guiTop + 123)
+		if (button == 0 && guiLeft + 179 < mouseX && mouseX < guiLeft + 191 && guiTop + 18 < mouseY && mouseY < guiTop + 123)
 		{
 			dragging = true;
 			return true;

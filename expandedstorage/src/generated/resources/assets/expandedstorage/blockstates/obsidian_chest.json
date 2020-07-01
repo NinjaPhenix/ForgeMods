@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "type=single": {
+      "model": "expandedstorage:block/obsidian_chest"
+    },
+    "type=top": {
+      "model": "expandedstorage:block/obsidian_chest"
+    },
+    "type=back": {
+      "model": "expandedstorage:block/obsidian_chest"
+    },
+    "type=right": {
+      "model": "expandedstorage:block/obsidian_chest"
+    },
+    "type=bottom": {
+      "model": "expandedstorage:block/obsidian_chest"
+    },
+    "type=front": {
+      "model": "expandedstorage:block/obsidian_chest"
+    },
+    "type=left": {
+      "model": "expandedstorage:block/obsidian_chest"
+    }
+  }
+}
