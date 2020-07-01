@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class OldChestBlock extends AbstractChestBlock
 {
-	public OldChestBlock(final Properties properties) { super(properties); }
+	public OldChestBlock(final Properties properties, ResourceLocation registryName) { super(properties); setRegistryName(registryName); }
 
 	@Nullable
 	@Override

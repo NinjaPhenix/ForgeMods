@@ -122,7 +122,7 @@ public abstract class AbstractChestBlock extends Block
 				final TileEntity pairedTileEntity = world.getTileEntity(pairedPos);
 				if (pairedTileEntity instanceof AbstractChestTileEntity)
 				{
-					if (clickedChestType.isRenderedType())
+					if (clickedChestType.isMainType())
 					{
 						return propertyRetriever.getFromDoubleChest(clickedChestTileEntity, (AbstractChestTileEntity) pairedTileEntity);
 					}

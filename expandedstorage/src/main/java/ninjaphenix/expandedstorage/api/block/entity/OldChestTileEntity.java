@@ -10,10 +10,7 @@ import ninjaphenix.expandedstorage.api.Registries;
 public class OldChestTileEntity extends AbstractChestTileEntity
 {
 
-	public OldChestTileEntity()
-	{
-		this(ExpandedStorage.getRl("null"));
-	}
+	public OldChestTileEntity() { this(null); }
 
 	public OldChestTileEntity(final ResourceLocation block) { super(ModContent.OLD_CHEST_TE, block); }
 

@@ -32,7 +32,6 @@ public class ExpandedStorageJeiPlugin implements IModPlugin
 			{
 				if (screen.hasScrollbar())
 				{
-
 					return Collections.singletonList(new Rectangle2d(screen.getLeft() + 172, screen.getTop(), 29, 132));
 				}
 				return Collections.emptyList();

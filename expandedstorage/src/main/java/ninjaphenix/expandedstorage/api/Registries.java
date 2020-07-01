@@ -7,6 +7,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
 
+import java.util.function.Function;
+
 /**
  * This class provides data registries for adding new chests to already defined chest types. This will likely be refactored in the future as new features and
  * chest types are added.
@@ -26,56 +28,53 @@ public class Registries
 	 */
 	public static final SimpleRegistry<TierData> OLD = new SimpleRegistry<>();
 
-	static
-	{
-		// Populates registries with null ids in case anything goes wrong. Ideally these should never present themselves.
-		final ResourceLocation nullId = ExpandedStorage.getRl("null");
-		MODELED.register(nullId, new ModeledTierData(0, nullId,
-				new TranslationTextComponent("container.expandedstorage.error"), nullId, nullId, nullId, nullId));
-		OLD.register(nullId, new TierData(0, nullId, new TranslationTextComponent("container.expandedstorage.error")));
-	}
+    public static class ModeledTierData extends TierData
+    {
+        private final ResourceLocation singleTexture;
+        private final ResourceLocation topTexture;
+        private final ResourceLocation backTexture;
+        private final ResourceLocation rightTexture;
+        private final ResourceLocation bottomTexture;
+        private final ResourceLocation frontTexture;
+        private final ResourceLocation leftTexture;
 
-	public static class ModeledTierData extends TierData
-	{
-		private final ResourceLocation singleTexture;
-		private final ResourceLocation vanillaTexture;
-		private final ResourceLocation tallTexture;
-		private final ResourceLocation longTexture;
+        /**
+         * Data representing a vanilla looking chest block.
+         *
+         * @param slots The amount of itemstacks this chest tier can hold.
+         * @param containerName The default container name for this chest tier.
+         * @param blockId The block id that represents this data.
+         * @param textureFunction The function which returns the chest texture for a supplied type.
+         */
+        public ModeledTierData(int slots, ResourceLocation blockId, ITextComponent containerName, Function<CursedChestType, ResourceLocation> textureFunction)
+        {
+            super(slots, blockId, containerName);
+            singleTexture = textureFunction.apply(CursedChestType.SINGLE);
+            topTexture = textureFunction.apply(CursedChestType.TOP);
+            backTexture = textureFunction.apply(CursedChestType.BACK);
+            rightTexture = textureFunction.apply(CursedChestType.RIGHT);
+            bottomTexture = textureFunction.apply(CursedChestType.BOTTOM);
+            frontTexture = textureFunction.apply(CursedChestType.FRONT);
+            leftTexture = textureFunction.apply(CursedChestType.LEFT);
+        }
 
-		/**
-		 * Data representing a vanilla looking chest block.
-		 *
-		 * @param slots The amount of itemstacks this chest tier can hold.
-		 * @param containerName The default container name for this chest tier.
-		 * @param blockId The block id that represents this data.
-		 * @param singleTexture The blocks single texture.
-		 * @param vanillaTexture The blocks vanilla texture ( Vanilla double chests ).
-		 * @param tallTexture The blocks tall texture.
-		 * @param longTexture The blocks long texture.
-		 */
-		public ModeledTierData(int slots, ResourceLocation blockId, ITextComponent containerName, ResourceLocation singleTexture,
-				ResourceLocation vanillaTexture,
-				ResourceLocation tallTexture, ResourceLocation longTexture)
-		{
-			super(slots, blockId, containerName);
-			this.singleTexture = singleTexture;
-			this.vanillaTexture = vanillaTexture;
-			this.tallTexture = tallTexture;
-			this.longTexture = longTexture;
-		}
-
-		/**
-		 * @param type The chest type to receive the texture for.
-		 * @return The texture relevant to the type.
-		 */
-		public ResourceLocation getChestTexture(CursedChestType type)
-		{
-			if (type == CursedChestType.BOTTOM || type == CursedChestType.TOP) { return tallTexture; }
-			else if (type == CursedChestType.LEFT || type == CursedChestType.RIGHT) { return vanillaTexture; }
-			else if (type == CursedChestType.FRONT || type == CursedChestType.BACK) { return longTexture; }
-			return singleTexture;
-		}
-	}
+        /**
+         * @param type The chest type to receive the texture for.
+         * @return The texture relevant to the type.
+         */
+        public ResourceLocation getChestTexture(CursedChestType type)
+        {
+            switch(type) {
+                case TOP: return topTexture;
+                case BACK: return backTexture;
+                case RIGHT: return rightTexture;
+                case BOTTOM: return bottomTexture;
+                case FRONT: return frontTexture;
+                case LEFT: return leftTexture;
+                default: return singleTexture;
+            }
+        }
+    }
 
 	public static class TierData
 	{

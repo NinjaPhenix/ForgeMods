@@ -35,7 +35,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 	private int viewerCount;
 	private int ticksOpen;
 
-	public CursedChestTileEntity() { this(ExpandedStorage.getRl("null")); }
+	public CursedChestTileEntity() { this(null); }
 
 	public CursedChestTileEntity(final ResourceLocation block) { super(ModContent.CURSED_CHEST_TE, block); }
 
@@ -109,7 +109,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 	private void playSound(final SoundEvent soundEvent)
 	{
 		CursedChestType chestType = getBlockState().get(CursedChestBlock.TYPE);
-		if (!chestType.isRenderedType()) { return; }
+		if (!chestType.isMainType()) { return; }
 		double zOffset = 0.5;
 		if (chestType == CursedChestType.BOTTOM) { zOffset = 1; }
 		BlockPos otherPos = CursedChestBlock.getPairedPos(world, pos);

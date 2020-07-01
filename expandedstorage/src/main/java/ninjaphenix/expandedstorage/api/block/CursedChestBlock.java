@@ -12,6 +12,7 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -36,10 +37,11 @@ public class CursedChestBlock extends AbstractChestBlock implements IWaterLoggab
 	private static final VoxelShape C = Block.makeCuboidShape(1, 0, 1 - 16, 15, 14, 15);
 	private static final VoxelShape D = Block.makeCuboidShape(1, 0, 1, 15, 14, 31);
 
-	public CursedChestBlock(final Properties properties)
+	public CursedChestBlock(final Properties properties, final ResourceLocation registryName)
 	{
 		super(properties);
 		setDefaultState(getDefaultState().with(WATERLOGGED, false));
+		setRegistryName(registryName);
 	}
 
 	@Nullable

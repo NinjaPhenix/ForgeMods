@@ -31,7 +31,7 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
 	public AbstractChestTileEntity(final TileEntityType type, final ResourceLocation block)
 	{
 		super(type);
-		this.initialize(block);
+		if(block != null) { initialize(block); }
 	}
 
 	@Override

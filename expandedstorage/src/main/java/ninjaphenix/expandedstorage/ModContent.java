@@ -9,15 +9,16 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import ninjaphenix.expandedstorage.api.Registries;
+import ninjaphenix.expandedstorage.api.Registries.ModeledTierData;
 import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.api.block.OldChestBlock;
 import ninjaphenix.expandedstorage.api.block.entity.CursedChestTileEntity;
@@ -70,24 +71,22 @@ public class ModContent
 
 	static
 	{
-		OLD_WOOD_CHEST = registerOld(Blocks.OAK_PLANKS, "wood", 3);
-		OLD_IRON_CHEST = registerOld(Blocks.IRON_BLOCK, "iron", 6);
-		OLD_GOLD_CHEST = registerOld(Blocks.GOLD_BLOCK, "gold", 9);
-		OLD_DIAMOND_CHEST = registerOld(Blocks.DIAMOND_BLOCK, "diamond", 12);
-		OLD_OBSIDIAN_CHEST = registerOld(Blocks.OBSIDIAN, "obsidian", 12);
+		OLD_WOOD_CHEST = registerOld(Blocks.OAK_PLANKS, "wood_chest", 3);
+		OLD_IRON_CHEST = registerOld(Blocks.IRON_BLOCK, "iron_chest", 6);
+		OLD_GOLD_CHEST = registerOld(Blocks.GOLD_BLOCK, "gold_chest", 9);
+		OLD_DIAMOND_CHEST = registerOld(Blocks.DIAMOND_BLOCK, "diamond_chest", 12);
+		OLD_OBSIDIAN_CHEST = registerOld(Blocks.OBSIDIAN, "obsidian_chest", 12);
 
-		WOOD_CHEST = register(Blocks.OAK_PLANKS, "wood", 3);
-		PUMPKIN_CHEST = register(Blocks.CARVED_PUMPKIN, "pumpkin", 3);
-		CHRISTMAS_CHEST = register(Blocks.OAK_PLANKS, "christmas", 3);
-		IRON_CHEST = register(Blocks.IRON_BLOCK, "iron", 6);
-		GOLD_CHEST = register(Blocks.GOLD_BLOCK, "gold", 9);
-		DIAMOND_CHEST = register(Blocks.DIAMOND_BLOCK, "diamond", 12);
-		OBSIDIAN_CHEST = register(Blocks.OBSIDIAN, "obsidian", 12);
+		WOOD_CHEST = register(Blocks.OAK_PLANKS, "wood_chest", 3);
+		PUMPKIN_CHEST = register(Blocks.CARVED_PUMPKIN, "pumpkin_chest", 3);
+		CHRISTMAS_CHEST = register(Blocks.OAK_PLANKS, "christmas_chest", 3);
+		IRON_CHEST = register(Blocks.IRON_BLOCK, "iron_chest", 6);
+		GOLD_CHEST = register(Blocks.GOLD_BLOCK, "gold_chest", 9);
+		DIAMOND_CHEST = register(Blocks.DIAMOND_BLOCK, "diamond_chest", 12);
+		OBSIDIAN_CHEST = register(Blocks.OBSIDIAN, "obsidian_chest", 12);
 
-		CURSED_CHEST_TE = new CustomTileEntityType<>(CursedChestTileEntity::new, (b) -> b instanceof CursedChestBlock);
-		CURSED_CHEST_TE.setRegistryName(ExpandedStorage.getRl("cursed_chest"));
-		OLD_CHEST_TE = new CustomTileEntityType<>(OldChestTileEntity::new, (b) -> b instanceof OldChestBlock);
-		OLD_CHEST_TE.setRegistryName(ExpandedStorage.getRl("old_cursed_chest"));
+		CURSED_CHEST_TE = new CustomTileEntityType<>(CursedChestTileEntity::new, (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
+		OLD_CHEST_TE = new CustomTileEntityType<>(OldChestTileEntity::new, (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
 
 		SCROLLABLE_CONTAINER_TYPE = new ContainerType<>(new ScrollableContainer.Factory());
 		SCROLLABLE_CONTAINER_TYPE.setRegistryName(ExpandedStorage.getRl("scrollable_container"));
@@ -114,30 +113,25 @@ public class ModContent
 
 	private static Pair<CursedChestBlock, BlockItem> register(final Block copy, final String name, final int rows)
 	{
-		final ResourceLocation registryId = ExpandedStorage.getRl(name + "_chest");
-		final CursedChestBlock block = new CursedChestBlock(Block.Properties.from(copy));
-		block.setRegistryName(registryId);
+		final ResourceLocation registryRl = ExpandedStorage.getRl(name);
+		final CursedChestBlock block = new CursedChestBlock(Block.Properties.from(copy), registryRl);
 		final BlockItem item = new BlockItem(block,
 				new Item.Properties().setISTER(() -> CursedChestTileEntityItemStackRenderer::new).group(ExpandedStorage.group));
-		item.setRegistryName(registryId);
-		Registries.MODELED.register(registryId, new Registries.ModeledTierData(rows * 9, registryId,
-				new TranslationTextComponent("container.expandedstorage." + name + "_chest"),
-				ExpandedStorage.getRl("entity/" + name + "_chest/single"),
-				ExpandedStorage.getRl("entity/" + name + "_chest/vanilla"),
-				ExpandedStorage.getRl("entity/" + name + "_chest/tall"),
-				ExpandedStorage.getRl("entity/" + name + "_chest/long")));
+		item.setRegistryName(registryRl);
+        Registry.register(Registries.MODELED, registryRl, new ModeledTierData(rows * 9, registryRl,
+                new TranslationTextComponent("container.expandedstorage." + name),
+                type -> ExpandedStorage.getRl(String.format("entity/%s/%s", name, type.getName()))));
 		return new Pair<>(block, item);
 	}
 
 	private static Pair<OldChestBlock, BlockItem> registerOld(final Block copy, final String name, final int rows)
 	{
-		final ResourceLocation registryId = ExpandedStorage.getRl("old_" + name + "_chest");
-		final OldChestBlock block = new OldChestBlock(Block.Properties.from(copy));
-		block.setRegistryName(registryId);
+		final ResourceLocation registryRl = ExpandedStorage.getRl("old_" + name);
+		final OldChestBlock block = new OldChestBlock(Block.Properties.from(copy), registryRl);
 		final BlockItem item = new BlockItem(block, new Item.Properties().group(ExpandedStorage.group));
-		item.setRegistryName(registryId);
-		Registries.OLD.register(ExpandedStorage.getRl(name + "_chest"), new Registries.TierData(rows * 9, registryId,
-				new TranslationTextComponent("container.expandedstorage." + name + "_chest")));
+		item.setRegistryName(registryRl);
+		Registries.OLD.register(ExpandedStorage.getRl(name), new Registries.TierData(rows * 9, registryRl,
+				new TranslationTextComponent("container.expandedstorage." + name)));
 		return new Pair<>(block, item);
 	}
 
@@ -207,7 +201,6 @@ public class ModContent
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> ModContent::registerScreenFactory);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static void registerScreenFactory() { ScreenManager.registerFactory(SCROLLABLE_CONTAINER_TYPE, ScrollableScreen::new); }
 
 	private static ChestConversionItem getConversionItem(final Pair<ResourceLocation, String> from, final Pair<ResourceLocation, String> to)
