@@ -12,9 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.api.Registries;
 import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
@@ -24,10 +21,6 @@ import ninjaphenix.expandedstorage.api.inventory.IDoubleSidedInventory;
 
 import java.util.List;
 
-@OnlyIn(
-		value = Dist.CLIENT,
-		_interface = IChestLid.class
-)
 public class CursedChestTileEntity extends AbstractChestTileEntity implements IChestLid, ITickableTileEntity
 {
 	private float animationAngle;
@@ -86,7 +79,6 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 		else { return super.receiveClientEvent(actionId, value); }
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public float getLidAngle(float float_1) { return MathHelper.lerp(float_1, lastAnimationAngle, animationAngle); }
 

@@ -11,12 +11,10 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.fml.loading.FMLLoader;
 import ninjaphenix.expandedstorage.api.Registries;
 import ninjaphenix.expandedstorage.api.Registries.ModeledTierData;
 import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
@@ -50,8 +48,8 @@ public class ModContent
 	public static final Pair<CursedChestBlock, BlockItem> DIAMOND_CHEST;
 	public static final Pair<CursedChestBlock, BlockItem> OBSIDIAN_CHEST;
 
-	public static final CustomTileEntityType<CursedChestTileEntity> CURSED_CHEST_TE;
-	public static final CustomTileEntityType<OldChestTileEntity> OLD_CHEST_TE;
+	public static final CustomTileEntityType<CursedChestTileEntity> CURSED_CHEST_TE = new CustomTileEntityType<>(CursedChestTileEntity::new, (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
+	public static final CustomTileEntityType<OldChestTileEntity> OLD_CHEST_TE = new CustomTileEntityType<>(OldChestTileEntity::new, (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
 
 	public static final ChestMutatorItem CHEST_MUTATOR;
 
@@ -84,9 +82,6 @@ public class ModContent
 		GOLD_CHEST = register(Blocks.GOLD_BLOCK, "gold_chest", 9);
 		DIAMOND_CHEST = register(Blocks.DIAMOND_BLOCK, "diamond_chest", 12);
 		OBSIDIAN_CHEST = register(Blocks.OBSIDIAN, "obsidian_chest", 12);
-
-		CURSED_CHEST_TE = new CustomTileEntityType<>(CursedChestTileEntity::new, (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
-		OLD_CHEST_TE = new CustomTileEntityType<>(OldChestTileEntity::new, (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
 
 		SCROLLABLE_CONTAINER_TYPE = new ContainerType<>(new ScrollableContainer.Factory());
 		SCROLLABLE_CONTAINER_TYPE.setRegistryName(ExpandedStorage.getRl("scrollable_container"));
@@ -138,8 +133,7 @@ public class ModContent
 	@SubscribeEvent
 	public static void registerBlocks(final RegistryEvent.Register<Block> event)
 	{
-		final IForgeRegistry<Block> registry = event.getRegistry();
-		registry.registerAll(
+        event.getRegistry().registerAll(
 				WOOD_CHEST.getFirst(),
 				PUMPKIN_CHEST.getFirst(),
 				CHRISTMAS_CHEST.getFirst(),
@@ -158,8 +152,7 @@ public class ModContent
 	@SubscribeEvent
 	public static void registerBlockItems(final RegistryEvent.Register<Item> event)
 	{
-		final IForgeRegistry<Item> registry = event.getRegistry();
-		registry.registerAll(
+        event.getRegistry().registerAll(
 				WOOD_CHEST.getSecond(),
 				PUMPKIN_CHEST.getSecond(),
 				CHRISTMAS_CHEST.getSecond(),
@@ -189,16 +182,14 @@ public class ModContent
 	@SubscribeEvent
 	public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event)
 	{
-		final IForgeRegistry<TileEntityType<?>> registry = event.getRegistry();
-		registry.registerAll(CURSED_CHEST_TE, OLD_CHEST_TE);
+        event.getRegistry().registerAll(CURSED_CHEST_TE, OLD_CHEST_TE);
 	}
 
 	@SubscribeEvent
 	public static void registerContainerTypes(final RegistryEvent.Register<ContainerType<?>> event)
 	{
-		final IForgeRegistry<ContainerType<?>> registry = event.getRegistry();
-		registry.register(SCROLLABLE_CONTAINER_TYPE);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> ModContent::registerScreenFactory);
+        event.getRegistry().register(SCROLLABLE_CONTAINER_TYPE);
+        if(FMLLoader.getDist().isClient()) { registerScreenFactory(); }
 	}
 
 	public static void registerScreenFactory() { ScreenManager.registerFactory(SCROLLABLE_CONTAINER_TYPE, ScrollableScreen::new); }
