@@ -12,10 +12,10 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import ninjaphenix.expandedstorage.ModContent;
-import ninjaphenix.expandedstorage.api.Registries;
-import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
-import ninjaphenix.expandedstorage.api.block.entity.CursedChestTileEntity;
-import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
+import ninjaphenix.expandedstorage.Registries;
+import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
+import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import ninjaphenix.expandedstorage.client.model.SingleChestModel;
 
 public class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntity>

@@ -1,11 +1,10 @@
-package ninjaphenix.expandedstorage.api.block.entity;
+package ninjaphenix.expandedstorage.common.block.entity;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.ModContent;
-import ninjaphenix.expandedstorage.api.Registries;
+import ninjaphenix.expandedstorage.Registries;
 
 public class OldChestTileEntity extends AbstractChestTileEntity
 {

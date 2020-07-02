@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.api.client.gui.widget;
+package ninjaphenix.expandedstorage.client.gui.widget;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;

@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.api.block;
+package ninjaphenix.expandedstorage.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -31,11 +31,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
-import ninjaphenix.expandedstorage.api.Registries;
-import ninjaphenix.expandedstorage.api.block.entity.AbstractChestTileEntity;
-import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
-import ninjaphenix.expandedstorage.api.container.ScrollableContainer;
-import ninjaphenix.expandedstorage.api.inventory.IDoubleSidedInventory;
+import ninjaphenix.expandedstorage.Registries;
+import ninjaphenix.expandedstorage.common.block.entity.AbstractChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
+import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
+import ninjaphenix.expandedstorage.common.inventory.IDoubleSidedInventory;
 
 import javax.annotation.Nullable;
 import java.util.List;

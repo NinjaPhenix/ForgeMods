@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.item;
+package ninjaphenix.expandedstorage.common.item;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -27,11 +27,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import ninjaphenix.expandedstorage.ExpandedStorage;
-import ninjaphenix.expandedstorage.api.Registries;
-import ninjaphenix.expandedstorage.api.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
-import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
-import ninjaphenix.expandedstorage.api.item.ChestModifierItem;
+import ninjaphenix.expandedstorage.Registries;
+import ninjaphenix.expandedstorage.common.block.AbstractChestBlock;
+import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 import javax.annotation.Nullable;
 import java.util.List;

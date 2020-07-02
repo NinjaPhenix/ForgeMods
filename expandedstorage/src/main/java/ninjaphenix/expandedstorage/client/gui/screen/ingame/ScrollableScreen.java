@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.api.client.gui.screen.ingame;
+package ninjaphenix.expandedstorage.client.gui.screen.ingame;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -10,8 +10,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import ninjaphenix.expandedstorage.ExpandedStorage;
-import ninjaphenix.expandedstorage.api.client.gui.widget.SearchTextFieldWidget;
-import ninjaphenix.expandedstorage.api.container.ScrollableContainer;
+import ninjaphenix.expandedstorage.client.gui.widget.SearchTextFieldWidget;
+import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
 
 import java.util.Optional;
 

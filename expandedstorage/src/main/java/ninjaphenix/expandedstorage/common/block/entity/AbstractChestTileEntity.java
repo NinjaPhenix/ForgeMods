@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.api.block.entity;
+package ninjaphenix.expandedstorage.common.block.entity;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -19,13 +19,12 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
 	protected ITextComponent defaultContainerName;
 	protected int inventorySize;
 	protected NonNullList<ItemStack> inventory;
+	protected int[] SLOTS;
 
 	@Override
 	protected Container createMenu(final int id, final PlayerInventory player) { return null; }
 
-	protected int[] SLOTS;
 
-	// May be "null:null"
 	protected ResourceLocation block;
 
 	public AbstractChestTileEntity(final TileEntityType type, final ResourceLocation block)

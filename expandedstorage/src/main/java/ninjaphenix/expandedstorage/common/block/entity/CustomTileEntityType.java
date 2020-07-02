@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.api.block.entity;
+package ninjaphenix.expandedstorage.common.block.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;

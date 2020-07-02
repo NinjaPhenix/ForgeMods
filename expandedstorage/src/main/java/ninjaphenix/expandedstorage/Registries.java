@@ -1,11 +1,9 @@
-package ninjaphenix.expandedstorage.api;
+package ninjaphenix.expandedstorage;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import ninjaphenix.expandedstorage.ExpandedStorage;
-import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 import java.util.function.Function;
 

@@ -6,8 +6,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.ModContent;
-import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
-import ninjaphenix.expandedstorage.api.block.OldChestBlock;
+import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
+import ninjaphenix.expandedstorage.common.block.OldChestBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;

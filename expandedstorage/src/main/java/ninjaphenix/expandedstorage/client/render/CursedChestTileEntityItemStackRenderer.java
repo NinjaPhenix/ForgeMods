@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
-import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
-import ninjaphenix.expandedstorage.api.block.entity.CursedChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
+import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
 
 public class CursedChestTileEntityItemStackRenderer extends ItemStackTileEntityRenderer
 {

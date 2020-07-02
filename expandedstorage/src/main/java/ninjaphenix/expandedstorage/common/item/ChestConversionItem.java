@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.api.item;
+package ninjaphenix.expandedstorage.common.item;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -20,10 +20,10 @@ import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 import ninjaphenix.expandedstorage.ExpandedStorage;
-import ninjaphenix.expandedstorage.api.Registries;
-import ninjaphenix.expandedstorage.api.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.api.block.entity.AbstractChestTileEntity;
-import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
+import ninjaphenix.expandedstorage.Registries;
+import ninjaphenix.expandedstorage.common.block.AbstractChestBlock;
+import ninjaphenix.expandedstorage.common.block.entity.AbstractChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 @SuppressWarnings({ "OptionalGetWithoutIsPresent", "ConstantConditions" })
 public class ChestConversionItem extends ChestModifierItem

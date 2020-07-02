@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.api.block.enums;
+package ninjaphenix.expandedstorage.common.block.enums;
 
 import net.minecraft.state.properties.ChestType;
 import net.minecraft.util.IStringSerializable;

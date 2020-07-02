@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.api.block.entity;
+package ninjaphenix.expandedstorage.common.block.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,11 +13,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ninjaphenix.expandedstorage.ModContent;
-import ninjaphenix.expandedstorage.api.Registries;
-import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
-import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
-import ninjaphenix.expandedstorage.api.container.ScrollableContainer;
-import ninjaphenix.expandedstorage.api.inventory.IDoubleSidedInventory;
+import ninjaphenix.expandedstorage.Registries;
+import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
+import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
+import ninjaphenix.expandedstorage.common.inventory.IDoubleSidedInventory;
 
 import java.util.List;
 
@@ -67,7 +67,6 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 		for (int i = 0; i < inventorySize; i++) { SLOTS[i] = i; }
 	}
 
-
 	@Override
 	public boolean receiveClientEvent(final int actionId, final int value)
 	{
@@ -82,7 +81,8 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 	@Override
 	public float getLidAngle(float float_1) { return MathHelper.lerp(float_1, lastAnimationAngle, animationAngle); }
 
-	@Override
+    @Override
+	@SuppressWarnings("ConstantConditions")
 	public void tick()
 	{
 		viewerCount = tickViewerCount(world, this, ++ticksOpen, pos.getX(), pos.getY(), pos.getZ(), viewerCount);
@@ -98,6 +98,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 		}
 	}
 
+    @SuppressWarnings("ConstantConditions")
 	private void playSound(final SoundEvent soundEvent)
 	{
 		CursedChestType chestType = getBlockState().get(CursedChestBlock.TYPE);
@@ -127,6 +128,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 		onInvOpenOrClose();
 	}
 
+    @SuppressWarnings("ConstantConditions")
 	private void onInvOpenOrClose()
 	{
 		Block block = getBlockState().getBlock();

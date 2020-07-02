@@ -15,18 +15,17 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLLoader;
-import ninjaphenix.expandedstorage.api.Registries;
-import ninjaphenix.expandedstorage.api.Registries.ModeledTierData;
-import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
-import ninjaphenix.expandedstorage.api.block.OldChestBlock;
-import ninjaphenix.expandedstorage.api.block.entity.CursedChestTileEntity;
-import ninjaphenix.expandedstorage.api.block.entity.CustomTileEntityType;
-import ninjaphenix.expandedstorage.api.block.entity.OldChestTileEntity;
-import ninjaphenix.expandedstorage.api.client.gui.screen.ingame.ScrollableScreen;
-import ninjaphenix.expandedstorage.api.container.ScrollableContainer;
-import ninjaphenix.expandedstorage.api.item.ChestConversionItem;
+import ninjaphenix.expandedstorage.Registries.ModeledTierData;
+import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
+import ninjaphenix.expandedstorage.common.block.OldChestBlock;
+import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.entity.CustomTileEntityType;
+import ninjaphenix.expandedstorage.common.block.entity.OldChestTileEntity;
+import ninjaphenix.expandedstorage.client.gui.screen.ingame.ScrollableScreen;
+import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
+import ninjaphenix.expandedstorage.common.item.ChestConversionItem;
 import ninjaphenix.expandedstorage.client.render.CursedChestTileEntityItemStackRenderer;
-import ninjaphenix.expandedstorage.item.ChestMutatorItem;
+import ninjaphenix.expandedstorage.common.item.ChestMutatorItem;
 
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 

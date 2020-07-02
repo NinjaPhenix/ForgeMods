@@ -5,10 +5,10 @@ import net.minecraft.item.Item;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.*;
 import ninjaphenix.expandedstorage.ModContent;
-import ninjaphenix.expandedstorage.api.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.api.block.CursedChestBlock;
-import ninjaphenix.expandedstorage.api.block.OldChestBlock;
-import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
+import ninjaphenix.expandedstorage.common.block.AbstractChestBlock;
+import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
+import ninjaphenix.expandedstorage.common.block.OldChestBlock;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

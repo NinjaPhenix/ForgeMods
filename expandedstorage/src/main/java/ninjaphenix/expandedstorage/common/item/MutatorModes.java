@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.item;
+package ninjaphenix.expandedstorage.common.item;
 
 import net.minecraft.util.text.TranslationTextComponent;
 

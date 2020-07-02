@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage.api.item;
+package ninjaphenix.expandedstorage.common.item;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -14,8 +14,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import ninjaphenix.expandedstorage.api.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.api.block.enums.CursedChestType;
+import ninjaphenix.expandedstorage.common.block.AbstractChestBlock;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 public abstract class ChestModifierItem extends Item
 {

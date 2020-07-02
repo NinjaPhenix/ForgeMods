@@ -1,12 +1,12 @@
-package ninjaphenix.expandedstorage.api.block;
+package ninjaphenix.expandedstorage.common.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.IBlockReader;
-import ninjaphenix.expandedstorage.api.Registries;
-import ninjaphenix.expandedstorage.api.block.entity.OldChestTileEntity;
+import ninjaphenix.expandedstorage.Registries;
+import ninjaphenix.expandedstorage.common.block.entity.OldChestTileEntity;
 
 import javax.annotation.Nullable;
 
