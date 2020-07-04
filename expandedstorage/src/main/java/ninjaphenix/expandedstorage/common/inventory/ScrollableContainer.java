@@ -20,9 +20,7 @@ public class ScrollableContainer extends Container
 	private final IInventory inventory;
 	private final int rows;
 	private final int realRows;
-	// sideonly client
 	private String searchTerm = "";
-	// sideonly client
 	private Integer[] unsortedToSortedSlotMap;
 
 	public ScrollableContainer(final int windowId, final PlayerInventory playerInventory, final IInventory inventory)

@@ -2,6 +2,7 @@
   "parent": "expandedstorage:block/old_chest/horizontal",
   "textures": {
     "top": "expandedstorage:block/old_iron_chest/chest_top_front",
+    "bottom": "expandedstorage:block/old_iron_chest/chest_top_back",
     "front": "expandedstorage:block/old_iron_chest/chest_front_single",
     "back": "expandedstorage:block/old_iron_chest/chest_side",
     "left": "expandedstorage:block/old_iron_chest/chest_back_left",

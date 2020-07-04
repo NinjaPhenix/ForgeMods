@@ -8,20 +8,18 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class CursedChestTileEntityItemStackRenderer extends ItemStackTileEntityRenderer
 {
-	private static final CursedChestTileEntity cursedChestRenderEntity = new CursedChestTileEntity();
+    private static final CursedChestTileEntity cursedChestRenderEntity = new CursedChestTileEntity();
 
-	@Override
-	public void render(final ItemStack stack, final MatrixStack matrix, final IRenderTypeBuffer buffer, final int x, final int y)
-	{
-		// todo: eval if these are always my tile entity
-		final Block block = Block.getBlockFromItem(stack.getItem());
-		if (block instanceof CursedChestBlock)
-		{
-			cursedChestRenderEntity.setBlock(block.getRegistryName());
-			TileEntityRendererDispatcher.instance.renderItem(cursedChestRenderEntity, matrix, buffer, x, y);
-		}
-	}
+    @Override
+    public void render(@NotNull final ItemStack stack,
+            @NotNull final MatrixStack matrix, @NotNull final IRenderTypeBuffer buffer, final int light, final int overlay)
+    {
+        final CursedChestBlock block = (CursedChestBlock) Block.getBlockFromItem(stack.getItem());
+        cursedChestRenderEntity.setBlock(block.getRegistryName());
+        TileEntityRendererDispatcher.instance.renderItem(cursedChestRenderEntity, matrix, buffer, light, overlay);
+    }
 }

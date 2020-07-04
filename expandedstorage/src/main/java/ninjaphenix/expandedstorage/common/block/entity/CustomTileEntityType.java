@@ -4,21 +4,25 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class CustomTileEntityType<T extends TileEntity> extends TileEntityType<T>
+// todo: just use regular tile entity type?
+public final class CustomTileEntityType<T extends TileEntity> extends TileEntityType<T>
 {
-	Predicate<Block> predicate;
+	private final Predicate<Block> predicate;
 
-	public CustomTileEntityType(Supplier<? extends T> supplier_1, Predicate<Block> supports, ResourceLocation registryName)
+	public CustomTileEntityType(@NotNull final Supplier<? extends T> tileEntityFactory,
+            @NotNull final Predicate<Block> supportedBlocks, @NotNull final ResourceLocation registryName)
 	{
-		super(supplier_1, null, null);
-		predicate = supports;
+        //noinspection ConstantConditions
+        super(tileEntityFactory, null, null);
+		predicate = supportedBlocks;
 		setRegistryName(registryName);
 	}
 
 	@Override
-	public boolean isValidBlock(final Block block) { return predicate.test(block); }
+	public final boolean isValidBlock(@NotNull final Block block) { return predicate.test(block); }
 }

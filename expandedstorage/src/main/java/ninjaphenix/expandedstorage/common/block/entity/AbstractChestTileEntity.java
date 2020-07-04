@@ -46,7 +46,7 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     @Override
     protected ITextComponent getDefaultName() { return defaultContainerName; }
 
-    protected void initialize(final ResourceLocation block) { }
+    protected void initialize(@NotNull final ResourceLocation block) { }
 
     public ResourceLocation getBlock() { return block; }
 

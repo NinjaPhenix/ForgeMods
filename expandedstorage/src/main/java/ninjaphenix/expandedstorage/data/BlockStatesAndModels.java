@@ -34,7 +34,7 @@ public class BlockStatesAndModels extends BlockStateProvider
         OLD_CHEST_HORIZONTAL = models().getBuilder("block/old_chest/horizontal")
                                        .parent(models().getExistingFile(mcLoc("cube")))
                                        .texture("particle", "#front")
-                                       .texture("down", "#top")
+                                       .texture("down", "#bottom")
                                        .texture("up", "#top")
                                        .texture("north", "#front")
                                        .texture("east", "#left")
@@ -45,7 +45,8 @@ public class BlockStatesAndModels extends BlockStateProvider
                                      .parent(OLD_CHEST_HORIZONTAL)
                                      .texture("east", "#side")
                                      .texture("west", "#side")
-                                     .texture("south", "#side");
+                                     .texture("south", "#side")
+                                     .texture("down", "#top");
         oldChestBlock(ModContent.OLD_WOOD_CHEST.getFirst());
         oldChestBlock(ModContent.OLD_IRON_CHEST.getFirst());
         oldChestBlock(ModContent.OLD_GOLD_CHEST.getFirst());
@@ -100,6 +101,7 @@ public class BlockStatesAndModels extends BlockStateProvider
             case FRONT:
                 builder.parent(OLD_CHEST_HORIZONTAL)
                        .texture("top", modLoc(String.format("block/%s/chest_top_%s", blockPath, chestTypeName)))
+                       .texture("bottom", modLoc(String.format("block/%s/chest_top_back", blockPath)))
                        .texture("front", modLoc(String.format("block/%s/chest_front_single", blockPath)))
                        .texture("back", modLoc(String.format("block/%s/chest_side", blockPath)))
                        .texture("left", modLoc(String.format("block/%s/chest_back_left", blockPath)))
@@ -108,6 +110,7 @@ public class BlockStatesAndModels extends BlockStateProvider
             case BACK:
                 builder.parent(OLD_CHEST_HORIZONTAL)
                        .texture("top", modLoc(String.format("block/%s/chest_top_%s", blockPath, chestTypeName)))
+                       .texture("bottom", modLoc(String.format("block/%s/chest_top_front", blockPath)))
                        .texture("front", modLoc(String.format("block/%s/chest_front_single", blockPath)))
                        .texture("back", modLoc(String.format("block/%s/chest_side", blockPath)))
                        .texture("left", modLoc(String.format("block/%s/chest_back_right", blockPath)))
@@ -117,6 +120,7 @@ public class BlockStatesAndModels extends BlockStateProvider
             case RIGHT:
                 builder.parent(OLD_CHEST_HORIZONTAL)
                        .texture("top", modLoc(String.format("block/%s/chest_top_%s", blockPath, chestTypeName)))
+                       .texture("bottom", "#top")
                        .texture("front", modLoc(String.format("block/%s/chest_front_%s", blockPath, chestTypeName)))
                        .texture("back", modLoc(String.format("block/%s/chest_back_%s", blockPath, chestTypeName)))
                        .texture("left", modLoc(String.format("block/%s/chest_side", blockPath)))
