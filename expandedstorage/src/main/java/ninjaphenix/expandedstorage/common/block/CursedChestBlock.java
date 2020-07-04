@@ -72,8 +72,7 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
         else if (type == CursedChestType.SINGLE) {return SINGLE_SHAPE; }
         else
         {
-            final int offset = (state.get(FACING).getHorizontalIndex() + type.getOffset()) % 4;
-            return HORIZONTAL_VALUES[offset];
+            return HORIZONTAL_VALUES[(state.get(FACING).getHorizontalIndex() + type.getOffset()) % 4];
         }
     }
 
