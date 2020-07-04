@@ -26,7 +26,6 @@ import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("deprecation")
 public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> implements IWaterLoggable
 {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -51,18 +50,15 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
     public TileEntity createTileEntity(@Nullable final BlockState state, @Nullable final IBlockReader world)
     { return new CursedChestTileEntity(getRegistryName()); }
 
-    @NotNull @Override
+    @NotNull @Override @SuppressWarnings("deprecation")
     public IFluidState getFluidState(@NotNull final BlockState state)
     { return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state); }
 
     @Override
     protected void fillStateContainer(@NotNull final StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.fillStateContainer(builder);
-        builder.add(WATERLOGGED);
-    }
+    { super.fillStateContainer(builder); builder.add(WATERLOGGED); }
 
-    @NotNull @Override
+    @NotNull @Override @SuppressWarnings("deprecation")
     public VoxelShape getShape(@NotNull final BlockState state,
             @NotNull final IBlockReader reader, @NotNull final BlockPos pos, @NotNull final ISelectionContext context)
     {
@@ -70,17 +66,12 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
         if (type == CursedChestType.TOP) { return TOP_SHAPE; }
         else if (type == CursedChestType.BOTTOM) { return BOTTOM_SHAPE; }
         else if (type == CursedChestType.SINGLE) {return SINGLE_SHAPE; }
-        else
-        {
-            return HORIZONTAL_VALUES[(state.get(FACING).getHorizontalIndex() + type.getOffset()) % 4];
-        }
+        else { return HORIZONTAL_VALUES[(state.get(FACING).getHorizontalIndex() + type.getOffset()) % 4]; }
     }
 
     @NotNull @Override
     public BlockState getStateForPlacement(@NotNull final BlockItemUseContext context)
-    {
-        return super.getStateForPlacement(context).with(WATERLOGGED, context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER);
-    }
+    { return super.getStateForPlacement(context).with(WATERLOGGED, context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER); }
 
     @NotNull @Override
     public BlockState updatePostPlacement(@NotNull final BlockState state, @NotNull final Direction offset,
@@ -90,7 +81,7 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
         return super.updatePostPlacement(state, offset, offsetState, world, pos, offsetPos);
     }
 
-    @NotNull @Override
+    @NotNull @Override @SuppressWarnings("deprecation")
     public BlockRenderType getRenderType(@NotNull final BlockState state) { return BlockRenderType.ENTITYBLOCK_ANIMATED; }
 
     @NotNull @Override @SuppressWarnings("unchecked")
