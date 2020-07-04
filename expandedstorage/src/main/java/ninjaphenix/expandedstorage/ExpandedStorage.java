@@ -17,7 +17,6 @@ public class ExpandedStorage
 	public static final String MOD_ID = "expandedstorage";
 	public static final ItemGroup group = new ItemGroup(MOD_ID)
 	{
-		@OnlyIn(Dist.CLIENT)
 		@Override
 		public ItemStack createIcon() { return new ItemStack(ModContent.DIAMOND_CHEST.getSecond()); }
 	};

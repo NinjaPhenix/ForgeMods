@@ -15,8 +15,7 @@ import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.Direction;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
-import ninjaphenix.expandedstorage.client.model.SingleChestModel;
-import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
+import ninjaphenix.expandedstorage.client.model.*;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
@@ -26,6 +25,14 @@ public class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntit
 {
     private static final BlockState defaultState = ModContent.WOOD_CHEST.getFirst().getDefaultState().with(CursedChestBlock.FACING, Direction.SOUTH)
                                                                         .with(CursedChestBlock.TYPE, CursedChestType.SINGLE);
+
+    private static final SingleChestModel singleChestModel = new SingleChestModel();
+    private static final SingleChestModel topChestModel = new TopChestModel();
+    private static final SingleChestModel bottomChestModel = new BottomChestModel();
+    private static final SingleChestModel frontChestModel = new FrontChestModel();
+    private static final SingleChestModel backChestModel = new BackChestModel();
+    private static final SingleChestModel leftChestModel = new LeftChestModel();
+    private static final SingleChestModel rightChestModel = new RightChestModel();
 
     public CursedChestRenderer(final TileEntityRendererDispatcher dispatcher) { super(dispatcher); }
 
@@ -38,7 +45,7 @@ public class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntit
         {
             final CursedChestBlock block = (CursedChestBlock) state.getBlock();
             final CursedChestType chestType = state.get(CursedChestBlock.TYPE);
-            SingleChestModel model = chestType.getModel();
+            SingleChestModel model = getModel(chestType);
             stack.push();
             stack.translate(0.5D, 0.5D, 0.5D);
             stack.rotate(Vector3f.YP.rotationDegrees(-state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle()));
@@ -54,5 +61,18 @@ public class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntit
             stack.pop();
         }
 
+    }
+
+    public SingleChestModel getModel(CursedChestType type)
+    {
+        switch(type) {
+            case TOP: return topChestModel;
+            case BOTTOM: return bottomChestModel;
+            case FRONT: return frontChestModel;
+            case BACK: return backChestModel;
+            case LEFT: return leftChestModel;
+            case RIGHT: return rightChestModel;
+            default: return singleChestModel;
+        }
     }
 }

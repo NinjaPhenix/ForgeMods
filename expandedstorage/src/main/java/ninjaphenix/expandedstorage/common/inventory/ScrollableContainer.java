@@ -8,10 +8,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.network.IContainerFactory;
 import ninjaphenix.expandedstorage.ModContent;
@@ -58,7 +55,6 @@ public class ScrollableContainer extends Container
 
 	public IInventory getInv() { return inventory; }
 
-	@OnlyIn(Dist.CLIENT)
 	public int getRows() { return realRows; }
 
 	@Override
@@ -71,14 +67,12 @@ public class ScrollableContainer extends Container
 		inventory.closeInventory(player);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public void setSearchTerm(final String term)
 	{
 		searchTerm = term.toLowerCase();
 		updateSlotPositions(0, true);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public void updateSlotPositions(final int offset, final boolean termChanged)
 	{
 		if (termChanged && !searchTerm.equals("")) { Arrays.sort(unsortedToSortedSlotMap, this::compare); }

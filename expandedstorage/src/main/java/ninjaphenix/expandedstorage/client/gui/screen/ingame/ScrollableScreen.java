@@ -7,15 +7,12 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.client.gui.widget.SearchTextFieldWidget;
 import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
 
 import java.util.Optional;
 
-@OnlyIn(Dist.CLIENT)
 public class ScrollableScreen extends ContainerScreen<ScrollableContainer>
 {
 	private static final ResourceLocation BASE_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");

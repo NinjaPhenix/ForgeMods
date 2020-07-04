@@ -300,9 +300,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
 
     @Override @SuppressWarnings("deprecation")
     public int getComparatorInputOverride(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos)
-    {
-        return combine(state, world, pos, true).apply(INVENTORY_GETTER).map(Container::calcRedstoneFromInventory).orElse(0);
-    }
+    { return combine(state, world, pos, true).apply(INVENTORY_GETTER).map(Container::calcRedstoneFromInventory).orElse(0); }
 
     @NotNull
     private Stat<ResourceLocation> getOpenStat() { return Stats.CUSTOM.get(Stats.OPEN_CHEST); }

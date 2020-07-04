@@ -12,79 +12,90 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({ "WeakerAccess", "NullableProblems" })
 public abstract class AbstractChestTileEntity extends LockableLootTileEntity implements ISidedInventory
 {
-	protected ITextComponent defaultContainerName;
-	protected int inventorySize;
-	protected NonNullList<ItemStack> inventory;
-	protected int[] SLOTS;
+    protected ITextComponent defaultContainerName;
+    protected int inventorySize;
+    protected NonNullList<ItemStack> inventory;
+    protected int[] SLOTS;
 
-	@Override
-	protected Container createMenu(final int id, final PlayerInventory player) { return null; } // todo: implement after adding new container code.
+    @Nullable @Override
+    protected Container createMenu(final int windowId, @NotNull final PlayerInventory playerInventory)
+    {
+        if (canOpen(playerInventory.player))
+        {
+            fillWithLoot(playerInventory.player);
+            return new ScrollableContainer(windowId, playerInventory, this); // todo: replace with new container code
+        }
+        return null;
+    }
 
-	protected ResourceLocation block;
+    protected ResourceLocation block;
 
-	public AbstractChestTileEntity(final TileEntityType type, final ResourceLocation block)
-	{
-		super(type);
-		if(block != null) { initialize(block); }
-	}
+    public AbstractChestTileEntity(final TileEntityType type, final ResourceLocation block)
+    {
+        super(type);
+        if (block != null) { initialize(block); }
+    }
 
-	@Override
-	protected ITextComponent getDefaultName() { return defaultContainerName; }
+    @Override
+    protected ITextComponent getDefaultName() { return defaultContainerName; }
 
-	protected void initialize(final ResourceLocation block) { }
+    protected void initialize(final ResourceLocation block) { }
 
-	public ResourceLocation getBlock() { return block; }
+    public ResourceLocation getBlock() { return block; }
 
-	public void setBlock(final ResourceLocation block) { this.block = block; }
+    public void setBlock(final ResourceLocation block) { this.block = block; }
 
-	@Override
-	protected NonNullList<ItemStack> getItems() { return inventory; }
+    @Override
+    protected NonNullList<ItemStack> getItems() { return inventory; }
 
-	@Override
-	public void setItems(NonNullList<ItemStack> inventory) { this.inventory = inventory; }
+    @Override
+    public void setItems(NonNullList<ItemStack> inventory) { this.inventory = inventory; }
 
-	@Override
-	public int[] getSlotsForFace(final Direction direction) { return SLOTS; }
+    @Override
+    public int[] getSlotsForFace(final Direction direction) { return SLOTS; }
 
-	@Override
-	public boolean canInsertItem(final int slot, final ItemStack stack, final Direction direction) { return this.isItemValidForSlot(slot, stack); }
+    @Override
+    public boolean canInsertItem(final int slot, final ItemStack stack, final Direction direction) { return this.isItemValidForSlot(slot, stack); }
 
-	@Override
-	public boolean canExtractItem(final int slot, final ItemStack stack, final Direction direction) { return true; }
+    @Override
+    public boolean canExtractItem(final int slot, final ItemStack stack, final Direction direction) { return true; }
 
-	@Override
-	public int getSizeInventory() { return inventorySize; }
+    @Override
+    public int getSizeInventory() { return inventorySize; }
 
-	@Override
-	public boolean isEmpty() { return inventory.stream().allMatch(ItemStack::isEmpty); }
+    @Override
+    public boolean isEmpty() { return inventory.stream().allMatch(ItemStack::isEmpty); }
 
-	@Override
-	public void read(final CompoundNBT tag)
-	{
-		super.read(tag);
-		ResourceLocation id = new ResourceLocation(tag.getString("type"));
-		this.initialize(id);
-		if (!checkLootAndRead(tag)) { ItemStackHelper.loadAllItems(tag, inventory); }
-	}
+    @Override
+    public void read(final CompoundNBT tag)
+    {
+        super.read(tag);
+        ResourceLocation id = new ResourceLocation(tag.getString("type"));
+        this.initialize(id);
+        if (!checkLootAndRead(tag)) { ItemStackHelper.loadAllItems(tag, inventory); }
+    }
 
-	@Override
-	public CompoundNBT write(final CompoundNBT tag)
-	{
-		super.write(tag);
-		tag.putString("type", block.toString());
-		if (!checkLootAndWrite(tag)) { ItemStackHelper.saveAllItems(tag, inventory); }
-		return tag;
-	}
+    @Override
+    public CompoundNBT write(final CompoundNBT tag)
+    {
+        super.write(tag);
+        tag.putString("type", block.toString());
+        if (!checkLootAndWrite(tag)) { ItemStackHelper.saveAllItems(tag, inventory); }
+        return tag;
+    }
 
-	@Override
-	public CompoundNBT getUpdateTag()
-	{
-		CompoundNBT tag = this.write(new CompoundNBT());
-		tag.putString("type", block.toString());
-		return tag;
-	}
+    @Override
+    public CompoundNBT getUpdateTag()
+    {
+        CompoundNBT tag = this.write(new CompoundNBT());
+        tag.putString("type", block.toString());
+        return tag;
+    }
 }

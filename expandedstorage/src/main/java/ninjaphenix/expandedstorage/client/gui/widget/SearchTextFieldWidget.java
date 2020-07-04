@@ -2,10 +2,7 @@ package ninjaphenix.expandedstorage.client.gui.widget;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class SearchTextFieldWidget extends TextFieldWidget
 {
 	private boolean ignoreNextChar;
