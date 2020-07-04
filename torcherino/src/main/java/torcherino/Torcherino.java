@@ -76,8 +76,4 @@ public class Torcherino
             }
         });
     }
-
-    /*
-     * TODO: Move over to using https://mcforge.readthedocs.io/en/1.13.x/gettingstarted/dependencymanagement/
-     */
 }
