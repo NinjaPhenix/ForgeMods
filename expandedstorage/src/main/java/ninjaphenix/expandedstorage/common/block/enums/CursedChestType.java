@@ -6,11 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 public enum CursedChestType implements IStringSerializable
 {
-    SINGLE("single"), TOP("top"), BACK("back"), RIGHT("right"), BOTTOM("bottom"), FRONT("front"), LEFT("left");
+    SINGLE("single", -1), TOP("top", -1), BACK("back", 2), RIGHT("right", 3), BOTTOM("bottom", -1), FRONT("front", 0), LEFT("left", 1);
 
     private final String name;
+    private final int offset;
 
-    CursedChestType(String string) { name = string; }
+    CursedChestType(String string, int outlineOffset) { name = string; offset = outlineOffset; }
 
     public static CursedChestType valueOf(ChestType type)
     {
@@ -33,4 +34,6 @@ public enum CursedChestType implements IStringSerializable
 
     @NotNull @Override
 	public String getName() { return name; }
+
+	public int getOffset() { return offset; }
 }

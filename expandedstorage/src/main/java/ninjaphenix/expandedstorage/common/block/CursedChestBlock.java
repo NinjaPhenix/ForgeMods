@@ -22,6 +22,7 @@ import net.minecraft.world.IWorld;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,10 +33,12 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
     private static final VoxelShape SINGLE_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 14, 15);
     private static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 14, 15);
     private static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 16, 15);
-    private static final VoxelShape A = Block.makeCuboidShape(1, 0, 1, 16, 14, 15);
-    private static final VoxelShape B = Block.makeCuboidShape(0, 0, 1, 15, 14, 15);
-    private static final VoxelShape C = Block.makeCuboidShape(1, 0, 0, 15, 14, 15);
-    private static final VoxelShape D = Block.makeCuboidShape(1, 0, 1, 15, 14, 16);
+    private static final VoxelShape[] HORIZONTAL_VALUES = {
+            Block.makeCuboidShape(1, 0, 0, 15, 14, 15),
+            Block.makeCuboidShape(1, 0, 1, 16, 14, 15),
+            Block.makeCuboidShape(1, 0, 1, 15, 14, 16),
+            Block.makeCuboidShape(0, 0, 1, 15, 14, 15)
+    };
 
     public CursedChestBlock(@NotNull final Properties properties, @NotNull final ResourceLocation registryName)
     {
@@ -63,44 +66,14 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
     public VoxelShape getShape(@NotNull final BlockState state,
             @NotNull final IBlockReader reader, @NotNull final BlockPos pos, @NotNull final ISelectionContext context)
     {
-        // todo: check if I can replace this with an array + index
-        switch (state.get(TYPE))
+        final CursedChestType type = state.get(TYPE);
+        if (type == CursedChestType.TOP) { return TOP_SHAPE; }
+        else if (type == CursedChestType.BOTTOM) { return BOTTOM_SHAPE; }
+        else if (type == CursedChestType.SINGLE) {return SINGLE_SHAPE; }
+        else
         {
-            case BACK:
-                switch (state.get(FACING))
-                {
-                    case NORTH: return C;
-                    case SOUTH: return D;
-                    case WEST: return B;
-                    case EAST: return A;
-                }
-            case RIGHT:
-                switch (state.get(FACING))
-                {
-                    case NORTH: return A;
-                    case SOUTH: return B;
-                    case WEST: return C;
-                    case EAST: return D;
-                }
-            case FRONT:
-                switch (state.get(FACING))
-                {
-                    case NORTH: return D;
-                    case SOUTH: return C;
-                    case WEST: return A;
-                    case EAST: return B;
-                }
-            case LEFT:
-                switch (state.get(FACING))
-                {
-                    case NORTH: return B;
-                    case SOUTH: return A;
-                    case WEST: return D;
-                    case EAST: return C;
-                }
-            case TOP: return TOP_SHAPE;
-            case BOTTOM: return BOTTOM_SHAPE;
-            default: return SINGLE_SHAPE;
+            final int offset = (state.get(FACING).getHorizontalIndex() + type.getOffset()) % 4;
+            return HORIZONTAL_VALUES[offset];
         }
     }
 
