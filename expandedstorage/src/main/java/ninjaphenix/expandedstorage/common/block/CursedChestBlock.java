@@ -30,12 +30,12 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
 {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape SINGLE_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 14, 15);
-    private static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(1, -16, 1, 15, 14, 15);
-    private static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 30, 15);
-    private static final VoxelShape A = Block.makeCuboidShape(1, 0, 1, 31, 14, 15);
-    private static final VoxelShape B = Block.makeCuboidShape(1 - 16, 0, 1, 15, 14, 15);
-    private static final VoxelShape C = Block.makeCuboidShape(1, 0, 1 - 16, 15, 14, 15);
-    private static final VoxelShape D = Block.makeCuboidShape(1, 0, 1, 15, 14, 31);
+    private static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 14, 15);
+    private static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 16, 15);
+    private static final VoxelShape A = Block.makeCuboidShape(1, 0, 1, 16, 14, 15);
+    private static final VoxelShape B = Block.makeCuboidShape(0, 0, 1, 15, 14, 15);
+    private static final VoxelShape C = Block.makeCuboidShape(1, 0, 0, 15, 14, 15);
+    private static final VoxelShape D = Block.makeCuboidShape(1, 0, 1, 15, 14, 16);
 
     public CursedChestBlock(@NotNull final Properties properties, @NotNull final ResourceLocation registryName)
     {
@@ -59,67 +59,48 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
         builder.add(WATERLOGGED);
     }
 
-    // todo: replace bounding boxes with ones that don't cause particles to glitch.
     @NotNull @Override
     public VoxelShape getShape(@NotNull final BlockState state,
             @NotNull final IBlockReader reader, @NotNull final BlockPos pos, @NotNull final ISelectionContext context)
     {
+        // todo: check if I can replace this with an array + index
         switch (state.get(TYPE))
         {
-            case TOP:
-                return TOP_SHAPE;
-            case BOTTOM:
-                return BOTTOM_SHAPE;
-            case FRONT:
-                switch (state.get(FACING))
-                {
-                    case NORTH:
-                        return D;
-                    case SOUTH:
-                        return C;
-                    case EAST:
-                        return B;
-                    case WEST:
-                        return A;
-                }
             case BACK:
                 switch (state.get(FACING))
                 {
-                    case NORTH:
-                        return C;
-                    case SOUTH:
-                        return D;
-                    case EAST:
-                        return A;
-                    case WEST:
-                        return B;
-                }
-            case LEFT:
-                switch (state.get(FACING))
-                {
-                    case NORTH:
-                        return B;
-                    case SOUTH:
-                        return A;
-                    case EAST:
-                        return C;
-                    case WEST:
-                        return D;
+                    case NORTH: return C;
+                    case SOUTH: return D;
+                    case WEST: return B;
+                    case EAST: return A;
                 }
             case RIGHT:
                 switch (state.get(FACING))
                 {
-                    case NORTH:
-                        return A;
-                    case SOUTH:
-                        return B;
-                    case EAST:
-                        return D;
-                    case WEST:
-                        return C;
+                    case NORTH: return A;
+                    case SOUTH: return B;
+                    case WEST: return C;
+                    case EAST: return D;
                 }
-            default:
-                return SINGLE_SHAPE;
+            case FRONT:
+                switch (state.get(FACING))
+                {
+                    case NORTH: return D;
+                    case SOUTH: return C;
+                    case WEST: return A;
+                    case EAST: return B;
+                }
+            case LEFT:
+                switch (state.get(FACING))
+                {
+                    case NORTH: return B;
+                    case SOUTH: return A;
+                    case WEST: return D;
+                    case EAST: return C;
+                }
+            case TOP: return TOP_SHAPE;
+            case BOTTOM: return BOTTOM_SHAPE;
+            default: return SINGLE_SHAPE;
         }
     }
 
