@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.*;
 import ninjaphenix.expandedstorage.ModContent;
-import ninjaphenix.expandedstorage.common.block.AbstractChestBlock;
+import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.OldChestBlock;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
@@ -60,7 +60,7 @@ public class BlockStatesAndModels extends BlockStateProvider
     {
         getVariantBuilder(block).forAllStatesExcept(state -> {
             final String blockPath = block.getRegistryName().getPath();
-            final CursedChestType chestType = state.get(AbstractChestBlock.TYPE);
+            final CursedChestType chestType = state.get(BaseChestBlock.TYPE);
             final ConfiguredModel[] result = ConfiguredModel
                     .builder()
                     .rotationY(((state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalIndex() + 2) % 4) * 90)
@@ -129,7 +129,7 @@ public class BlockStatesAndModels extends BlockStateProvider
     private void chestBlock(final CursedChestBlock block)
     {
         getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel
-                        .builder().modelFile(chestGetParticleTexture(state.get(AbstractChestBlock.TYPE), block.getRegistryName().getPath())).build(),
+                        .builder().modelFile(chestGetParticleTexture(state.get(BaseChestBlock.TYPE), block.getRegistryName().getPath())).build(),
                 BlockStateProperties.WATERLOGGED, BlockStateProperties.HORIZONTAL_FACING);
     }
 

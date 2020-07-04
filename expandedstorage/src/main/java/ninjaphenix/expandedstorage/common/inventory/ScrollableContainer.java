@@ -20,7 +20,6 @@ import java.util.Arrays;
 
 public class ScrollableContainer extends Container
 {
-	private final ITextComponent containerName;
 	private final IInventory inventory;
 	private final int rows;
 	private final int realRows;
@@ -29,11 +28,10 @@ public class ScrollableContainer extends Container
 	// sideonly client
 	private Integer[] unsortedToSortedSlotMap;
 
-	public ScrollableContainer(final int windowId, final PlayerInventory playerInventory, final IInventory inventory, final ITextComponent containerName)
+	public ScrollableContainer(final int windowId, final PlayerInventory playerInventory, final IInventory inventory)
 	{
 		super(ModContent.SCROLLABLE_CONTAINER_TYPE, windowId);
 		this.inventory = inventory;
-		this.containerName = containerName;
 		realRows = inventory.getSizeInventory() / 9;
 		rows = Math.min(realRows, 6);
 		if (FMLLoader.getDist() == Dist.CLIENT) { unsortedToSortedSlotMap = new Integer[realRows * 9]; }
@@ -55,16 +53,13 @@ public class ScrollableContainer extends Container
 
 	public ScrollableContainer(final int windowId, final PlayerInventory playerInventory)
 	{
-		this(windowId, playerInventory, new Inventory(0), new TranslationTextComponent("error"));
+		this(windowId, playerInventory, new Inventory(0));
 	}
 
 	public IInventory getInv() { return inventory; }
 
 	@OnlyIn(Dist.CLIENT)
 	public int getRows() { return realRows; }
-
-	@OnlyIn(Dist.CLIENT)
-	public ITextComponent getDisplayName() { return containerName; }
 
 	@Override
 	public boolean canInteractWith(final PlayerEntity player) { return inventory.isUsableByPlayer(player); }
@@ -136,8 +131,7 @@ public class ScrollableContainer extends Container
 		public ScrollableContainer create(final int windowId, final PlayerInventory inv, final PacketBuffer data)
 		{
 			final int invSize = data.readInt();
-			final ITextComponent containerName = data.readTextComponent();
-			return new ScrollableContainer(windowId, inv, new Inventory(invSize), containerName);
+			return new ScrollableContainer(windowId, inv, new Inventory(invSize));
 		}
 	}
 }

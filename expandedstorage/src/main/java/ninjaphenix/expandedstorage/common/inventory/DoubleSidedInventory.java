@@ -4,13 +4,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class IDoubleSidedInventory implements ISidedInventory
+public class DoubleSidedInventory implements ISidedInventory
 {
 	private final ISidedInventory first;
 	private final ISidedInventory second;
 
-	public IDoubleSidedInventory(ISidedInventory firstInventory, ISidedInventory secondInventory)
+	public DoubleSidedInventory(ISidedInventory firstInventory, ISidedInventory secondInventory)
 	{
 		if (firstInventory == null) { firstInventory = secondInventory; }
 		if (secondInventory == null) { secondInventory = firstInventory; }
@@ -18,8 +20,8 @@ public class IDoubleSidedInventory implements ISidedInventory
 		second = secondInventory;
 	}
 
-	@Override
-	public int[] getSlotsForFace(final Direction direction)
+	@NotNull @Override @SuppressWarnings("NullableProblems")
+	public int[] getSlotsForFace(@NotNull final Direction direction)
 	{
 		final int[] firstSlots = first.getSlotsForFace(direction);
 		final int[] secondSlots = second.getSlotsForFace(direction);
@@ -31,14 +33,14 @@ public class IDoubleSidedInventory implements ISidedInventory
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, final ItemStack stack, final Direction direction)
+	public boolean canInsertItem(int slot, @NotNull final ItemStack stack, @SuppressWarnings("NullableProblems") @NotNull final Direction direction)
 	{
 		if (slot >= first.getSizeInventory()) { return second.canInsertItem(slot - first.getSizeInventory(), stack, direction); }
 		return first.canInsertItem(slot, stack, direction);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, final ItemStack stack, final Direction direction)
+	public boolean canExtractItem(int slot, @NotNull final ItemStack stack, @NotNull final Direction direction)
 	{
 		if (slot >= first.getSizeInventory()) { return second.canExtractItem(slot - first.getSizeInventory(), stack, direction); }
 		return first.canExtractItem(slot, stack, direction);
@@ -51,7 +53,7 @@ public class IDoubleSidedInventory implements ISidedInventory
 	public boolean isEmpty() { return first.isEmpty() && second.isEmpty(); }
 
 	@Override
-	public boolean isUsableByPlayer(final PlayerEntity player) { return first.isUsableByPlayer(player) && second.isUsableByPlayer(player); }
+	public boolean isUsableByPlayer(@NotNull final PlayerEntity player) { return first.isUsableByPlayer(player) && second.isUsableByPlayer(player); }
 
 	@Override
 	public void clear()
@@ -68,39 +70,39 @@ public class IDoubleSidedInventory implements ISidedInventory
 	}
 
 	@Override
-	public void openInventory(final PlayerEntity player)
+	public void openInventory(@NotNull final PlayerEntity player)
 	{
 		first.openInventory(player);
 		second.openInventory(player);
 	}
 
 	@Override
-	public void closeInventory(final PlayerEntity player)
+	public void closeInventory(@NotNull final PlayerEntity player)
 	{
 		first.closeInventory(player);
 		second.closeInventory(player);
 	}
 
-	public boolean isPart(final ISidedInventory inventory) { return first == inventory || second == inventory; }
+	public boolean isPart(@NotNull final ISidedInventory inventory) { return first == inventory || second == inventory; }
 
 	@Override
 	public int getInventoryStackLimit() { return first.getInventoryStackLimit(); }
 
-	@Override
+    @NotNull @Override
 	public ItemStack getStackInSlot(int slot)
 	{
 		if (slot >= first.getSizeInventory()) { return second.getStackInSlot(slot - first.getSizeInventory()); }
 		return first.getStackInSlot(slot);
 	}
 
-	@Override
+    @NotNull @Override
 	public ItemStack decrStackSize(int slot, int amount)
 	{
 		if (slot >= first.getSizeInventory()) { return second.decrStackSize(slot - first.getSizeInventory(), amount); }
 		return first.decrStackSize(slot, amount);
 	}
 
-	@Override
+    @NotNull @Override
 	public ItemStack removeStackFromSlot(int slot)
 	{
 		if (slot >= first.getSizeInventory()) { return second.removeStackFromSlot(slot - first.getSizeInventory()); }
@@ -108,14 +110,14 @@ public class IDoubleSidedInventory implements ISidedInventory
 	}
 
 	@Override
-	public void setInventorySlotContents(int slot, final ItemStack stack)
+	public void setInventorySlotContents(int slot, @NotNull final ItemStack stack)
 	{
 		if (slot >= first.getSizeInventory()) { second.setInventorySlotContents(slot - first.getSizeInventory(), stack); }
 		else { first.setInventorySlotContents(slot, stack); }
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, final ItemStack stack)
+	public boolean isItemValidForSlot(int slot, @NotNull final ItemStack stack)
 	{
 		if (slot >= first.getSizeInventory()) { return second.isItemValidForSlot(slot - first.getSizeInventory(), stack); }
 		return first.isItemValidForSlot(slot, stack);

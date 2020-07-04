@@ -22,8 +22,7 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
 	protected int[] SLOTS;
 
 	@Override
-	protected Container createMenu(final int id, final PlayerInventory player) { return null; }
-
+	protected Container createMenu(final int id, final PlayerInventory player) { return null; } // todo: implement after adding new container code.
 
 	protected ResourceLocation block;
 

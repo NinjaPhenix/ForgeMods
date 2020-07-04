@@ -1,23 +1,24 @@
 package ninjaphenix.expandedstorage.common.block.entity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
+import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
-import ninjaphenix.expandedstorage.common.inventory.IDoubleSidedInventory;
+import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
 
 import java.util.List;
 
@@ -35,24 +36,22 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 	private static int tickViewerCount(final World world, final CursedChestTileEntity instance, final int ticksOpen, final int x, final int y, final int z,
 			final int viewCount)
 	{
-		if (!world.isRemote && viewCount != 0 && (ticksOpen + x + y + z) % 200 == 0) { return countViewers(world, instance, x, y, z); }
-		return viewCount;
-	}
-
-	// todo: merge back into tickViewerCount method.
-	private static int countViewers(final World world, final CursedChestTileEntity instance, final int x, final int y, final int z)
-	{
-		int viewers = 0;
-		final List<PlayerEntity> playersInRange = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(x - 5, y - 5, z - 5, x + 6, y + 6, z + 6));
-		for (PlayerEntity player : playersInRange)
+		if (!world.isRemote && viewCount != 0 && (ticksOpen + x + y + z) % 200 == 0)
 		{
-			if (player.openContainer instanceof ScrollableContainer)
-			{
-				final IInventory inventory = ((ScrollableContainer) player.openContainer).getInv();
-				if (inventory == instance || inventory instanceof IDoubleSidedInventory && ((IDoubleSidedInventory) inventory).isPart(instance)) { ++viewers; }
-			}
+		    // todo: replace with stream?
+            int viewers = 0;
+            final List<PlayerEntity> playersInRange = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(x - 5, y - 5, z - 5, x + 6, y + 6, z + 6));
+            for (PlayerEntity player : playersInRange)
+            {
+                if (player.openContainer instanceof ScrollableContainer)
+                {
+                    final IInventory inventory = ((ScrollableContainer) player.openContainer).getInv();
+                    if (inventory == instance || inventory instanceof DoubleSidedInventory && ((DoubleSidedInventory) inventory).isPart(instance)) { viewers++; }
+                }
+            }
+            return viewers;
 		}
-		return viewers;
+		return viewCount;
 	}
 
 	@Override
@@ -101,14 +100,11 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     @SuppressWarnings("ConstantConditions")
 	private void playSound(final SoundEvent soundEvent)
 	{
-		CursedChestType chestType = getBlockState().get(CursedChestBlock.TYPE);
-		if (!chestType.isMainType()) { return; }
-		double zOffset = 0.5;
-		if (chestType == CursedChestType.BOTTOM) { zOffset = 1; }
-		BlockPos otherPos = CursedChestBlock.getPairedPos(world, pos);
-		Vec3d center = new Vec3d(pos).add(new Vec3d(otherPos == null ? pos : otherPos));
-		world.playSound(null, center.getX() / 2 + 0.5D, center.getY() / 2 + 0.5D, center.getZ() / 2 + zOffset, soundEvent, SoundCategory.BLOCKS, 0.5F,
-				world.rand.nextFloat() * 0.1F + 0.9F);
+        final BlockState state = getBlockState();
+        if(BaseChestBlock.getMergeType(state) == TileEntityMerger.Type.SECOND) { return; }
+		final Vec3i offset = BaseChestBlock.getDirectionToAttached(getBlockState()).getDirectionVec();
+        Vec3d soundPos = new Vec3d(pos).add(0.5, 0.5, 0.5).add(offset.getX() * 0.5D, offset.getY() * 0.5D, offset.getZ() * 0.5D);
+		world.playSound(null, soundPos.getX(), soundPos.getY(), soundPos.getZ(), soundEvent, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 	}
 
 	@Override
@@ -116,7 +112,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 	{
 		if (player.isSpectator()) { return; }
 		if (viewerCount < 0) { viewerCount = 0; }
-		++viewerCount;
+		viewerCount++;
 		onInvOpenOrClose();
 	}
 
@@ -124,7 +120,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 	public void closeInventory(final PlayerEntity player)
 	{
 		if (player.isSpectator()) { return; }
-		--viewerCount;
+		viewerCount--;
 		onInvOpenOrClose();
 	}
 

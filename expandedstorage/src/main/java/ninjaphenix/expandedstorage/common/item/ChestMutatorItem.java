@@ -28,7 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.Registries;
-import ninjaphenix.expandedstorage.common.block.AbstractChestBlock;
+import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
@@ -43,7 +43,7 @@ import static net.minecraft.util.Rotation.CLOCKWISE_90;
 public class ChestMutatorItem extends ChestModifierItem
 {
 	private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final EnumProperty<CursedChestType> TYPE = AbstractChestBlock.TYPE;
+	private static final EnumProperty<CursedChestType> TYPE = BaseChestBlock.TYPE;
 
 	public ChestMutatorItem() { super(new Item.Properties().maxStackSize(1).group(ExpandedStorage.group)); }
 
@@ -175,7 +175,7 @@ public class ChestMutatorItem extends ChestModifierItem
 									final Registries.TierData entry = Registries.MODELED.getValue(ExpandedStorage.getRl("wood_chest")).get();
 									final BlockState defState = ForgeRegistries.BLOCKS.getValue(entry.getBlockId())
 																					  .getDefaultState().with(FACING, state.get(FACING));
-									final CursedChestType mainChestType = AbstractChestBlock
+									final CursedChestType mainChestType = BaseChestBlock
 											.getChestType(state.get(FACING), Direction.getFacingFromVector(vec.getX(), vec.getY(), vec.getZ()));
 
 									TileEntity blockEntity = world.getTileEntity(mainPos);
