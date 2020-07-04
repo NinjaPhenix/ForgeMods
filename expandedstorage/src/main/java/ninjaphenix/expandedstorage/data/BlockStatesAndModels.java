@@ -39,8 +39,10 @@ public class BlockStatesAndModels extends BlockStateProvider
                                        .texture("north", "#front")
                                        .texture("east", "#left")
                                        .texture("south", "#back")
-                                       .texture("west", "#right");
-        // todo: display first person transform
+                                       .texture("west", "#right")
+                                       .transforms()
+                                       .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 135, 0).scale(0.4F).end()
+                                       .end();
         OLD_CHEST_VERTICAL = models().getBuilder("block/old_chest/vertical")
                                      .parent(OLD_CHEST_HORIZONTAL)
                                      .texture("east", "#side")
