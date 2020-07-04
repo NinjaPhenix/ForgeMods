@@ -16,6 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class ChestModifierItem extends Item
 {
@@ -75,26 +77,29 @@ public abstract class ChestModifierItem extends Item
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
+	public boolean itemInteractionForEntity(@NotNull final ItemStack stack,
+            @NotNull final PlayerEntity player, @NotNull final LivingEntity entity, @NotNull final Hand hand)
 	{
 		return useModifierOnEntity(stack, player, entity, hand);
 	}
 
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final PlayerEntity player, final Hand hand)
+    @NotNull @Override
+	public ActionResult<ItemStack> onItemRightClick(@NotNull final World world, @NotNull final PlayerEntity player, @NotNull final Hand hand)
 	{
 		final ActionResult<ItemStack> result = useModifierInAir(world, player, hand);
 		if (result.getType() == ActionResultType.SUCCESS) { player.getCooldownTracker().setCooldown(this, 5); }
 		return result;
 	}
 
-	protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainBlockPos,
-			final BlockState otherState, final BlockPos otherBlockPos)
+    @NotNull
+    protected ActionResultType useModifierOnChestBlock(@NotNull final ItemUseContext context, @NotNull final BlockState mainState,
+            @NotNull final BlockPos mainBlockPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherBlockPos)
 	{
 		return ActionResultType.PASS;
 	}
 
-	protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state) { return ActionResultType.PASS; }
+    @NotNull
+	protected ActionResultType useModifierOnBlock(@NotNull final ItemUseContext context, @NotNull final BlockState state) { return ActionResultType.PASS; }
 
 	protected boolean useModifierOnEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand) { return false; }
 

@@ -29,15 +29,15 @@ import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static net.minecraft.state.properties.BlockStateProperties.WATERLOGGED;
 import static net.minecraft.util.Rotation.CLOCKWISE_180;
 import static net.minecraft.util.Rotation.CLOCKWISE_90;
 
-@SuppressWarnings("ConstantConditions")
 public class ChestMutatorItem extends ChestModifierItem
 {
 	private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -45,9 +45,9 @@ public class ChestMutatorItem extends ChestModifierItem
 
 	public ChestMutatorItem() { super(new Item.Properties().maxStackSize(1).group(ExpandedStorage.group)); }
 
-	@Override
-	protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainPos,
-			final BlockState otherState, final BlockPos otherPos)
+    @NotNull  @Override
+	protected ActionResultType useModifierOnChestBlock(@NotNull  final ItemUseContext context,
+            @NotNull final BlockState mainState, @NotNull final BlockPos mainPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
 	{
 		final PlayerEntity player = context.getPlayer();
 		final World world = context.getWorld();
@@ -142,17 +142,17 @@ public class ChestMutatorItem extends ChestModifierItem
 		return ActionResultType.FAIL;
 	}
 
-	@Override
-	protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state)
+    @NotNull @Override
+	protected ActionResultType useModifierOnBlock(@NotNull final ItemUseContext context, @NotNull final BlockState state)
 	{
 		final PlayerEntity player = context.getPlayer();
 		final ItemStack stack = context.getItem();
 		final World world = context.getWorld();
 		final BlockPos mainPos = context.getPos();
-		final MutatorModes mode = getMode(stack);
+		final MutatorMode mode = getMode(stack);
 		if (state.getBlock() instanceof ChestBlock)
 		{
-			if (mode == MutatorModes.MERGE)
+			if (mode == MutatorMode.MERGE)
 			{
 				final CompoundNBT tag = stack.getOrCreateTag();
 				if (tag.contains("pos"))
@@ -213,7 +213,7 @@ public class ChestMutatorItem extends ChestModifierItem
 					}
 				}
 			}
-			else if (mode == MutatorModes.UNMERGE)
+			else if (mode == MutatorMode.UNMERGE)
 			{
 				BlockPos otherPos;
 				switch (state.get(ChestBlock.TYPE))
@@ -235,7 +235,7 @@ public class ChestMutatorItem extends ChestModifierItem
 				player.getCooldownTracker().setCooldown(this, 5);
 				return ActionResultType.SUCCESS;
 			}
-			else if (mode == MutatorModes.ROTATE)
+			else if (mode == MutatorMode.ROTATE)
 			{
 				BlockPos otherPos;
 				switch (state.get(ChestBlock.TYPE))
@@ -267,7 +267,7 @@ public class ChestMutatorItem extends ChestModifierItem
 		}
 		else if (state.getBlock() == Blocks.ENDER_CHEST)
 		{
-			if (mode == MutatorModes.ROTATE)
+			if (mode == MutatorMode.ROTATE)
 			{
 				if (!world.isRemote) { world.setBlockState(mainPos, state.rotate(CLOCKWISE_90)); }
 				player.getCooldownTracker().setCooldown(this, 5);
@@ -278,8 +278,8 @@ public class ChestMutatorItem extends ChestModifierItem
 		return super.useModifierOnBlock(context, state);
 	}
 
-	@Override
-	protected ActionResult<ItemStack> useModifierInAir(final World world, final PlayerEntity player, final Hand hand)
+    @NotNull @Override
+	protected ActionResult<ItemStack> useModifierInAir(@NotNull final World world, @NotNull final PlayerEntity player, @NotNull final Hand hand)
 	{
 		if (player.isCrouching())
 		{
@@ -287,20 +287,20 @@ public class ChestMutatorItem extends ChestModifierItem
 			final CompoundNBT tag = stack.getOrCreateTag();
 			tag.putByte("mode", getMode(stack).next);
 			if (tag.contains("pos")) { tag.remove("pos"); }
-			if (!world.isRemote) { player.sendStatusMessage(getMode(stack).translation, true); }
+			if (!world.isRemote) { player.sendStatusMessage(getMode(stack).title, true); }
 			return new ActionResult<>(ActionResultType.SUCCESS, stack);
 		}
 		return super.useModifierInAir(world, player, hand);
 	}
 
 	@Override
-	public void onCreated(final ItemStack stack, final World world, final PlayerEntity player)
+	public void onCreated(@NotNull final ItemStack stack, @NotNull final World world, @NotNull final PlayerEntity player)
 	{
 		super.onCreated(stack, world, player);
 		getMode(stack);
 	}
 
-	@Override
+    @NotNull @Override
 	public ItemStack getDefaultInstance()
 	{
 		final ItemStack stack = super.getDefaultInstance();
@@ -309,22 +309,26 @@ public class ChestMutatorItem extends ChestModifierItem
 	}
 
 	@Override
-	public void fillItemGroup(final ItemGroup itemGroup, final NonNullList<ItemStack> stackList)
+	public void fillItemGroup(@NotNull final ItemGroup itemGroup, @NotNull final NonNullList<ItemStack> stackList)
 	{
 		if (isInGroup(itemGroup)) { stackList.add(getDefaultInstance()); }
 	}
 
-	private MutatorModes getMode(final ItemStack stack)
+    @NotNull
+	private MutatorMode getMode(@NotNull final ItemStack stack)
 	{
 		final CompoundNBT tag = stack.getOrCreateTag();
 		if (!tag.contains("mode", 1)) { tag.putByte("mode", (byte) 0); }
-		return MutatorModes.values()[tag.getByte("mode")];
+		return MutatorMode.values()[tag.getByte("mode")];
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, @Nullable final World world, final List<ITextComponent> tooltip, final ITooltipFlag flag)
+	public void addInformation(@NotNull final ItemStack stack,
+            @Nullable final World world, @NotNull final List<ITextComponent> tooltip, @NotNull final ITooltipFlag flag)
 	{
-		tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", getMode(stack).translation).applyTextStyle(TextFormatting.GRAY));
+	    final MutatorMode mode = getMode(stack);
+		tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", mode.title).applyTextStyle(TextFormatting.GRAY));
+		tooltip.add(mode.description.applyTextStyle(TextFormatting.GRAY));
 		super.addInformation(stack, world, tooltip, flag);
 	}
 }

@@ -56,9 +56,12 @@ public class Language extends LanguageProvider
         this.add(ModContent.CHEST_MUTATOR, "Chest Mutator");
         // Tooltips
         this.add("tooltip.expandedstorage.chest_mutator.merge", "Merge");
+        this.add("tooltip.expandedstorage.chest_mutator.merge_desc", "%s on two adjacent chests to merge them.");
         this.add("tooltip.expandedstorage.chest_mutator.unmerge", "Unmerge");
+        this.add("tooltip.expandedstorage.chest_mutator.unmerge_desc", "%s on a chest to split it into two single chests.");
         this.add("tooltip.expandedstorage.chest_mutator.rotate", "Rotate");
-        this.add("tooltip.expandedstorage.chest_mutator.merge_start", "Merging started, now click the other chest.");
+        this.add("tooltip.expandedstorage.chest_mutator.rotate_desc", "%s on a chest to rotate it.");
+        this.add("tooltip.expandedstorage.chest_mutator.merge_start", "Merging started, now %s the other chest.");
         this.add("tooltip.expandedstorage.chest_mutator.merge_end", "Merging finished.");
         this.add("tooltip.expandedstorage.tool_mode", "Tool Mode: %s");
         // Creative Group

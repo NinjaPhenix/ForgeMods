@@ -229,7 +229,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         {
             BlockState state;
             Direction direction_3;
-            if (direction_2.getAxis() == Direction.Axis.Y)
+            if (direction_2.getAxis().isVertical())
             {
                 state = world.getBlockState(pos.offset(direction_2.getOpposite()));
                 direction_3 = state.getBlock() == this && state.get(TYPE) == CursedChestType.SINGLE ? state.get(FACING) : null;
@@ -325,7 +325,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     @Override @SuppressWarnings("deprecation")
     public final boolean hasComparatorInputOverride(@NotNull final BlockState state) { return true; }
 
-    // todo: refactor out, replace with either client only registry thing or just a getClientExtraData method
+    // todo: refactor to a "getExtraData" method
     @NotNull
     public abstract <R extends Registries.TierData> SimpleRegistry<R> getDataRegistry();
 }

@@ -24,6 +24,8 @@ import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.entity.AbstractChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({ "OptionalGetWithoutIsPresent", "ConstantConditions" })
 public class ChestConversionItem extends ChestModifierItem
@@ -67,9 +69,9 @@ public class ChestConversionItem extends ChestModifierItem
 		tileEntity.read(ItemStackHelper.saveAllItems(tileEntity.write(new CompoundNBT()), inventoryData));
 	}
 
-	@Override
-	protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainPos,
-			final BlockState otherState, final BlockPos otherPos)
+    @NotNull @Override
+	protected ActionResultType useModifierOnChestBlock(@NotNull final ItemUseContext context,
+            @NotNull final BlockState mainState, @NotNull final BlockPos mainPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
 	{
 		final World world = context.getWorld();
 		final PlayerEntity player = context.getPlayer();
@@ -98,8 +100,8 @@ public class ChestConversionItem extends ChestModifierItem
 		return ActionResultType.FAIL;
 	}
 
-	@Override
-	protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state)
+    @NotNull @Override
+	protected ActionResultType useModifierOnBlock(@NotNull final ItemUseContext context, @NotNull final BlockState state)
 	{
 		if (state.getBlock() == Blocks.CHEST && from.equals(ExpandedStorage.getRl("wood_chest")))
 		{
