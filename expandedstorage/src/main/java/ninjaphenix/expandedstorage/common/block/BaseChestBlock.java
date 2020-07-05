@@ -215,7 +215,8 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         return CursedChestType.SINGLE;
     }
 
-    // todo: look at and see if it can be updated.
+    // todo: look at and see if it can be updated, specificly want to remove "BlockState state;", "Direction direction_3;" if possible
+    // todo: add config to prevent automatic merging of chests.
     @NotNull @Override
     public BlockState getStateForPlacement(@NotNull final BlockItemUseContext context)
     {
@@ -240,23 +241,17 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
             {
                 Direction offsetDir = direction_2.getOpposite();
                 final BlockState clickedBlock = world.getBlockState(pos.offset(offsetDir));
-                if (clickedBlock.getBlock() == this)
+                if (clickedBlock.getBlock() == this && clickedBlock.get(TYPE) == CursedChestType.SINGLE)
                 {
-                    if (clickedBlock.get(TYPE) == CursedChestType.SINGLE)
+                    if (clickedBlock.get(FACING) == direction_2 && clickedBlock.get(FACING) == direction_1)
+                    { chestType = CursedChestType.FRONT; }
+                    else
                     {
-                        if (clickedBlock.get(FACING) == direction_2 && clickedBlock.get(FACING) == direction_1)
+                        state = world.getBlockState(pos.offset(direction_2.getOpposite()));
+                        if (state.get(FACING).getHorizontalIndex() < 2) { offsetDir = offsetDir.getOpposite(); }
+                        if (direction_1 == state.get(FACING))
                         {
-                            chestType = CursedChestType.FRONT;
-                        }
-                        else
-                        {
-                            state = world.getBlockState(pos.offset(direction_2.getOpposite()));
-                            if (state.get(FACING).getHorizontalIndex() < 2) { offsetDir = offsetDir.getOpposite(); }
-                            if (direction_1 == state.get(FACING))
-                            {
-                                if (offsetDir == Direction.WEST || offsetDir == Direction.NORTH) { chestType = CursedChestType.LEFT; }
-                                else { chestType = CursedChestType.RIGHT; }
-                            }
+                            chestType = (offsetDir == Direction.WEST || offsetDir == Direction.NORTH) ? CursedChestType.LEFT : CursedChestType.RIGHT;
                         }
                     }
                 }
@@ -325,7 +320,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     @Override @SuppressWarnings("deprecation")
     public final boolean hasComparatorInputOverride(@NotNull final BlockState state) { return true; }
 
-    // todo: refactor to a "getExtraData" method
+    // todo: refactor to a "getExtraData" method, how to implement BlockEntity#fromTag in that case, not issue in 1.16 so perhaps just write a hack.
     @NotNull
     public abstract <R extends Registries.TierData> SimpleRegistry<R> getDataRegistry();
 }

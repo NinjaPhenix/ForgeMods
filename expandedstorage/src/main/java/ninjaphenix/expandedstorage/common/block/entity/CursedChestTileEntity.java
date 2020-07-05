@@ -81,7 +81,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
         if (viewerCount > 0 && animationAngle == 0.0F) { playSound(SoundEvents.BLOCK_CHEST_OPEN); }
         if (viewerCount == 0 && animationAngle > 0.0F || viewerCount > 0 && animationAngle < 1.0F)
         {
-            animationAngle = MathHelper.clamp(animationAngle + viewerCount > 0 ? 0.1F : -0.1F, 0, 1);
+            animationAngle = MathHelper.clamp(animationAngle + (viewerCount > 0 ? 0.1F : -0.1F), 0, 1);
             if (animationAngle < 0.5F && lastAnimationAngle >= 0.5F) { playSound(SoundEvents.BLOCK_CHEST_CLOSE); }
         }
     }

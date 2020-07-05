@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-// todo: just use regular tile entity type?
+// todo: Remove, requires ModContent to be rewritten.
 public final class CustomTileEntityType<T extends TileEntity> extends TileEntityType<T>
 {
 	private final Predicate<Block> predicate;
