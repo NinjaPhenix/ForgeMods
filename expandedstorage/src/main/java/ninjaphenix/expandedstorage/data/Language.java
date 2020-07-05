@@ -66,6 +66,15 @@ public class Language extends LanguageProvider
         this.add("tooltip.expandedstorage.tool_mode", "Tool Mode: %s");
         // Creative Group
         this.add(ExpandedStorage.group.getTranslationKey(), "Expanded Storage");
+        // Screen
+        this.add("screen.expandedstorage.screen_picker_title", "Select Screen Type");
+        this.add("screen.expandedstorage.change_screen_button", "Change Screen Type");
+        this.add("screen.expandedstorage.single_screen", "Single Page Screen");
+        this.add("screen.expandedstorage.paged_screen", "Paginated Screen");
+        this.add("screen.expandedstorage.scrollable_screen", "Scrollable Screen");
+        this.add("screen.expandedstorage.page_x_y", "%d/%d");
+        this.add("screen.expandedstorage.next_page", "Next Page");
+        this.add("screen.expandedstorage.prev_page", "Previous Page");
     }
 
     @Override
