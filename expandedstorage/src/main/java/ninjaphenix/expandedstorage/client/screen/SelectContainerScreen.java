@@ -1,4 +1,4 @@
-package ninjaphenix.container_library.client.screen;
+package ninjaphenix.expandedstorage.client.screen;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
@@ -9,9 +9,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import ninjaphenix.container_library.common.network.Networker;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
+import ninjaphenix.expandedstorage.common.network.Networker;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

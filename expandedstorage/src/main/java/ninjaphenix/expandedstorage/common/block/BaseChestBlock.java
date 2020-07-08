@@ -34,12 +34,12 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import ninjaphenix.container_library.ContainerLibraryImpl;
-import ninjaphenix.container_library.common.inventory.IDataNamedContainerProvider;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.entity.AbstractChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
+import ninjaphenix.expandedstorage.common.inventory.IDataNamedContainerProvider;
+import ninjaphenix.expandedstorage.common.network.Networker;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -98,7 +98,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                     {
                         first.fillWithLoot(player);
                         second.fillWithLoot(player);
-                        return ContainerLibraryImpl.INSTANCE.getContainer(windowId, first.getPos(), inventory, player, getDisplayName());
+                        return Networker.INSTANCE.getContainer(windowId, first.getPos(), inventory, player, getDisplayName());
                     }
                     return null;
                 }
@@ -126,7 +126,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                     if (single.canOpen(player))
                     {
                         single.fillWithLoot(player);
-                        return ContainerLibraryImpl.INSTANCE.getContainer(windowId, single.getPos(), single, player, getDisplayName());
+                        return Networker.INSTANCE.getContainer(windowId, single.getPos(), single, player, getDisplayName());
                     }
                     return null;
                 }
@@ -201,7 +201,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
             final Optional<IDataNamedContainerProvider> containerProvider = combine(state, world, pos, false).apply(CONTAINER_GETTER);
             containerProvider.ifPresent(provider ->
             {
-                ContainerLibraryImpl.INSTANCE.openContainer((ServerPlayerEntity) player, provider);
+                Networker.INSTANCE.openContainer((ServerPlayerEntity) player, provider);
                 player.addStat(this.getOpenStat());
             });
         }

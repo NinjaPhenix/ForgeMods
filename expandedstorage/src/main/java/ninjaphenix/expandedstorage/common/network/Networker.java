@@ -1,4 +1,4 @@
-package ninjaphenix.container_library;
+package ninjaphenix.expandedstorage.common.network;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,11 +11,13 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.NetworkHooks;
-import ninjaphenix.container_library.common.inventory.*;
-import ninjaphenix.container_library.common.network.Networker;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 import ninjaphenix.expandedstorage.ExpandedStorage;
+import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
+import ninjaphenix.expandedstorage.common.inventory.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,19 +25,46 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-@Mod.EventBusSubscriber(modid = ExpandedStorage.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ContainerLibraryImpl
+public class Networker
 {
-    public static final ContainerLibraryImpl INSTANCE = new ContainerLibraryImpl();
-
+    public static final Networker INSTANCE = new Networker();
+    private final SimpleChannel channel;
     private final ImmutableMap<ResourceLocation, ServerContainerFactory<?>> containerFactories =
             new ImmutableMap.Builder<ResourceLocation, ServerContainerFactory<?>>()
-            .put(ExpandedStorage.getRl("single"), SingleContainer::new)
-            .put(ExpandedStorage.getRl("scrollable"), ScrollableContainer::new)
-            .put(ExpandedStorage.getRl("paged"), PagedContainer::new)
-            .build();
+                    .put(ExpandedStorage.getRl("single"), SingleContainer::new)
+                    .put(ExpandedStorage.getRl("scrollable"), ScrollableContainer::new)
+                    .put(ExpandedStorage.getRl("paged"), PagedContainer::new)
+                    .build();
     private final HashMap<UUID, Consumer<ResourceLocation>> preferenceCallbacks = new HashMap<>();
     private final HashMap<UUID, ResourceLocation> playerPreferences = new HashMap<>();
+
+    private Networker()
+    {
+        final String channelVersion = "1";
+        channel = NetworkRegistry.newSimpleChannel(ExpandedStorage.getRl("channel"), () -> channelVersion, channelVersion::equals, channelVersion::equals);
+    }
+
+    public void registerMessages()
+    {
+        // @formatter:off
+        channel.registerMessage(0, PreferenceUpdateMessage.class, PreferenceUpdateMessage::encode, PreferenceUpdateMessage::decode, PreferenceUpdateMessage::handle);
+        channel.registerMessage(1, OpenSelectScreenMessage.class, OpenSelectScreenMessage::encode, OpenSelectScreenMessage::decode, OpenSelectScreenMessage::handle);
+        channel.registerMessage(2, RemovePreferenceCallbackMessage.class, RemovePreferenceCallbackMessage::encode, RemovePreferenceCallbackMessage::decode, RemovePreferenceCallbackMessage::handle);
+        // @formatter:on
+    }
+
+    public void sendPreferenceToServer()
+    { channel.sendToServer(new PreferenceUpdateMessage(new ResourceLocation(ExpandedStorageConfig.CLIENT.preferredContainerType.get()))); }
+
+    @SuppressWarnings("InstantiationOfUtilityClass")
+    public void sendRemovePreferenceCallbackToServer() { channel.sendToServer(new RemovePreferenceCallbackMessage()); }
+
+    @SuppressWarnings("InstantiationOfUtilityClass")
+    public void requestOpenSelectionScreen() { channel.sendToServer(new OpenSelectScreenMessage()); }
+
+    @SuppressWarnings("InstantiationOfUtilityClass")
+    public void openSelectionScreen(@NotNull final ServerPlayerEntity player)
+    { channel.send(PacketDistributor.PLAYER.with(() -> player), new OpenSelectScreenMessage()); }
 
     public void setPlayerPreference(@NotNull final PlayerEntity player, @Nullable final ResourceLocation containerType)
     {
@@ -48,7 +77,7 @@ public class ContainerLibraryImpl
         else { playerPreferences.remove(uuid); preferenceCallbacks.remove(uuid); }
     }
 
-    public void removePlayerPreferenceCallback(@NotNull final PlayerEntity player) { preferenceCallbacks.remove(player.getUniqueID()); }
+    void removePlayerPreferenceCallback(@NotNull final PlayerEntity player) { preferenceCallbacks.remove(player.getUniqueID()); }
 
     public void openContainer(@NotNull final ServerPlayerEntity player, @NotNull final IDataNamedContainerProvider containerProvider)
     {
@@ -58,7 +87,7 @@ public class ContainerLibraryImpl
         else { openSelectScreen(player, (type) -> openContainer(player, containerProvider)); }
     }
 
-    public void openSelectScreen(@NotNull final ServerPlayerEntity player, @Nullable final Consumer<ResourceLocation> preferenceSetCallback)
+    void openSelectScreen(@NotNull final ServerPlayerEntity player, @Nullable final Consumer<ResourceLocation> preferenceSetCallback)
     {
         if (preferenceSetCallback != null) { preferenceCallbacks.put(player.getUniqueID(), preferenceSetCallback); }
         Networker.INSTANCE.openSelectionScreen(player);

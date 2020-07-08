@@ -1,4 +1,4 @@
-package ninjaphenix.container_library.client.screen;
+package ninjaphenix.expandedstorage.client.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -6,8 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
-import ninjaphenix.container_library.common.network.Networker;
 import ninjaphenix.expandedstorage.ExpandedStorage;
+import ninjaphenix.expandedstorage.common.network.Networker;
 import org.jetbrains.annotations.NotNull;
 
 public class ScreenTypeSelectionScreenButton extends Button

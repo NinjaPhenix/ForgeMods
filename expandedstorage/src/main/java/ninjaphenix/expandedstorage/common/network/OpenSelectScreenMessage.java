@@ -1,4 +1,4 @@
-package ninjaphenix.container_library.common.network;
+package ninjaphenix.expandedstorage.common.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,9 +11,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
-import ninjaphenix.container_library.ContainerLibraryImpl;
-import ninjaphenix.container_library.common.inventory.AbstractContainer;
-import ninjaphenix.container_library.common.inventory.IDataNamedContainerProvider;
+import ninjaphenix.expandedstorage.client.screen.SelectContainerScreen;
+import ninjaphenix.expandedstorage.common.inventory.AbstractContainer;
+import ninjaphenix.expandedstorage.common.inventory.IDataNamedContainerProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +33,7 @@ public class OpenSelectScreenMessage
         if (context.getDirection().getOriginationSide() == LogicalSide.SERVER) { handleClient(); context.setPacketHandled(true); return; }
         final ServerPlayerEntity sender = context.getSender();
         AbstractContainer<?> container = (AbstractContainer<?>) sender.openContainer;
-        ContainerLibraryImpl.INSTANCE.openSelectScreen(sender, (type) -> ContainerLibraryImpl.INSTANCE.openContainer(sender, new IDataNamedContainerProvider()
+        Networker.INSTANCE.openSelectScreen(sender, (type) -> Networker.INSTANCE.openContainer(sender, new IDataNamedContainerProvider()
         {
             @Override
             public void writeExtraData(@NotNull final PacketBuffer buffer)
@@ -44,7 +44,7 @@ public class OpenSelectScreenMessage
 
             @Nullable @Override
             public Container createMenu(final int windowId, @NotNull final PlayerInventory playerInventory, @NotNull final PlayerEntity player)
-            { return ContainerLibraryImpl.INSTANCE.getContainer(windowId, container.ORIGIN, container.getInv(), player, container.DISPLAY_NAME); }
+            { return Networker.INSTANCE.getContainer(windowId, container.ORIGIN, container.getInv(), player, container.DISPLAY_NAME); }
 
             @NotNull @Override
             public ITextComponent getDisplayName() { return container.DISPLAY_NAME; }
@@ -53,5 +53,5 @@ public class OpenSelectScreenMessage
     }
 
     @OnlyIn(Dist.CLIENT)
-    private static void handleClient() { Minecraft.getInstance().displayGuiScreen(new ninjaphenix.container_library.client.screen.SelectContainerScreen()); }
+    private static void handleClient() { Minecraft.getInstance().displayGuiScreen(new SelectContainerScreen()); }
 }

@@ -1,11 +1,11 @@
-package ninjaphenix.container_library.client.screen;
+package ninjaphenix.expandedstorage.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
-import ninjaphenix.container_library.common.inventory.AbstractContainer;
-import ninjaphenix.container_library.common.screen.ScreenMeta;
+import ninjaphenix.expandedstorage.common.inventory.AbstractContainer;
+import ninjaphenix.expandedstorage.common.screen.ScreenMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;

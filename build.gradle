@@ -11,12 +11,14 @@ buildscript {
 
 plugins {
     id  'idea'
+    id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
 }
 
 subprojects {
     apply plugin: 'net.minecraftforge.gradle'
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
+    apply plugin: 'com.matthewprenger.cursegradle'
 
     group = maven_group
     archivesBaseName = mod_id
@@ -148,16 +150,16 @@ subprojects {
         doLast {
             def tagName = "${mod_id}-${mod_version}+${minecraft_version}"
             def commit = "git rev-parse HEAD".execute().in.readLines().get(0)
-            if (extensions.getExtraProperties().has("artifactId")) {
-                def artifactId = extensions.getExtraProperties().get("artifactId")
+            if (extensions.getExtraProperties().has('artifactId')) {
+                def artifactId = extensions.getExtraProperties().get('artifactId')
                 def url = String.format(curseforge_url_template, curseforge_project_slug, artifactId)
-                if ("false".equalsIgnoreCase(upload_debug)) {
+                if ('false'.equalsIgnoreCase(upload_debug)) {
                     "hub release create -t ${commit} -m ${tagName} -m ${url} ${tagName}".execute()
                     println "Created release for tag ${tagName} with message ${url}"
                 }
             } else {
-                if ("false".equalsIgnoreCase(upload_debug)) {
-                    "hub release create -t ${commit} -m ${tagName} -m ${tagName} -a ${project.buildDir}/libs/${tagName}.jar -a ${project.buildDir}/libs/${tagName}-sources.jar ${tagName}".execute()
+                if ('false'.equalsIgnoreCase(upload_debug)) {
+                    "hub release create -a ${projectDir.getName()}/build/libs/${tagName}.jar -a ${projectDir.getName()}/build/libs/${tagName}-sources.jar -m ${tagName} -m ${tagName} -t ${commit} ${tagName}".execute()
                     println "Created release for tag ${tagName} with message ${tagName}"
                 }
             }
@@ -196,7 +198,8 @@ subprojects {
                     displayName = "${mod_name} ${mod_version}+${minecraft_version}"
                 }
                 addArtifact(file("${project.buildDir}/libs/${mod_id}-${mod_version}+${minecraft_version}-sources.jar")) {
-                    changelog = "- See main artifact for changelog."
+                    changelogType = 'markdown'
+                    changelog = file("${project.rootDir}/sources-changelog.md")
                 }
                 afterEvaluate {
                     uploadTask.dependsOn("sourcesJar")
@@ -226,6 +229,7 @@ subprojects {
     task sourcesJar(type: Jar) {
         archiveClassifier = "sources"
         from sourceSets.main.allJava
+        from("LICENSE")
     }
 
     artifacts { archives sourcesJar }

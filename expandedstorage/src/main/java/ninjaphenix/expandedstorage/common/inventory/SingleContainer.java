@@ -1,4 +1,4 @@
-package ninjaphenix.container_library.common.inventory;
+package ninjaphenix.expandedstorage.common.inventory;
 
 import com.google.common.collect.ImmutableSortedMap;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,8 +10,8 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.IContainerFactory;
-import ninjaphenix.container_library.common.screen.SingleScreenMeta;
 import ninjaphenix.expandedstorage.ModContent;
+import ninjaphenix.expandedstorage.common.screen.SingleScreenMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

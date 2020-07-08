@@ -1,9 +1,9 @@
-package ninjaphenix.container_library.client.screen;
+package ninjaphenix.expandedstorage.client.screen;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
-import ninjaphenix.container_library.common.inventory.SingleContainer;
-import ninjaphenix.container_library.common.screen.SingleScreenMeta;
+import ninjaphenix.expandedstorage.common.inventory.SingleContainer;
+import ninjaphenix.expandedstorage.common.screen.SingleScreenMeta;
 import org.jetbrains.annotations.NotNull;
 
 public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMeta>

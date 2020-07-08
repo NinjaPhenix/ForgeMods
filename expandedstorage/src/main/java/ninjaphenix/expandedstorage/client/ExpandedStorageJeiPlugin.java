@@ -6,8 +6,8 @@ import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.util.ResourceLocation;
-import ninjaphenix.container_library.client.screen.ScrollableScreen;
 import ninjaphenix.expandedstorage.ExpandedStorage;
+import ninjaphenix.expandedstorage.client.screen.ScrollableScreen;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package ninjaphenix.container_library.common.inventory;
+package ninjaphenix.expandedstorage.common.inventory;
 
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.network.PacketBuffer;

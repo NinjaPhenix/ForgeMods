@@ -1,4 +1,4 @@
-package ninjaphenix.container_library.common.inventory;
+package ninjaphenix.expandedstorage.common.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import ninjaphenix.container_library.common.screen.ScreenMeta;
 import ninjaphenix.expandedstorage.ExpandedStorage;
+import ninjaphenix.expandedstorage.common.screen.ScreenMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

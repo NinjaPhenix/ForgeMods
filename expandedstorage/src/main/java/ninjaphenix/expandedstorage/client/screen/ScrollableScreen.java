@@ -1,13 +1,13 @@
-package ninjaphenix.container_library.client.screen;
+package ninjaphenix.expandedstorage.client.screen;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import ninjaphenix.container_library.common.inventory.ScrollableContainer;
-import ninjaphenix.container_library.common.screen.ScrollableScreenMeta;
 import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
+import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
+import ninjaphenix.expandedstorage.common.screen.ScrollableScreenMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;

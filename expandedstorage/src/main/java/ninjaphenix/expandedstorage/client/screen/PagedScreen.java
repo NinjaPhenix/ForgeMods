@@ -1,4 +1,4 @@
-package ninjaphenix.container_library.client.screen;
+package ninjaphenix.expandedstorage.client.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -8,9 +8,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import ninjaphenix.container_library.common.inventory.PagedContainer;
-import ninjaphenix.container_library.common.screen.PagedScreenMeta;
 import ninjaphenix.expandedstorage.ExpandedStorage;
+import ninjaphenix.expandedstorage.common.inventory.PagedContainer;
+import ninjaphenix.expandedstorage.common.screen.PagedScreenMeta;
 import org.jetbrains.annotations.NotNull;
 
 public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>

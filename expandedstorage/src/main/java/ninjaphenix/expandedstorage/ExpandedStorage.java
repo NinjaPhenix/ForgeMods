@@ -8,9 +8,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
-import ninjaphenix.container_library.common.network.Networker;
 import ninjaphenix.expandedstorage.client.ExpandedStorageClient;
 import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
+import ninjaphenix.expandedstorage.common.network.Networker;
 import org.jetbrains.annotations.NotNull;
 
 @Mod("expandedstorage")
@@ -30,6 +30,7 @@ public class ExpandedStorage
 	{
         Networker.INSTANCE.registerMessages();
         ExpandedStorageConfig.register();
+        MinecraftForge.EVENT_BUS.register(Networker.INSTANCE);
         if(FMLLoader.getDist() == Dist.CLIENT) {
             FMLJavaModLoadingContext.get().getModEventBus().register(ExpandedStorageClient.class);
             MinecraftForge.EVENT_BUS.register(ExpandedStorageClient.class);

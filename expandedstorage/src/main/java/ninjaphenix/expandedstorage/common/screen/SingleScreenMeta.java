@@ -1,4 +1,4 @@
-package ninjaphenix.container_library.common.screen;
+package ninjaphenix.expandedstorage.common.screen;
 
 import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
