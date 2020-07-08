@@ -2,18 +2,20 @@ package ninjaphenix.expandedstorage.common;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber(modid = ExpandedStorage.MOD_ID, bus= Mod.EventBusSubscriber.Bus.MOD)
 public class ExpandedStorageConfig
 {
-    private static class Client
+    public static class Client
     {
-        private final ForgeConfigSpec.ConfigValue<String> preferredContainerType;
-        private final ForgeConfigSpec.BooleanValue restrictiveScrolling;
-        private final ForgeConfigSpec.BooleanValue centerSettingsButtonOnScrollbar;
+        public final ForgeConfigSpec.ConfigValue<String> preferredContainerType;
+        public final ForgeConfigSpec.BooleanValue restrictiveScrolling;
+        public final ForgeConfigSpec.BooleanValue centerSettingsButtonOnScrollbar;
 
         Client(ForgeConfigSpec.Builder builder)
         {
@@ -32,11 +34,12 @@ public class ExpandedStorageConfig
 
     private static final ForgeConfigSpec clientSpec;
     public static final ExpandedStorageConfig.Client CLIENT;
+
     static {
         final Pair<ExpandedStorageConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ExpandedStorageConfig.Client::new);
         clientSpec = specPair.getRight();
         CLIENT = specPair.getLeft();
     }
 
-    public static ForgeConfigSpec getClientSpec() { return clientSpec; }
+    public static void register() { ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, clientSpec); }
 }

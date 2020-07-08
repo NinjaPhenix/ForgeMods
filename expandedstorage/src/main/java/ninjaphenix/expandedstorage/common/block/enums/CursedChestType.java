@@ -11,9 +11,9 @@ public enum CursedChestType implements IStringSerializable
     private final String name;
     private final int offset;
 
-    CursedChestType(String string, int outlineOffset) { name = string; offset = outlineOffset; }
+    CursedChestType(@NotNull final String string, final int outlineOffset) { name = string; offset = outlineOffset; }
 
-    public static CursedChestType valueOf(ChestType type)
+    public static CursedChestType valueOf(@NotNull final ChestType type)
     {
         if (type == ChestType.SINGLE) { return SINGLE; }
         else if (type == ChestType.RIGHT) { return LEFT; }
@@ -33,7 +33,7 @@ public enum CursedChestType implements IStringSerializable
     }
 
     @NotNull @Override
-	public String getName() { return name; }
+    public String getName() { return name; }
 
-	public int getOffset() { return offset; }
+    public int getOffset() { return offset; }
 }

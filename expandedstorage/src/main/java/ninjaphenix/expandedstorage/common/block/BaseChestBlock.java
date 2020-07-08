@@ -15,6 +15,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -33,12 +34,12 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import ninjaphenix.container_library.ContainerLibraryImpl;
+import ninjaphenix.container_library.common.inventory.IDataNamedContainerProvider;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.entity.AbstractChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
-import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,13 +67,22 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         @NotNull @Override
         public Optional<ISidedInventory> func_225537_b_() { return Optional.empty(); }
     };
-    private final TileEntityMerger.ICallback<T, Optional<INamedContainerProvider>> CONTAINER_GETTER = new TileEntityMerger.ICallback<T, Optional<INamedContainerProvider>>()
+    private final TileEntityMerger.ICallback<T, Optional<IDataNamedContainerProvider>> CONTAINER_GETTER = new TileEntityMerger.ICallback<T, Optional<IDataNamedContainerProvider>>()
     {
         @NotNull @Override
-        public Optional<INamedContainerProvider> func_225539_a_(@NotNull final T first, @NotNull final T second)
+        public Optional<IDataNamedContainerProvider> func_225539_a_(@NotNull final T first, @NotNull final T second)
         {
-            return Optional.of(new INamedContainerProvider()
+            return Optional.of(new IDataNamedContainerProvider()
             {
+                private final DoubleSidedInventory inventory = new DoubleSidedInventory(first, second);
+
+                @Override
+                public void writeExtraData(@NotNull final PacketBuffer buffer)
+                {
+                    buffer.writeInt(inventory.getSizeInventory());
+                    buffer.writeBlockPos(first.getPos());
+                }
+
                 @NotNull @Override
                 public ITextComponent getDisplayName()
                 {
@@ -88,8 +98,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                     {
                         first.fillWithLoot(player);
                         second.fillWithLoot(player);
-                        final DoubleSidedInventory inventory = new DoubleSidedInventory(first, second);
-                        return new ScrollableContainer(windowId, playerInventory, inventory); // todo: replace with new container code
+                        return ContainerLibraryImpl.INSTANCE.getContainer(windowId, first.getPos(), inventory, player, getDisplayName());
                     }
                     return null;
                 }
@@ -97,13 +106,38 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         }
 
         @NotNull @Override
-        public Optional<INamedContainerProvider> func_225538_a_(@NotNull final T single) { return Optional.of(single); }
+        public Optional<IDataNamedContainerProvider> func_225538_a_(@NotNull final T single)
+        {
+            return Optional.of(new IDataNamedContainerProvider()
+            {
+                @Override
+                public void writeExtraData(@NotNull final PacketBuffer buffer)
+                {
+                    buffer.writeInt(single.getSizeInventory());
+                    buffer.writeBlockPos(single.getPos());
+                }
+
+                @NotNull @Override
+                public ITextComponent getDisplayName() { return single.getDisplayName(); }
+
+                @Nullable @Override
+                public Container createMenu(final int windowId, @NotNull final PlayerInventory playerInventory, @NotNull final PlayerEntity player)
+                {
+                    if (single.canOpen(player))
+                    {
+                        single.fillWithLoot(player);
+                        return ContainerLibraryImpl.INSTANCE.getContainer(windowId, single.getPos(), single, player, getDisplayName());
+                    }
+                    return null;
+                }
+            });
+        }
 
         @NotNull @Override
-        public Optional<INamedContainerProvider> func_225537_b_() { return Optional.empty(); }
+        public Optional<IDataNamedContainerProvider> func_225537_b_() { return Optional.empty(); }
     };
 
-    protected BaseChestBlock(Properties builder, Supplier<TileEntityType<? extends T>> tileEntityType)
+    protected BaseChestBlock(@NotNull final Properties builder, Supplier<TileEntityType<? extends T>> tileEntityType)
     {
         super(builder);
         this.tileEntityType = tileEntityType;
@@ -118,13 +152,15 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     }
 
     @NotNull
-    public final TileEntityMerger.ICallbackWrapper<? extends T>
-    combine(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos, final boolean alwaysOpen)
+    public final TileEntityMerger.ICallbackWrapper<? extends T> combine(@NotNull final BlockState state, @NotNull final World world,
+            @NotNull final BlockPos pos, final boolean alwaysOpen)
     {
-        final BiPredicate<IWorld, BlockPos> isChestBlocked = alwaysOpen ? (_world, _pos) -> false : ChestBlock::isBlocked;
+        final BiPredicate<IWorld, BlockPos> isChestBlocked = alwaysOpen ? (_world, _pos) -> false : this::isBlocked;
         return TileEntityMerger.func_226924_a_(tileEntityType.get(), BaseChestBlock::getMergeType,
                 BaseChestBlock::getDirectionToAttached, FACING, state, world, pos, isChestBlocked);
     }
+
+    protected boolean isBlocked(@NotNull final IWorld world, @NotNull final BlockPos pos) { return ChestBlock.isBlocked(world, pos); }
 
     @NotNull
     public static Direction getDirectionToAttached(@NotNull final BlockState state)
@@ -154,32 +190,27 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     }
 
     @Nullable @Override
-    public final INamedContainerProvider getContainer(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos)
-    {
-        Optional<INamedContainerProvider> containerProvider = combine(state, world, pos, false).apply(CONTAINER_GETTER);
-        return containerProvider.orElse(null);
-    }
+    public final INamedContainerProvider getContainer(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos) { return null; }
 
     @NotNull @Override @SuppressWarnings("deprecation")
-    public final ActionResultType onBlockActivated(@NotNull final BlockState state, @NotNull final World world,
-            @NotNull final BlockPos pos, @NotNull final PlayerEntity player, @NotNull final Hand handIn, @NotNull final BlockRayTraceResult hit)
+    public final ActionResultType onBlockActivated(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos,
+            @NotNull final PlayerEntity player, @NotNull final Hand handIn, @NotNull final BlockRayTraceResult hit)
     {
         if (!world.isRemote)
         {
-            final INamedContainerProvider containerProvider = state.getContainer(world, pos);
-            if (containerProvider != null)
+            final Optional<IDataNamedContainerProvider> containerProvider = combine(state, world, pos, false).apply(CONTAINER_GETTER);
+            containerProvider.ifPresent(provider ->
             {
-                final int invSize = combine(state, world, pos, true).apply(INVENTORY_GETTER).map(IInventory::getSizeInventory).orElse(0);
-                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, data -> data.writeInt(invSize));
+                ContainerLibraryImpl.INSTANCE.openContainer((ServerPlayerEntity) player, provider);
                 player.addStat(this.getOpenStat());
-            }
+            });
         }
         return ActionResultType.SUCCESS;
     }
 
     @Override
-    public final void onBlockPlacedBy(@NotNull final World world, @NotNull final BlockPos pos,
-            @NotNull final BlockState state, @Nullable final LivingEntity placer, @NotNull final ItemStack stack)
+    public final void onBlockPlacedBy(@NotNull final World world, @NotNull final BlockPos pos, @NotNull final BlockState state,
+            @Nullable final LivingEntity placer, @NotNull final ItemStack stack)
     {
         if (stack.hasDisplayName())
         {
@@ -189,17 +220,13 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     }
 
     @Override @SuppressWarnings("deprecation")
-    public void onReplaced(@NotNull final BlockState state, @NotNull final World world,
-            @NotNull final BlockPos pos, @NotNull final BlockState newState, final boolean isMoving)
+    public void onReplaced(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos, @NotNull final BlockState newState,
+            final boolean isMoving)
     {
         if (state.getBlock() != newState.getBlock())
         {
             final TileEntity tileEntity = world.getTileEntity(pos);
-            if (tileEntity instanceof IInventory)
-            {
-                InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity);
-                world.notifyNeighbors(pos, this);
-            }
+            if (tileEntity instanceof IInventory) { InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity); world.notifyNeighbors(pos, this); }
             super.onReplaced(state, world, pos, newState, isMoving);
         }
     }
@@ -215,7 +242,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         return CursedChestType.SINGLE;
     }
 
-    // todo: look at and see if it can be updated, specificly want to remove "BlockState state;", "Direction direction_3;" if possible
+    // todo: look at and see if it can be updated, specifically want to remove "BlockState state;", "Direction direction_3;" if possible
     // todo: add config to prevent automatic merging of chests.
     @NotNull @Override
     public BlockState getStateForPlacement(@NotNull final BlockItemUseContext context)
@@ -259,7 +286,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         }
         else
         {
-            for (Direction dir : Direction.values())
+            for (@NotNull final Direction dir : Direction.values())
             {
                 final BlockState state = world.getBlockState(pos.offset(dir));
                 if (state.getBlock() != this || state.get(TYPE) != CursedChestType.SINGLE || state.get(FACING) != direction_1) { continue; }
@@ -275,8 +302,8 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     }
 
     @NotNull @Override @SuppressWarnings("deprecation")
-    public BlockState updatePostPlacement(@NotNull final BlockState state, @NotNull final Direction offset,
-            @NotNull final BlockState offsetState, @NotNull final IWorld world, @NotNull final BlockPos pos, @NotNull final BlockPos offsetPos)
+    public BlockState updatePostPlacement(@NotNull final BlockState state, @NotNull final Direction offset, @NotNull final BlockState offsetState,
+            @NotNull final IWorld world, @NotNull final BlockPos pos, @NotNull final BlockPos offsetPos)
     {
         final TileEntityMerger.Type mergeType = getMergeType(state);
         if (mergeType == TileEntityMerger.Type.SINGLE)
@@ -286,10 +313,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
             final CursedChestType newType = getChestType(facing, offset);
             if (offsetState.get(TYPE) == newType.getOpposite() && facing == offsetState.get(FACING)) { return state.with(TYPE, newType); }
         }
-        else if (world.getBlockState(pos.offset(getDirectionToAttached(state))).getBlock() != this)
-        {
-            return state.with(TYPE, CursedChestType.SINGLE);
-        }
+        else if (world.getBlockState(pos.offset(getDirectionToAttached(state))).getBlock() != this) { return state.with(TYPE, CursedChestType.SINGLE); }
         return super.updatePostPlacement(state, offset, offsetState, world, pos, offsetPos);
     }
 

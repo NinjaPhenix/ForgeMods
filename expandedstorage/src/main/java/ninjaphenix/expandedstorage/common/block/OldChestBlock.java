@@ -2,10 +2,14 @@ package ninjaphenix.expandedstorage.common.block;
 
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.entity.OldChestTileEntity;
@@ -22,6 +26,15 @@ public class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
     {
         final ResourceLocation registryName = getRegistryName();
         return new OldChestTileEntity(new ResourceLocation(registryName.getNamespace(), registryName.getPath().substring(4)));
+    }
+
+    @Override
+    protected boolean isBlocked(@NotNull IWorld world, @NotNull BlockPos pos)
+    {
+        final BlockPos upPos = pos.up();
+        final BlockState upState = world.getBlockState(upPos);
+        return (upState.isNormalCube(world, upPos) && upState.getBlock() != this) || world.getEntitiesWithinAABB(CatEntity.class, new AxisAlignedBB(pos.getX(),
+                pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)).stream().anyMatch(CatEntity::isSitting);
     }
 
     @NotNull @Override @SuppressWarnings("deprecation")

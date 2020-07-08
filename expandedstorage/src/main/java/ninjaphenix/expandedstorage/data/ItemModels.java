@@ -2,13 +2,15 @@ package ninjaphenix.expandedstorage.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
-import net.minecraftforge.client.model.generators.*;
+import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
 import ninjaphenix.expandedstorage.ModContent;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemModels extends ItemModelProvider
 {
-    public ItemModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper) { super(generator, modId, fileHelper); }
+    public ItemModels(@NotNull final DataGenerator generator, @NotNull final String modId, @NotNull final ExistingFileHelper fileHelper)
+    { super(generator, modId, fileHelper); }
 
     @Override
     protected void registerModels()
@@ -24,7 +26,6 @@ public class ItemModels extends ItemModelProvider
         simple(ModContent.CONVERSION_KIT_GOLD_DIAMOND);
         simple(ModContent.CONVERSION_KIT_GOLD_OBSIDIAN);
         simple(ModContent.CONVERSION_KIT_DIAMOND_OBSIDIAN);
-
         chest(ModContent.WOOD_CHEST.getSecond());
         chest(ModContent.PUMPKIN_CHEST.getSecond());
         chest(ModContent.CHRISTMAS_CHEST.getSecond());
@@ -32,7 +33,6 @@ public class ItemModels extends ItemModelProvider
         chest(ModContent.GOLD_CHEST.getSecond());
         chest(ModContent.DIAMOND_CHEST.getSecond());
         chest(ModContent.OBSIDIAN_CHEST.getSecond());
-
         oldChest(ModContent.OLD_WOOD_CHEST.getSecond());
         oldChest(ModContent.OLD_IRON_CHEST.getSecond());
         oldChest(ModContent.OLD_GOLD_CHEST.getSecond());
@@ -40,20 +40,19 @@ public class ItemModels extends ItemModelProvider
         oldChest(ModContent.OLD_OBSIDIAN_CHEST.getSecond());
     }
 
-    private ItemModelBuilder oldChest(final Item item)
+    @SuppressWarnings("ConstantConditions")
+    private void oldChest(@NotNull final Item item) { getBuilder(item.getRegistryName().getPath()).parent(BlockStatesAndModels.SINGLE_OLD_MODELS.get(item)); }
+
+    @SuppressWarnings("ConstantConditions")
+    private void simple(@NotNull final Item item)
     {
-        final ModelFile parent = BlockStatesAndModels.SINGLE_OLD_MODELS.get(item);
         final String itemId = item.getRegistryName().getPath();
-        return getBuilder(itemId).parent(parent);
+        withExistingParent(itemId, mcLoc("item/generated")).texture("layer0", "item/" + itemId);
     }
 
-    private ItemModelBuilder simple(final Item item) {
-        final String itemId = item.getRegistryName().getPath();
-        return withExistingParent(itemId, mcLoc("item/generated")).texture("layer0", "item/"+itemId);
-    }
+    @SuppressWarnings("ConstantConditions")
+    private void chest(@NotNull final Item item) { withExistingParent(item.getRegistryName().getPath(), mcLoc("item/chest")); }
 
-    private ItemModelBuilder chest(final Item item) { return withExistingParent(item.getRegistryName().getPath(), mcLoc("item/chest")); }
-
-    @Override
-    public @NotNull String getName() { return "Expanded Storage - Item Models"; }
+    @NotNull @Override
+    public String getName() { return "Expanded Storage - Item Models"; }
 }

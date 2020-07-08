@@ -19,7 +19,8 @@ public class BlockStatesAndModels extends BlockStateProvider
     private ModelFile OLD_CHEST_VERTICAL;
     public static HashMap<Item, ModelFile> SINGLE_OLD_MODELS = new HashMap<>();
 
-    public BlockStatesAndModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper) { super(generator, modId, fileHelper); }
+    public BlockStatesAndModels(@NotNull final DataGenerator generator, @NotNull final String modId, @NotNull final ExistingFileHelper fileHelper)
+    { super(generator, modId, fileHelper); }
 
     @Override
     protected void registerStatesAndModels()
@@ -56,10 +57,11 @@ public class BlockStatesAndModels extends BlockStateProvider
         oldChestBlock(ModContent.OLD_OBSIDIAN_CHEST.getFirst());
     }
 
-    @Override
-    public @NotNull String getName() { return "Expanded Storage - BlockStates / Models"; }
+    @NotNull @Override
+    public String getName() { return "Expanded Storage - BlockStates / Models"; }
 
-    private void oldChestBlock(final OldChestBlock block)
+    @SuppressWarnings("ConstantConditions")
+    private void oldChestBlock(@NotNull final OldChestBlock block)
     {
         getVariantBuilder(block).forAllStatesExcept(state -> {
             final String blockPath = block.getRegistryName().getPath();
@@ -69,14 +71,13 @@ public class BlockStatesAndModels extends BlockStateProvider
                     .rotationY(((state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalIndex() + 2) % 4) * 90)
                     .modelFile(oldChestGetModel(blockPath, chestType))
                     .build();
-            if(chestType == CursedChestType.SINGLE) {
-                SINGLE_OLD_MODELS.put(block.asItem(), result[0].model);
-            }
+            if(chestType == CursedChestType.SINGLE) { SINGLE_OLD_MODELS.put(block.asItem(), result[0].model); }
             return result;
         }, BlockStateProperties.WATERLOGGED);
     }
 
-    private ModelFile oldChestGetModel(final String blockPath, final CursedChestType chestType)
+    @NotNull
+    private ModelFile oldChestGetModel(@NotNull final String blockPath, @NotNull final CursedChestType chestType)
     {
         final String chestTypeName = chestType.getName();
         final BlockModelBuilder builder = models().getBuilder(String.format("block/%s/%s", blockPath, chestTypeName));
@@ -132,20 +133,19 @@ public class BlockStatesAndModels extends BlockStateProvider
         return builder;
     }
 
-    private void chestBlock(final CursedChestBlock block)
+    @SuppressWarnings("ConstantConditions")
+    private void chestBlock(@NotNull final CursedChestBlock block)
     {
-        getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel
-                        .builder().modelFile(chestGetParticleTexture(state.get(BaseChestBlock.TYPE), block.getRegistryName().getPath())).build(),
-                BlockStateProperties.WATERLOGGED, BlockStateProperties.HORIZONTAL_FACING);
+        getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(chestGetParticleTexture(state.get(BaseChestBlock.TYPE),
+                block.getRegistryName().getPath())).build(), BlockStateProperties.WATERLOGGED, BlockStateProperties.HORIZONTAL_FACING);
     }
 
-    private ModelFile chestGetParticleTexture(final CursedChestType type, final String blockPath)
+    @NotNull
+    private ModelFile chestGetParticleTexture(@NotNull final CursedChestType type, @NotNull final String blockPath)
     {
         final String chestName = blockPath.substring(0, blockPath.indexOf('_'));
         if (blockPath.equals("pumpkin_chest"))
-        {
-            return models().getBuilder(blockPath).texture("particle", modLoc(String.format("block/%s_break", chestName)));
-        }
+        { return models().getBuilder(blockPath).texture("particle", modLoc(String.format("block/%s_break", chestName))); }
         else if (blockPath.equals("christmas_chest"))
         {
             final String chestType = CursedChestType.TOP == type || CursedChestType.BOTTOM == type ? "tall" :
@@ -153,9 +153,6 @@ public class BlockStatesAndModels extends BlockStateProvider
                             CursedChestType.FRONT == type || CursedChestType.BACK == type ? "long" : "single";
             return models().getBuilder(chestType + "_" + blockPath).texture("particle", modLoc(String.format("block/%s_%s_break", chestType, chestName)));
         }
-        else
-        {
-            return models().getBuilder(blockPath).texture("particle", modLoc("block/old_" + blockPath + "/chest_front_single"));
-        }
+        else { return models().getBuilder(blockPath).texture("particle", modLoc("block/old_" + blockPath + "/chest_front_single")); }
     }
 }

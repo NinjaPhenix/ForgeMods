@@ -13,33 +13,32 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import ninjaphenix.container_library.common.inventory.AbstractContainer;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
-import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CursedChestTileEntity extends AbstractChestTileEntity implements IChestLid, ITickableTileEntity
 {
-    private float animationAngle;
-    private float lastAnimationAngle;
-    private int viewerCount;
-    private int ticksOpen;
+    private float animationAngle, lastAnimationAngle;
+    private int viewerCount, ticksOpen;
 
     public CursedChestTileEntity() { this(null); }
 
-    public CursedChestTileEntity(final ResourceLocation block) { super(ModContent.CURSED_CHEST_TE, block); }
+    public CursedChestTileEntity(@Nullable final ResourceLocation block) { super(ModContent.CURSED_CHEST_TE, block); }
 
-    private static int tickViewerCount(@NotNull final World world,
-            @NotNull final CursedChestTileEntity instance, final int ticksOpen, final int x, final int y, final int z, final int viewCount)
+    private static int tickViewerCount(@NotNull final World world, @NotNull final CursedChestTileEntity instance, final int ticksOpen, final int x,
+            final int y, final int z, final int viewCount)
     {
         if (!world.isRemote && viewCount != 0 && (ticksOpen + x + y + z) % 200 == 0)
         {
             return world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(x - 5, y - 5, z - 5, x + 6, y + 6, z + 6)).stream()
-                        .filter(player -> player.openContainer instanceof ScrollableContainer)
-                        .map(player -> ((ScrollableContainer) player.openContainer).getInv())
+                        .filter(player -> player.openContainer instanceof AbstractContainer)
+                        .map(player -> ((AbstractContainer<?>) player.openContainer).getInv())
                         .filter(inventory -> inventory == instance ||
                                 inventory instanceof DoubleSidedInventory && ((DoubleSidedInventory) inventory).isPart(instance))
                         .mapToInt(inv -> 1).sum();
@@ -47,11 +46,11 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
         return viewCount;
     }
 
-    @Override
+    @Override @SuppressWarnings("OptionalGetWithoutIsPresent")
     protected void initialize(@NotNull final ResourceLocation block)
     {
         this.block = block;
-        Registries.ModeledTierData data = Registries.MODELED.getValue(block).get();
+        final Registries.ModeledTierData data = Registries.MODELED.getValue(block).get();
         defaultContainerName = data.getContainerName();
         inventorySize = data.getSlotCount();
         inventory = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
@@ -62,11 +61,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     @Override
     public boolean receiveClientEvent(final int actionId, final int value)
     {
-        if (actionId == 1)
-        {
-            viewerCount = value;
-            return true;
-        }
+        if (actionId == 1) { viewerCount = value; return true; }
         else { return super.receiveClientEvent(actionId, value); }
     }
 
@@ -87,7 +82,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void playSound(final SoundEvent soundEvent)
+    private void playSound(@NotNull final SoundEvent soundEvent)
     {
         final BlockState state = getBlockState();
         if (BaseChestBlock.getMergeType(state) == TileEntityMerger.Type.SECOND) { return; }
@@ -97,16 +92,15 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     }
 
     @Override
-    public void openInventory(final PlayerEntity player)
+    public void openInventory(@NotNull final PlayerEntity player)
     {
         if (player.isSpectator()) { return; }
-        if (viewerCount < 0) { viewerCount = 0; }
-        viewerCount++;
+        if (viewerCount < 0) { viewerCount = 0; } viewerCount++;
         onInvOpenOrClose();
     }
 
     @Override
-    public void closeInventory(final PlayerEntity player)
+    public void closeInventory(@NotNull final PlayerEntity player)
     {
         if (player.isSpectator()) { return; }
         viewerCount--;
@@ -116,11 +110,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     @SuppressWarnings("ConstantConditions")
     private void onInvOpenOrClose()
     {
-        Block block = getBlockState().getBlock();
-        if (block instanceof CursedChestBlock)
-        {
-            world.addBlockEvent(pos, block, 1, viewerCount);
-            world.notifyNeighbors(pos, block);
-        }
+        final Block block = getBlockState().getBlock();
+        if (block instanceof CursedChestBlock) { world.addBlockEvent(pos, block, 1, viewerCount); world.notifyNeighbors(pos, block); }
     }
 }

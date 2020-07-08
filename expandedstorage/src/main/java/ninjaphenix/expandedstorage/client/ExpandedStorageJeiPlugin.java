@@ -6,36 +6,25 @@ import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.util.ResourceLocation;
+import ninjaphenix.container_library.client.screen.ScrollableScreen;
 import ninjaphenix.expandedstorage.ExpandedStorage;
-import ninjaphenix.expandedstorage.client.gui.screen.ingame.ScrollableScreen;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.List;
 
 @JeiPlugin
 public class ExpandedStorageJeiPlugin implements IModPlugin
 {
-	@Override
-	public ResourceLocation getPluginUid()
-	{
-		return ExpandedStorage.getRl("jei_plugin");
-	}
+	@NotNull @Override
+	public ResourceLocation getPluginUid() { return ExpandedStorage.getRl("jei_plugin"); }
 
 	@Override
-	@SuppressWarnings("ConstantConditions")
-	public void registerGuiHandlers(IGuiHandlerRegistration registration)
+	public void registerGuiHandlers(@NotNull final IGuiHandlerRegistration registration)
 	{
 		registration.addGuiContainerHandler(ScrollableScreen.class, new IGuiContainerHandler<ScrollableScreen>()
 		{
-			@Override
-			public List<Rectangle2d> getGuiExtraAreas(ScrollableScreen screen)
-			{
-				if (screen.hasScrollbar())
-				{
-					return Collections.singletonList(new Rectangle2d(screen.getLeft() + 172, screen.getTop(), 29, 132));
-				}
-				return Collections.emptyList();
-			}
+			@NotNull @Override
+			public List<Rectangle2d> getGuiExtraAreas(@NotNull final ScrollableScreen screen) { return screen.getJeiRectangle(); }
 		});
 	}
 }

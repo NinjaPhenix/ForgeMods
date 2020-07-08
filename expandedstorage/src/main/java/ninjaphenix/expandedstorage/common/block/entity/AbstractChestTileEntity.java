@@ -12,7 +12,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,49 +22,39 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     protected int inventorySize;
     protected NonNullList<ItemStack> inventory;
     protected int[] SLOTS;
-
-    @Nullable @Override
-    protected Container createMenu(final int windowId, @NotNull final PlayerInventory playerInventory)
-    {
-        if (canOpen(playerInventory.player))
-        {
-            fillWithLoot(playerInventory.player);
-            return new ScrollableContainer(windowId, playerInventory, this); // todo: replace with new container code
-        }
-        return null;
-    }
-
     protected ResourceLocation block;
 
-    public AbstractChestTileEntity(final TileEntityType type, final ResourceLocation block)
-    {
-        super(type);
-        if (block != null) { initialize(block); }
-    }
+    @Nullable @Override
+    protected Container createMenu(final int windowId, @NotNull final PlayerInventory playerInventory) { return null; }
 
-    @Override
+    public AbstractChestTileEntity(@NotNull final TileEntityType type, @Nullable final ResourceLocation block)
+    { super(type); if (block != null) { initialize(block); } }
+
+    @NotNull @Override
     protected ITextComponent getDefaultName() { return defaultContainerName; }
 
-    protected void initialize(@NotNull final ResourceLocation block) { }
+    protected abstract void initialize(@NotNull final ResourceLocation block);
 
+    @NotNull
     public ResourceLocation getBlock() { return block; }
 
-    public void setBlock(final ResourceLocation block) { this.block = block; }
+    public void setBlock(@NotNull final ResourceLocation block) { this.block = block; }
 
-    @Override
+    @NotNull @Override
     protected NonNullList<ItemStack> getItems() { return inventory; }
 
     @Override
-    public void setItems(NonNullList<ItemStack> inventory) { this.inventory = inventory; }
+    public void setItems(@NotNull final NonNullList<ItemStack> inventory) { this.inventory = inventory; }
+
+    @NotNull @Override
+    public int[] getSlotsForFace(@NotNull final Direction direction) { return SLOTS; }
 
     @Override
-    public int[] getSlotsForFace(final Direction direction) { return SLOTS; }
+    public boolean canInsertItem(final int slot, @NotNull final ItemStack stack, @NotNull final Direction direction)
+    { return this.isItemValidForSlot(slot, stack); }
 
     @Override
-    public boolean canInsertItem(final int slot, final ItemStack stack, final Direction direction) { return this.isItemValidForSlot(slot, stack); }
-
-    @Override
-    public boolean canExtractItem(final int slot, final ItemStack stack, final Direction direction) { return true; }
+    public boolean canExtractItem(final int slot, @NotNull final ItemStack stack, @NotNull final Direction direction) { return true; }
 
     @Override
     public int getSizeInventory() { return inventorySize; }
@@ -74,16 +63,15 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     public boolean isEmpty() { return inventory.stream().allMatch(ItemStack::isEmpty); }
 
     @Override
-    public void read(final CompoundNBT tag)
+    public void read(@NotNull final CompoundNBT tag)
     {
         super.read(tag);
-        ResourceLocation id = new ResourceLocation(tag.getString("type"));
-        this.initialize(id);
+        this.initialize(new ResourceLocation(tag.getString("type")));
         if (!checkLootAndRead(tag)) { ItemStackHelper.loadAllItems(tag, inventory); }
     }
 
-    @Override
-    public CompoundNBT write(final CompoundNBT tag)
+    @NotNull @Override
+    public CompoundNBT write(@NotNull final CompoundNBT tag)
     {
         super.write(tag);
         tag.putString("type", block.toString());
@@ -91,11 +79,6 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
         return tag;
     }
 
-    @Override
-    public CompoundNBT getUpdateTag()
-    {
-        CompoundNBT tag = this.write(new CompoundNBT());
-        tag.putString("type", block.toString());
-        return tag;
-    }
+    @NotNull @Override
+    public CompoundNBT getUpdateTag() { CompoundNBT tag = this.write(new CompoundNBT()); tag.putString("type", block.toString()); return tag; }
 }

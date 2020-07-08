@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Language extends LanguageProvider
 {
-    public Language(final DataGenerator generator, final String modId, final String locale) { super(generator, modId, locale); }
+    public Language(@NotNull final DataGenerator generator, @NotNull final String modId, @NotNull final String locale) { super(generator, modId, locale); }
 
     @Override
     protected void addTranslations()
@@ -77,6 +77,6 @@ public class Language extends LanguageProvider
         this.add("screen.expandedstorage.prev_page", "Previous Page");
     }
 
-    @Override
-    public @NotNull String getName() { return "Expanded Storage - Language"; }
+    @NotNull @Override
+    public String getName() { return "Expanded Storage - Language"; }
 }

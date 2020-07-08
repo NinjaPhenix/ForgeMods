@@ -9,30 +9,25 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
-import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import ninjaphenix.expandedstorage.client.render.CursedChestRenderer;
+import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
+import org.jetbrains.annotations.NotNull;
 
 public class ExpandedStorageClient
 {
     @SubscribeEvent
-    public static void setup(final FMLClientSetupEvent event)
-    {
-        ClientRegistry.bindTileEntityRenderer(ModContent.CURSED_CHEST_TE, CursedChestRenderer::new);
-    }
+    public static void setup(final FMLClientSetupEvent event) { ClientRegistry.bindTileEntityRenderer(ModContent.CURSED_CHEST_TE, CursedChestRenderer::new); }
 
-    @SubscribeEvent
+    @SubscribeEvent @SuppressWarnings("OptionalGetWithoutIsPresent")
     public static void preStitchTextures(final TextureStitchEvent.Pre event)
     {
         if (!event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS)) { return; }
-        for (ResourceLocation entry : Registries.MODELED.keySet())
+        for (@NotNull final ResourceLocation entry : Registries.MODELED.keySet())
         {
-            if (entry.getNamespace().equals(ExpandedStorage.MOD_ID))
+            final Registries.ModeledTierData data = Registries.MODELED.getValue(entry).get();
+            for (@NotNull final CursedChestType value : CursedChestType.values())
             {
-                final Registries.ModeledTierData data = Registries.MODELED.getValue(entry).get();
-                for (CursedChestType value : CursedChestType.values())
-                {
-                    event.addSprite(new ResourceLocation(ExpandedStorage.MOD_ID, data.getChestTexture(value).getPath()));
-                }
+                event.addSprite(new ResourceLocation(ExpandedStorage.MOD_ID, data.getChestTexture(value).getPath()));
             }
         }
     }

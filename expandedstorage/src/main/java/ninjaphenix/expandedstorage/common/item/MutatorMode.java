@@ -17,15 +17,14 @@ public enum MutatorMode
 	ROTATE(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.rotate"),
             src -> new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.rotate_desc", src), 0);
 
-	public final ITextComponent title;
-	public final ITextComponent description;
+	public final ITextComponent title, description;
 	public final byte next;
 
 	MutatorMode(@NotNull final ITextComponent title, @NotNull final Function<ITextComponent, ITextComponent> description, final int next)
 	{
 		this.title = title;
-		this.description = description.apply(new KeybindTextComponent("key.sneak")
-                .appendText(" + ").appendSibling(new KeybindTextComponent("key.use")).applyTextStyle(TextFormatting.GOLD));
+		this.description = description.apply(new KeybindTextComponent("key.sneak").appendText(" + ").appendSibling(new KeybindTextComponent("key.use"))
+                                                                                  .applyTextStyle(TextFormatting.GOLD));
 		this.next = (byte) next;
 	}
 }

@@ -5,13 +5,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
+import ninjaphenix.container_library.common.network.Networker;
 import ninjaphenix.expandedstorage.client.ExpandedStorageClient;
 import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
+import org.jetbrains.annotations.NotNull;
 
 @Mod("expandedstorage")
 public class ExpandedStorage
@@ -23,12 +23,13 @@ public class ExpandedStorage
 		public ItemStack createIcon() { return new ItemStack(ModContent.DIAMOND_CHEST.getSecond()); }
 	};
 
-	public static ResourceLocation getRl(final String path) { return new ResourceLocation(MOD_ID, path); }
+	public static ResourceLocation getRl(@NotNull final String path) { return new ResourceLocation(MOD_ID, path); }
 
 	// todo: sided proxies
 	public ExpandedStorage()
 	{
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ExpandedStorageConfig.getClientSpec());
+        Networker.INSTANCE.registerMessages();
+        ExpandedStorageConfig.register();
         if(FMLLoader.getDist() == Dist.CLIENT) {
             FMLJavaModLoadingContext.get().getModEventBus().register(ExpandedStorageClient.class);
             MinecraftForge.EVENT_BUS.register(ExpandedStorageClient.class);

@@ -40,11 +40,7 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
     };
 
     public CursedChestBlock(@NotNull final Properties properties, @NotNull final ResourceLocation registryName)
-    {
-        super(properties, () -> ModContent.CURSED_CHEST_TE);
-        setDefaultState(getDefaultState().with(WATERLOGGED, false));
-        setRegistryName(registryName);
-    }
+    { super(properties, () -> ModContent.CURSED_CHEST_TE); setDefaultState(getDefaultState().with(WATERLOGGED, false)); setRegistryName(registryName); }
 
     @NotNull @Override
     public TileEntity createTileEntity(@Nullable final BlockState state, @Nullable final IBlockReader world)

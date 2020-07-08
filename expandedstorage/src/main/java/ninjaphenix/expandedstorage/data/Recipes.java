@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 public class Recipes extends RecipeProvider
 {
-    public Recipes(final DataGenerator generator) { super(generator); }
+    public Recipes(@NotNull final DataGenerator generator) { super(generator); }
 
     @Override
     protected void registerRecipes(@NotNull final Consumer<IFinishedRecipe> consumer)
@@ -27,7 +27,6 @@ public class Recipes extends RecipeProvider
         final CursedChestBlock GOLD_CHEST = ModContent.GOLD_CHEST.getFirst();
         final CursedChestBlock DIAMOND_CHEST = ModContent.DIAMOND_CHEST.getFirst();
         final CursedChestBlock OBSIDIAN_CHEST = ModContent.OBSIDIAN_CHEST.getFirst();
-
         final OldChestBlock OLD_WOOD_CHEST = ModContent.OLD_WOOD_CHEST.getFirst();
         final OldChestBlock OLD_IRON_CHEST = ModContent.OLD_IRON_CHEST.getFirst();
         final OldChestBlock OLD_GOLD_CHEST = ModContent.OLD_GOLD_CHEST.getFirst();
@@ -217,6 +216,6 @@ public class Recipes extends RecipeProvider
         // </editor-fold>
     }
 
-    @Override
-    public @NotNull String getName() { return "Expanded Storage - Recipes"; }
+    @NotNull @Override
+    public String getName() { return "Expanded Storage - Recipes"; }
 }
