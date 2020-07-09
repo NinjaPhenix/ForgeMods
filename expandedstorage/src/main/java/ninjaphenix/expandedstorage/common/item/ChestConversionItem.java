@@ -1,5 +1,6 @@
 package ninjaphenix.expandedstorage.common.item;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
@@ -37,13 +38,19 @@ import java.util.List;
 @SuppressWarnings({ "OptionalGetWithoutIsPresent", "ConstantConditions" })
 public class ChestConversionItem extends ChestModifierItem
 {
-    private ITextComponent TOOLTIP = null;
+    private final ITextComponent TOOLTIP;
     private final ResourceLocation FROM, TO;
 
-    public ChestConversionItem(@NotNull final ResourceLocation from, @NotNull final ResourceLocation to)
+    public ChestConversionItem(@NotNull final Pair<ResourceLocation, String> from, @NotNull final Pair<ResourceLocation, String> to)
     {
         super(new Item.Properties().group(ExpandedStorage.group).maxStackSize(16));
-        FROM = from; TO = to;
+        setRegistryName(ExpandedStorage.getRl(from.getSecond() + "_to_" + to.getSecond() + "_conversion_kit"));
+        FROM = from.getFirst(); TO = to.getFirst();
+        TOOLTIP = new KeybindTextComponent("key.sneak")
+                .appendText(" + ").appendSibling(new KeybindTextComponent("key.use")).applyTextStyle(TextFormatting.GOLD)
+                .appendSibling(new TranslationTextComponent(String.format("tooltip.expandedstorage.conversion_kit_%s_%s",from.getSecond(), to.getSecond()))
+                        .appendSibling(new TranslationTextComponent("tooltip.expandedstorage.conversion_kit_double_requires_2"))
+                        .applyTextStyle(TextFormatting.GRAY));
     }
 
     @SuppressWarnings("unchecked")
@@ -135,16 +142,6 @@ public class ChestConversionItem extends ChestModifierItem
             @NotNull final ITooltipFlag flag)
     {
         super.addInformation(stack, world, tooltip, flag);
-        if (TOOLTIP == null) { createTooltip(); }
         tooltip.add(TOOLTIP);
-    }
-
-    private void createTooltip()
-    {
-        TOOLTIP = new KeybindTextComponent("key.sneak").appendText(" + ").appendSibling(new KeybindTextComponent("key.use")).applyTextStyle(TextFormatting.GOLD)
-                                                       .appendSibling(new TranslationTextComponent("tooltip.expandedstorage.conversion_kit_hint",
-                                                               new TranslationTextComponent(ForgeRegistries.BLOCKS.getValue(FROM).getTranslationKey()),
-                                                               new TranslationTextComponent(ForgeRegistries.BLOCKS.getValue(TO).getTranslationKey()))
-                                                               .applyTextStyle(TextFormatting.GRAY));
     }
 }

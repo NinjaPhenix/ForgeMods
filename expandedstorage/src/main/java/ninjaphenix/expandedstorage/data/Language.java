@@ -13,8 +13,9 @@ public class Language extends LanguageProvider
     @Override
     protected void addTranslations()
     {
+        // @formatter:off
         // Container Titles
-        this.add("container.expandedstorage.wood_chest", "Wooden Chest");
+        this.add("container.expandedstorage.wood_chest", "Chest");
         this.add("container.expandedstorage.pumpkin_chest", "Pumpkin Chest");
         this.add("container.expandedstorage.christmas_chest", "Christmas Chest");
         this.add("container.expandedstorage.iron_chest", "Iron Chest");
@@ -25,13 +26,13 @@ public class Language extends LanguageProvider
         this.add("container.expandedstorage.generic_double", "Large %s");
         this.add("container.expandedstorage.error", "Error");
         // Old Chest Blocks
-        this.add(ModContent.OLD_WOOD_CHEST.getFirst(), "Old Wooden Chest");
+        this.add(ModContent.OLD_WOOD_CHEST.getFirst(), "Old Chest");
         this.add(ModContent.OLD_IRON_CHEST.getFirst(), "Old Iron Chest");
         this.add(ModContent.OLD_GOLD_CHEST.getFirst(), "Old Gold Chest");
         this.add(ModContent.OLD_DIAMOND_CHEST.getFirst(), "Old Diamond Chest");
         this.add(ModContent.OLD_OBSIDIAN_CHEST.getFirst(), "Old Obsidian Chest");
         // Chest Blocks
-        this.add(ModContent.WOOD_CHEST.getFirst(), "Wooden Chest");
+        this.add(ModContent.WOOD_CHEST.getFirst(), "Chest");
         this.add(ModContent.PUMPKIN_CHEST.getFirst(), "Pumpkin Chest");
         this.add(ModContent.CHRISTMAS_CHEST.getFirst(), "Christmas Chest");
         this.add(ModContent.IRON_CHEST.getFirst(), "Iron Chest");
@@ -64,7 +65,17 @@ public class Language extends LanguageProvider
         this.add("tooltip.expandedstorage.chest_mutator.merge_start", "Merging started, now %s the other chest.");
         this.add("tooltip.expandedstorage.chest_mutator.merge_end", "Merging finished.");
         this.add("tooltip.expandedstorage.tool_mode", "Tool Mode: %s");
-        this.add("tooltip.expandedstorage.conversion_kit_hint", " on a %s to convert it to a %s, double chests require 2 upgrades.");
+        this.add("tooltip.expandedstorage.conversion_kit_wood_iron", " on a Wooden Chest to convert it to an Iron Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_wood_gold", " on a Wooden Chest to convert it to a Gold Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_wood_diamond", " on a Wooden Chest to convert it to a Diamond Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_wood_obsidian", " on a Wooden Chest to convert it to an Obsidian Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_iron_gold", " on an Iron Chest to convert it to a Gold Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_iron_diamond", " on an Iron Chest to convert it to a Diamond Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_iron_obsidian", " on an Iron Chest to convert it to an Obsidian Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_gold_diamond", " on a Gold Chest to convert it to a Diamond Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_gold_obsidian", " on a Gold Chest to convert it to an Obsidian Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_diamond_obsidian", " on a Diamond Chest to convert it to an Obsidian Chest");
+        this.add("tooltip.expandedstorage.conversion_kit_double_requires_2", ", double chests require 2 upgrades.");
         // Creative Group
         this.add(ExpandedStorage.group.getTranslationKey(), "Expanded Storage");
         // Screen
@@ -76,6 +87,7 @@ public class Language extends LanguageProvider
         this.add("screen.expandedstorage.page_x_y", "%d/%d");
         this.add("screen.expandedstorage.next_page", "Next Page");
         this.add("screen.expandedstorage.prev_page", "Previous Page");
+        // @formatter:on
     }
 
     @NotNull @Override

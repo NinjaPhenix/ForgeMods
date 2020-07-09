@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.ModList;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.inventory.PagedContainer;
 import ninjaphenix.expandedstorage.common.screen.PagedScreenMeta;
@@ -76,16 +77,20 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
     protected void init()
     {
         super.init();
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize - 19, guiTop + 4));
+        int settingsXOffset = -19;
+        final boolean isQuarkLoaded = ModList.get().isLoaded("quark");
+        if(isQuarkLoaded && SCREEN_META.WIDTH <= 9) { settingsXOffset -= 24; }
+        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4));
         if (SCREEN_META.PAGES != 1)
         {
+            final int pageButtonsXOffset = isQuarkLoaded ? 36 : 0;
             page = 1;
             setPageText();
-            leftPageButton = new PageButtonWidget(guiLeft + xSize - 61, guiTop + ySize - 96, 0,
+            leftPageButton = new PageButtonWidget(guiLeft + xSize - 61 - pageButtonsXOffset, guiTop + ySize - 96, 0,
                     new TranslationTextComponent("screen.expandedstorage.prev_page"), button -> setPage(page, page - 1));
             leftPageButton.active = false;
             addButton(leftPageButton);
-            rightPageButton = new PageButtonWidget(guiLeft + xSize - 19, guiTop + ySize - 96, 1,
+            rightPageButton = new PageButtonWidget(guiLeft + xSize - 19 - pageButtonsXOffset, guiTop + ySize - 96, 1,
                     new TranslationTextComponent("screen.expandedstorage.next_page"), button -> setPage(page, page + 1));
             addButton(rightPageButton);
             pageTextX = (1 + leftPageButton.x + rightPageButton.x - rightPageButton.getWidth() / 2F) / 2F;

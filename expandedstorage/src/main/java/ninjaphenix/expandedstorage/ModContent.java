@@ -88,21 +88,21 @@ public class ModContent
         SINGLE_CONTAINER_TYPE.setRegistryName(ExpandedStorage.getRl("single_container"));
         SCROLLABLE_CONTAINER_TYPE.setRegistryName(ExpandedStorage.getRl("scrollable_container"));
         CHEST_MUTATOR = new ChestMutatorItem().setRegistryName(ExpandedStorage.getRl("chest_mutator"));
-        Pair<ResourceLocation, String> wood = new Pair<>(ExpandedStorage.getRl("wood_chest"), "wood");
-        Pair<ResourceLocation, String> iron = new Pair<>(ExpandedStorage.getRl("iron_chest"), "iron");
-        Pair<ResourceLocation, String> gold = new Pair<>(ExpandedStorage.getRl("gold_chest"), "gold");
-        Pair<ResourceLocation, String> diamond = new Pair<>(ExpandedStorage.getRl("diamond_chest"), "diamond");
-        Pair<ResourceLocation, String> obsidian = new Pair<>(ExpandedStorage.getRl("obsidian_chest"), "obsidian");
-        CONVERSION_KIT_WOOD_IRON = getConversionItem(wood, iron);
-        CONVERSION_KIT_WOOD_GOLD = getConversionItem(wood, gold);
-        CONVERSION_KIT_WOOD_DIAMOND = getConversionItem(wood, diamond);
-        CONVERSION_KIT_WOOD_OBSIDIAN = getConversionItem(wood, obsidian);
-        CONVERSION_KIT_IRON_GOLD = getConversionItem(iron, gold);
-        CONVERSION_KIT_IRON_DIAMOND = getConversionItem(iron, diamond);
-        CONVERSION_KIT_IRON_OBSIDIAN = getConversionItem(iron, obsidian);
-        CONVERSION_KIT_GOLD_DIAMOND = getConversionItem(gold, diamond);
-        CONVERSION_KIT_GOLD_OBSIDIAN = getConversionItem(gold, obsidian);
-        CONVERSION_KIT_DIAMOND_OBSIDIAN = getConversionItem(diamond, obsidian);
+        final Pair<ResourceLocation, String> wood = new Pair<>(ExpandedStorage.getRl("wood_chest"), "wood");
+        final Pair<ResourceLocation, String> iron = new Pair<>(ExpandedStorage.getRl("iron_chest"), "iron");
+        final Pair<ResourceLocation, String> gold = new Pair<>(ExpandedStorage.getRl("gold_chest"), "gold");
+        final Pair<ResourceLocation, String> diamond = new Pair<>(ExpandedStorage.getRl("diamond_chest"), "diamond");
+        final Pair<ResourceLocation, String> obsidian = new Pair<>(ExpandedStorage.getRl("obsidian_chest"), "obsidian");
+        CONVERSION_KIT_WOOD_IRON = new ChestConversionItem(wood, iron);
+        CONVERSION_KIT_WOOD_GOLD = new ChestConversionItem(wood, gold);
+        CONVERSION_KIT_WOOD_DIAMOND = new ChestConversionItem(wood, diamond);
+        CONVERSION_KIT_WOOD_OBSIDIAN = new ChestConversionItem(wood, obsidian);
+        CONVERSION_KIT_IRON_GOLD = new ChestConversionItem(iron, gold);
+        CONVERSION_KIT_IRON_DIAMOND = new ChestConversionItem(iron, diamond);
+        CONVERSION_KIT_IRON_OBSIDIAN = new ChestConversionItem(iron, obsidian);
+        CONVERSION_KIT_GOLD_DIAMOND = new ChestConversionItem(gold, diamond);
+        CONVERSION_KIT_GOLD_OBSIDIAN = new ChestConversionItem(gold, obsidian);
+        CONVERSION_KIT_DIAMOND_OBSIDIAN = new ChestConversionItem(diamond, obsidian);
     }
 
     private static Pair<CursedChestBlock, BlockItem> register(final Block copy, final String name, final int rows)
@@ -196,12 +196,5 @@ public class ModContent
         ScreenManager.registerFactory(SCROLLABLE_CONTAINER_TYPE, ScrollableScreen::new);
         ScreenManager.registerFactory(PAGED_CONTAINER_TYPE, PagedScreen::new);
         ScreenManager.registerFactory(SINGLE_CONTAINER_TYPE, SingleScreen::new);
-    }
-
-    private static ChestConversionItem getConversionItem(final Pair<ResourceLocation, String> from, final Pair<ResourceLocation, String> to)
-    {
-        final ChestConversionItem conversionItem = new ChestConversionItem(from.getFirst(), to.getFirst());
-        conversionItem.setRegistryName(ExpandedStorage.getRl(from.getSecond() + "_to_" + to.getSecond() + "_conversion_kit"));
-        return conversionItem;
     }
 }

@@ -2,6 +2,7 @@ package ninjaphenix.expandedstorage.client.screen;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.fml.ModList;
 import ninjaphenix.expandedstorage.common.inventory.SingleContainer;
 import ninjaphenix.expandedstorage.common.screen.SingleScreenMeta;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,9 @@ public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMe
     protected void init()
     {
         super.init();
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize - 19, guiTop + 4));
+        int settingsXOffset = -19;
+        if(ModList.get().isLoaded("quark") && SCREEN_META.WIDTH <= 9) { settingsXOffset -= 24; }
+        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4));
         final int blanked = SCREEN_META.BLANK_SLOTS;
         if (blanked > 0)
         {
