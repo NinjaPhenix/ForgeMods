@@ -8,11 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemTags extends ItemTagsProvider
 {
-    public ItemTags(final DataGenerator generator) { super(generator); }
+    public ItemTags(@NotNull final DataGenerator generator) { super(generator); }
 
     @Override
     protected void registerTags() { getBuilder(Tags.Items.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getSecond()).build(Tags.Items.CHESTS_WOODEN.getId()); }
 
-    @Override
-    public @NotNull String getName() { return "Expanded Storage - Item Tags"; }
+    @NotNull @Override
+    public String getName() { return "Expanded Storage - Item Tags"; }
 }

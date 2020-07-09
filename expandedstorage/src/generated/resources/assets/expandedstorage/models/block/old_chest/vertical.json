@@ -3,6 +3,7 @@
   "textures": {
     "east": "#side",
     "west": "#side",
-    "south": "#side"
+    "south": "#side",
+    "down": "#top"
   }
 }

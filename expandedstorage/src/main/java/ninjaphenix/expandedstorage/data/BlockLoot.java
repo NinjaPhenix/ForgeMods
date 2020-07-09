@@ -21,7 +21,6 @@ public class BlockLoot extends BlockLootTables
         registerLootTable(ModContent.GOLD_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.DIAMOND_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.OBSIDIAN_CHEST.getFirst(), BlockLootTables::droppingWithName);
-
         registerLootTable(ModContent.OLD_WOOD_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.OLD_IRON_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.OLD_GOLD_CHEST.getFirst(), BlockLootTables::droppingWithName);
@@ -29,10 +28,10 @@ public class BlockLoot extends BlockLootTables
         registerLootTable(ModContent.OLD_OBSIDIAN_CHEST.getFirst(), BlockLootTables::droppingWithName);
     }
 
-    @Override
-    protected @NotNull Iterable<Block> getKnownBlocks()
+    @NotNull @Override @SuppressWarnings("ConstantConditions")
+    protected Iterable<Block> getKnownBlocks()
     {
-        return ForgeRegistries.BLOCKS.getValues().stream().filter(block ->
-                ExpandedStorage.MOD_ID.equals(block.getRegistryName().getNamespace())).collect(Collectors.toSet());
+        return ForgeRegistries.BLOCKS.getValues().stream().filter(block -> ExpandedStorage.MOD_ID.equals(block.getRegistryName().getNamespace()))
+                                     .collect(Collectors.toSet());
     }
 }

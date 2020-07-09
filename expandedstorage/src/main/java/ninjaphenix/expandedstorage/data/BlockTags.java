@@ -8,14 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class BlockTags extends BlockTagsProvider
 {
-    public BlockTags(final DataGenerator generator) { super(generator); }
+    public BlockTags(@NotNull final DataGenerator generator) { super(generator); }
 
     @Override
-    protected void registerTags()
-    {
-        getBuilder(Tags.Blocks.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getFirst()).build(Tags.Blocks.CHESTS_WOODEN.getId());
-    }
+    protected void registerTags() { getBuilder(Tags.Blocks.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getFirst()).build(Tags.Blocks.CHESTS_WOODEN.getId()); }
 
-    @Override
-    public @NotNull String getName() { return "Expanded Storage - Block Tags"; }
+    @NotNull @Override
+    public String getName() { return "Expanded Storage - Block Tags"; }
 }
