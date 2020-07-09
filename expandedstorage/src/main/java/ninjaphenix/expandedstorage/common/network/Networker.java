@@ -8,6 +8,8 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -103,7 +105,7 @@ public class Networker
         return null;
     }
 
-    @SubscribeEvent
+    @SubscribeEvent @OnlyIn(Dist.CLIENT)
     public void onPlayerConnected(@NotNull final ClientPlayerNetworkEvent.LoggedInEvent event) { Networker.INSTANCE.sendPreferenceToServer(); }
 
     @SubscribeEvent
