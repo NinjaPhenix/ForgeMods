@@ -166,24 +166,25 @@ public class ChestMutatorItem extends ChestModifierItem
                                 if (!world.isRemote)
                                 {
                                     final Registries.TierData entry = Registries.MODELED.getValue(ExpandedStorage.getRl("wood_chest")).get();
-                                    final BlockState defState = ForgeRegistries.BLOCKS.getValue(entry.getBlockId()).getDefaultState().with(FACING,
-                                            state.get(FACING));
                                     final CursedChestType mainChestType = BaseChestBlock.getChestType(state.get(FACING),
                                             Direction.getFacingFromVector(vec.getX(), vec.getY(), vec.getZ()));
+                                    BlockState defState = ForgeRegistries.BLOCKS.getValue(entry.getBlockId()).getDefaultState().with(FACING,
+                                            state.get(FACING)).with(WATERLOGGED, state.get(WATERLOGGED)).with(TYPE, mainChestType);
                                     TileEntity blockEntity = world.getTileEntity(mainPos);
                                     NonNullList<ItemStack> invData = NonNullList.withSize(entry.getSlotCount(), ItemStack.EMPTY);
                                     ItemStackHelper.loadAllItems(blockEntity.write(new CompoundNBT()), invData);
                                     world.removeTileEntity(mainPos);
-                                    world.setBlockState(mainPos, defState.with(WATERLOGGED, state.get(WATERLOGGED)).with(TYPE, mainChestType));
+                                    world.setBlockState(mainPos, defState);
                                     blockEntity = world.getTileEntity(mainPos);
-                                    blockEntity.read(ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
+                                    blockEntity.func_230337_a_(defState, ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
                                     blockEntity = world.getTileEntity(otherPos);
                                     invData = NonNullList.withSize(entry.getSlotCount(), ItemStack.EMPTY);
                                     ItemStackHelper.loadAllItems(blockEntity.write(new CompoundNBT()), invData);
                                     world.removeTileEntity(otherPos);
-                                    world.setBlockState(otherPos, defState.with(WATERLOGGED, state.get(WATERLOGGED)).with(TYPE, mainChestType.getOpposite()));
+                                    defState = defState.with(WATERLOGGED, state.get(WATERLOGGED)).with(TYPE, mainChestType.getOpposite());
+                                    world.setBlockState(otherPos, defState);
                                     blockEntity = world.getTileEntity(otherPos);
-                                    blockEntity.read(ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
+                                    blockEntity.func_230337_a_(defState, ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
                                     tag.remove("pos");
                                     player.sendStatusMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_end"), true);
                                     player.getCooldownTracker().setCooldown(this, 5);
@@ -297,8 +298,8 @@ public class ChestMutatorItem extends ChestModifierItem
             @NotNull final ITooltipFlag flag)
     {
         final MutatorMode mode = getMode(stack);
-        tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", mode.title).applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(mode.description.applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", mode.title).func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(mode.description);
         super.addInformation(stack, world, tooltip, flag);
     }
 }

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SingleChestModel extends Model
 {
-    protected ModelRenderer lid, base;
+    protected final ModelRenderer lid, base;
 
     public SingleChestModel(final int width, final int height)
     {

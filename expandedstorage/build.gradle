@@ -14,8 +14,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly fg.deobf('mezz.jei:jei-1.15.2:6.0.0.2:api')
-    runtimeOnly fg.deobf('mezz.jei:jei-1.15.2:6.0.0.2')
-    runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-40.79')
-    runtimeOnly fg.deobf('vazkii.quark:Quark:r2.1-245.1160')
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:7.0.0.6:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:7.0.0.6")
+    //runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-40.79')
+    //runtimeOnly fg.deobf('vazkii.quark:Quark:r2.1-245.1160')
 }

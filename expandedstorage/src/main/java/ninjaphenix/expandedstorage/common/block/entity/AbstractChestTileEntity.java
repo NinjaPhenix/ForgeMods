@@ -1,5 +1,6 @@
 package ninjaphenix.expandedstorage.common.block.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -63,9 +64,8 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     public boolean isEmpty() { return inventory.stream().allMatch(ItemStack::isEmpty); }
 
     @Override
-    public void read(@NotNull final CompoundNBT tag)
-    {
-        super.read(tag);
+    public void func_230337_a_(@NotNull final BlockState state, @NotNull final CompoundNBT tag) {
+        super.func_230337_a_(state, tag);
         this.initialize(new ResourceLocation(tag.getString("type")));
         if (!checkLootAndRead(tag)) { ItemStackHelper.loadAllItems(tag, inventory); }
     }

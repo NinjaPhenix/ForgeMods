@@ -33,7 +33,7 @@ public enum CursedChestType implements IStringSerializable
     }
 
     @NotNull @Override
-    public String getName() { return name; }
+    public String func_176610_l() { return name; }
 
     public int getOffset() { return offset; }
 }

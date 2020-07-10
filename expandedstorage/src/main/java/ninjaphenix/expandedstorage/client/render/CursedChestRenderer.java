@@ -6,14 +6,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.tileentity.DualBrightnessCallback;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.vector.Vector3f;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.client.model.*;
@@ -57,7 +57,7 @@ public class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntit
             TileEntityMerger.ICallbackWrapper<? extends CursedChestTileEntity> wrapper = te.hasWorld() ?
                     block.combine(state, te.getWorld(), te.getPos(), true) : TileEntityMerger.ICallback::func_225537_b_;
             int combinedLight = wrapper.apply(new DualBrightnessCallback<>()).applyAsInt(light);
-            Material material = new Material(Atlases.CHEST_ATLAS, Registries.MODELED.getValue(te.getBlock()).get().getChestTexture(chestType));
+            RenderMaterial material = new RenderMaterial(Atlases.CHEST_ATLAS, Registries.MODELED.getValue(te.getBlock()).get().getChestTexture(chestType));
             model.render(stack, material.getBuffer(buffer, RenderType::getEntityCutout), combinedLight, overlay);
             stack.pop();
         }

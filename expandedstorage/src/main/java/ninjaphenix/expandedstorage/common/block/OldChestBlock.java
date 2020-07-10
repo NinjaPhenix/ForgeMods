@@ -34,7 +34,7 @@ public class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
         final BlockPos upPos = pos.up();
         final BlockState upState = world.getBlockState(upPos);
         return (upState.isNormalCube(world, upPos) && upState.getBlock() != this) || world.getEntitiesWithinAABB(CatEntity.class, new AxisAlignedBB(pos.getX(),
-                pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)).stream().anyMatch(CatEntity::isSitting);
+                pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)).stream().anyMatch(CatEntity::func_233684_eK_);
     }
 
     @NotNull @Override @SuppressWarnings("deprecation")

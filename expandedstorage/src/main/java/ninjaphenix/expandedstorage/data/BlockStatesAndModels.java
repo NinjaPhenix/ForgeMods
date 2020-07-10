@@ -17,7 +17,7 @@ public class BlockStatesAndModels extends BlockStateProvider
 {
     private ModelFile OLD_CHEST_HORIZONTAL;
     private ModelFile OLD_CHEST_VERTICAL;
-    public static HashMap<Item, ModelFile> SINGLE_OLD_MODELS = new HashMap<>();
+    public final static HashMap<Item, ModelFile> SINGLE_OLD_MODELS = new HashMap<>();
 
     public BlockStatesAndModels(@NotNull final DataGenerator generator, @NotNull final String modId, @NotNull final ExistingFileHelper fileHelper)
     { super(generator, modId, fileHelper); }
@@ -79,7 +79,7 @@ public class BlockStatesAndModels extends BlockStateProvider
     @NotNull
     private ModelFile oldChestGetModel(@NotNull final String blockPath, @NotNull final CursedChestType chestType)
     {
-        final String chestTypeName = chestType.getName();
+        final String chestTypeName = chestType.func_176610_l();
         final BlockModelBuilder builder = models().getBuilder(String.format("block/%s/%s", blockPath, chestTypeName));
         switch (chestType)
         {

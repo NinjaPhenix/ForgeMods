@@ -1,5 +1,7 @@
 package ninjaphenix.expandedstorage;
 
+import com.mojang.serialization.Lifecycle;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.util.text.ITextComponent;
@@ -10,8 +12,10 @@ import java.util.function.Function;
 
 public class Registries
 {
-	public static final SimpleRegistry<ModeledTierData> MODELED = new SimpleRegistry<>();
-	public static final SimpleRegistry<TierData> OLD = new SimpleRegistry<>();
+	public static final SimpleRegistry<ModeledTierData> MODELED = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
+            ExpandedStorage.getRl("modeled")), Lifecycle.experimental());
+	public static final SimpleRegistry<TierData> OLD = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
+            ExpandedStorage.getRl("old")), Lifecycle.experimental());
 
     public static class ModeledTierData extends TierData
     {

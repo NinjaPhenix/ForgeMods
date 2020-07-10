@@ -1,5 +1,6 @@
 package ninjaphenix.expandedstorage.data;
 
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,8 +17,9 @@ public class DataGenerators
     {
         final DataGenerator generator = event.getGenerator();
         final ExistingFileHelper fileHelper = event.getExistingFileHelper();
-        generator.addProvider(new BlockTags(generator));
-        generator.addProvider(new ItemTags(generator));
+        final BlockTagsProvider blockTagsProvider = new BlockTags(generator);
+        generator.addProvider(blockTagsProvider);
+        generator.addProvider(new ItemTags(generator, blockTagsProvider));
         generator.addProvider(new Recipes(generator));
         generator.addProvider(new LootTables(generator));
         generator.addProvider(new Language(generator, ExpandedStorage.MOD_ID, "en_us"));

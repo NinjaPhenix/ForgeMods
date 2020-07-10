@@ -10,8 +10,8 @@ import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
@@ -86,8 +86,8 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     {
         final BlockState state = getBlockState();
         if (BaseChestBlock.getMergeType(state) == TileEntityMerger.Type.SECOND) { return; }
-        final Vec3i offset = BaseChestBlock.getDirectionToAttached(getBlockState()).getDirectionVec();
-        final Vec3d soundPos = new Vec3d(pos).add(0.5, 0.5, 0.5).add(offset.getX() * 0.5D, offset.getY() * 0.5D, offset.getZ() * 0.5D);
+        final Vector3i offset = BaseChestBlock.getDirectionToAttached(getBlockState()).getDirectionVec();
+        final Vector3d soundPos = Vector3d.func_237489_a_(pos).add(offset.getX() * 0.5D, offset.getY() * 0.5D, offset.getZ() * 0.5D);
         world.playSound(null, soundPos.getX(), soundPos.getY(), soundPos.getZ(), soundEvent, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
     }
 
@@ -111,6 +111,6 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     private void onInvOpenOrClose()
     {
         final Block block = getBlockState().getBlock();
-        if (block instanceof CursedChestBlock) { world.addBlockEvent(pos, block, 1, viewerCount); world.notifyNeighbors(pos, block); }
+        if (block instanceof CursedChestBlock) { world.addBlockEvent(pos, block, 1, viewerCount); world.notifyNeighborsOfStateChange(pos, block); }
     }
 }

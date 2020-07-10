@@ -114,7 +114,7 @@ public class ModContent
         item.setRegistryName(registryRl);
         Registry.register(Registries.MODELED, registryRl, new ModeledTierData(rows * 9, registryRl,
                 new TranslationTextComponent("container.expandedstorage." + name), type -> ExpandedStorage.getRl(String.format("entity/%s/%s", name,
-                type.getName()))));
+                type.func_176610_l()))));
         return new Pair<>(block, item);
     }
 
@@ -124,7 +124,7 @@ public class ModContent
         final OldChestBlock block = new OldChestBlock(Block.Properties.from(copy), registryRl);
         final BlockItem item = new BlockItem(block, new Item.Properties().group(ExpandedStorage.group));
         item.setRegistryName(registryRl);
-        Registries.OLD.register(ExpandedStorage.getRl(name), new Registries.TierData(rows * 9, registryRl,
+        Registry.register(Registries.OLD, ExpandedStorage.getRl(name), new Registries.TierData(rows * 9, registryRl,
                 new TranslationTextComponent("container.expandedstorage." + name)));
         return new Pair<>(block, item);
     }

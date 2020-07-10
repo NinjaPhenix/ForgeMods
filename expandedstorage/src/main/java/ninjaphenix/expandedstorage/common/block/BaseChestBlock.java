@@ -226,7 +226,8 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         if (state.getBlock() != newState.getBlock())
         {
             final TileEntity tileEntity = world.getTileEntity(pos);
-            if (tileEntity instanceof IInventory) { InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity); world.notifyNeighbors(pos, this); }
+            if (tileEntity instanceof IInventory)
+            { InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity); world.notifyNeighborsOfStateChange(pos, this); }
             super.onReplaced(state, world, pos, newState, isMoving);
         }
     }
@@ -309,7 +310,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         if (mergeType == TileEntityMerger.Type.SINGLE)
         {
             final Direction facing = state.get(FACING);
-            if (!offsetState.has(TYPE)) { return state.with(TYPE, CursedChestType.SINGLE); }
+            if (!offsetState.func_235901_b_(TYPE)) { return state.with(TYPE, CursedChestType.SINGLE); }
             final CursedChestType newType = getChestType(facing, offset);
             if (offsetState.get(TYPE) == newType.getOpposite() && facing == offsetState.get(FACING)) { return state.with(TYPE, newType); }
         }
