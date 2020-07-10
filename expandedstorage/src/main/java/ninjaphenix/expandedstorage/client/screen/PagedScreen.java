@@ -1,5 +1,6 @@
 package ninjaphenix.expandedstorage.client.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -45,13 +46,13 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
                             SCREEN_META.TEXTURE_HEIGHT);
                 }
             }
-            if (!leftPageButton.active) { leftPageButton.setActive(true); }
+            if (!leftPageButton.field_230693_o_) { leftPageButton.setActive(true); }
         }
         else
         {
             if (page == 1) { leftPageButton.setActive(false); }
             if (blankArea != null) {blankArea = null; }
-            if (!rightPageButton.active) { rightPageButton.setActive(true); }
+            if (!rightPageButton.field_230693_o_) { rightPageButton.setActive(true); }
         }
         final int slotsPerPage = SCREEN_META.WIDTH * SCREEN_META.HEIGHT;
         int oldMin = slotsPerPage * (oldPage - 1);
@@ -66,46 +67,49 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
     private void setPageText() { currentPageText = new TranslationTextComponent("screen.expandedstorage.page_x_y", page, SCREEN_META.PAGES); }
 
     @Override
-    public void render(final int mouseX, final int mouseY, final float partialTicks)
+    public void func_230430_a_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
-        super.render(mouseX, mouseY, partialTicks);
-        if(SCREEN_META.PAGES != 1) { leftPageButton.renderTooltip(mouseX, mouseY); rightPageButton.renderTooltip(mouseX, mouseY); }
-        screenSelectButton.renderTooltip(mouseX, mouseY, this::renderTooltip);
+        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
+        if(SCREEN_META.PAGES != 1) { leftPageButton.renderTooltip(stack, mouseX, mouseY); rightPageButton.renderTooltip(stack, mouseX, mouseY); }
+        screenSelectButton.renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void init()
+    protected void func_231160_c_()
     {
-        super.init();
+        super.func_231160_c_();
         int settingsXOffset = -19;
         final boolean isQuarkLoaded = ModList.get().isLoaded("quark");
         if(isQuarkLoaded && SCREEN_META.WIDTH <= 9) { settingsXOffset -= 24; }
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4));
+        screenSelectButton = func_230480_a_(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4,
+                (button, stack, x, y) -> func_238652_a_(stack, button.func_230458_i_(), x, y)));
         if (SCREEN_META.PAGES != 1)
         {
             final int pageButtonsXOffset = isQuarkLoaded ? 36 : 0;
             page = 1;
             setPageText();
             leftPageButton = new PageButtonWidget(guiLeft + xSize - 61 - pageButtonsXOffset, guiTop + ySize - 96, 0,
-                    new TranslationTextComponent("screen.expandedstorage.prev_page"), button -> setPage(page, page - 1));
-            leftPageButton.active = false;
-            addButton(leftPageButton);
+                    new TranslationTextComponent("screen.expandedstorage.prev_page"), button -> setPage(page, page - 1),
+                    (button, stack, x, y) -> func_238652_a_(stack, button.func_230458_i_(), x, y));
+            leftPageButton.setActive(false);
+            func_230480_a_(leftPageButton);
             rightPageButton = new PageButtonWidget(guiLeft + xSize - 19 - pageButtonsXOffset, guiTop + ySize - 96, 1,
-                    new TranslationTextComponent("screen.expandedstorage.next_page"), button -> setPage(page, page + 1));
-            addButton(rightPageButton);
-            pageTextX = (1 + leftPageButton.x + rightPageButton.x - rightPageButton.getWidth() / 2F) / 2F;
+                    new TranslationTextComponent("screen.expandedstorage.next_page"), button -> setPage(page, page + 1),
+                    (button, stack, x, y) -> func_238652_a_(stack, button.func_230458_i_(), x, y));
+            func_230480_a_(rightPageButton);
+            pageTextX = (1 + leftPageButton.field_230690_l_ + rightPageButton.field_230690_l_ - rightPageButton.func_230998_h_() / 2F) / 2F;
         }
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY)
+    protected void func_230450_a_(@NotNull final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-        if (blankArea != null) { blankArea.render(); }
+        super.func_230450_a_(stack, partialTicks, mouseX, mouseY);
+        if (blankArea != null) { blankArea.render(stack); }
     }
 
     @Override
-    public void resize(@NotNull final Minecraft minecraft, final int width, final int height)
+    public void func_231152_a_(@NotNull final Minecraft minecraft, final int width, final int height)
     {
         if (SCREEN_META.PAGES != 1)
         {
@@ -113,29 +117,29 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
             if (currentPage != 1)
             {
                 container.resetSlotPositions(false);
-                super.resize(minecraft, width, height);
+                super.func_231152_a_(minecraft, width, height);
                 setPage(1, currentPage);
                 return;
             }
         }
-        super.resize(minecraft, width, height);
+        super.func_231152_a_(minecraft, width, height);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY)
+    protected void func_230451_b_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY)
     {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        if (currentPageText != null) { font.drawString(currentPageText.getFormattedText(), pageTextX - guiLeft, ySize - 94, 4210752); }
+        super.func_230451_b_(stack, mouseX, mouseY);
+        if (currentPageText != null) { field_230712_o_.func_238407_a_(stack, currentPageText, pageTextX - guiLeft, ySize - 94, 4210752); }
     }
 
     @Override
-    public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
+    public boolean func_231046_a_(final int keyCode, final int scanCode, final int modifiers)
     {
         if (keyCode == 262 || keyCode == 267) // Right Arrow, Page Down
         {
             if (SCREEN_META.PAGES != 1)
             {
-                if (hasShiftDown()) { setPage(page, SCREEN_META.PAGES); }
+                if (func_231173_s_()) { setPage(page, SCREEN_META.PAGES); }
                 else { if (page != SCREEN_META.PAGES) { setPage(page, page + 1); } }
                 return true;
             }
@@ -144,48 +148,49 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
         {
             if (SCREEN_META.PAGES != 1)
             {
-                if (hasShiftDown()) { setPage(page, 1); }
+                if (func_231173_s_()) { setPage(page, 1); }
                 else { if (page != 1) { setPage(page, page - 1); } }
                 return true;
             }
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.func_231046_a_(keyCode, scanCode, modifiers);
     }
 
-    private class PageButtonWidget extends Button
+    private static class PageButtonWidget extends Button
     {
         private final int TEXTURE_OFFSET;
         private final ResourceLocation TEXTURE = ExpandedStorage.getRl("textures/gui/page_buttons.png");
 
-        public PageButtonWidget(final int x, final int y, final int textureOffset, @NotNull final ITextComponent message, @NotNull final IPressable onPress)
+        public PageButtonWidget(final int x, final int y, final int textureOffset, @NotNull final ITextComponent message, @NotNull final IPressable onPress,
+                @NotNull final ITooltip onTooltip)
         {
-            super(x, y, 12, 12, message.getUnformattedComponentText(), onPress);
+            super(x, y, 12, 12, message, onPress, onTooltip);
             TEXTURE_OFFSET = textureOffset;
         }
 
         public void setActive(final boolean active)
         {
-            this.active = active;
-            if (!active) { this.setFocused(false); }
+            this.field_230693_o_ = active;
+            if (!active) { this.func_230996_d_(false); }
         }
 
         @Override
-        public void renderButton(final int mouseX, final int mouseY, final float partialTicks)
+        public void func_230431_b_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
         {
             Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.field_230695_q_);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            blit(x, y, TEXTURE_OFFSET * 12, getYImage(isHovered()) * 12, width, height, 32, 48);
+            func_238463_a_(stack, field_230690_l_, field_230691_m_, TEXTURE_OFFSET * 12, func_230989_a_(func_230449_g_()) * 12, field_230688_j_, field_230689_k_, 32, 48);
         }
 
-        public void renderTooltip(final int mouseX, final int mouseY)
+        public void renderTooltip(@NotNull final MatrixStack stack, final int mouseX, final int mouseY)
         {
-            if (active)
+            if (field_230693_o_)
             {
-                if (isHovered) { PagedScreen.this.renderTooltip(getMessage(), mouseX, mouseY); }
-                else if (isHovered()) { PagedScreen.this.renderTooltip(getMessage(), x, y); }
+                if (field_230692_n_) { field_238487_u_.onTooltip(this, stack, mouseX, mouseY); }
+                else if (func_230449_g_()) { field_238487_u_.onTooltip(this, stack, field_230690_l_, field_230691_m_); }
             }
         }
     }

@@ -1,5 +1,6 @@
 package ninjaphenix.expandedstorage.client.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -23,36 +24,36 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     }
 
     @Override @SuppressWarnings("ConstantConditions")
-    protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY)
+    protected void func_230450_a_(@NotNull final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(SCREEN_META.TEXTURE);
-        blit(guiLeft, guiTop, 0, 0, xSize, ySize, SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
+        field_230706_i_.getTextureManager().bindTexture(SCREEN_META.TEXTURE);
+        func_238463_a_(stack, guiLeft, guiTop, 0, 0, xSize, ySize, SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
     }
 
     @Override
-    public void render(final int mouseX, final int mouseY, final float partialTicks)
+    public void func_230430_a_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
-        renderBackground();
-        super.render(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+        func_230446_a_(stack);
+        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
+        this.func_230459_a_(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY)
+    protected void func_230451_b_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY)
     {
-        font.drawString(title.getUnformattedComponentText(), 8, 6, 4210752);
-        font.drawString(playerInventory.getDisplayName().getUnformattedComponentText(), INVENTORY_LABEL_LEFT, this.ySize - 96 + 2, 4210752);
+        field_230712_o_.func_238407_a_(stack, field_230704_d_, 8, 6, 4210752);
+        field_230712_o_.func_238407_a_(stack, playerInventory.getDisplayName(), INVENTORY_LABEL_LEFT, this.ySize - 96 + 2, 4210752);
     }
 
     @Override @SuppressWarnings("ConstantConditions")
-    public void onClose() { minecraft.player.closeScreen(); }
+    public void func_231175_as__() { field_230706_i_.player.closeScreen(); }
 
     @Override @SuppressWarnings("ConstantConditions")
-    public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
+    public boolean func_231046_a_(final int keyCode, final int scanCode, final int modifiers)
     {
-        if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.matchesKey(keyCode, scanCode)) { onClose(); return true; }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        if (keyCode == 256 || field_230706_i_.gameSettings.keyBindInventory.matchesKey(keyCode, scanCode)) { func_231175_as__(); return true; }
+        return super.func_231046_a_(keyCode, scanCode, modifiers);
     }
 
     protected static class Rectangle
@@ -66,6 +67,7 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
             TEXTURE_X = textureX; TEXTURE_Y = textureY; TEXTURE_WIDTH = textureWidth; TEXTURE_HEIGHT = textureHeight;
         }
 
-        public void render() { blit(X, Y, TEXTURE_X, TEXTURE_Y, WIDTH, HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT); }
+        public void render(@NotNull final MatrixStack stack)
+        { func_238463_a_(stack, X, Y, TEXTURE_X, TEXTURE_Y, WIDTH, HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT); }
     }
 }

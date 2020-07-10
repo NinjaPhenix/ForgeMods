@@ -1,5 +1,6 @@
 package ninjaphenix.expandedstorage.client.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
@@ -36,12 +37,13 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     }
 
     @Override
-    protected void init()
+    protected void func_231160_c_()
     {
-        super.init();
+        super.func_231160_c_();
         int settingsXOffset = -(hasScrollbar ? (ExpandedStorageConfig.CLIENT.centerSettingsButtonOnScrollbar.get() ? 2 : 1) : ModList.get().isLoaded("quark") ?
                 43 : 19);
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4));
+        screenSelectButton = func_230480_a_(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4,
+                (button, stack, x, y) -> func_238652_a_(stack, button.func_230458_i_(), x, y)));
         if (hasScrollbar) { isDragging = false; topRow = 0; }
         else
         {
@@ -56,25 +58,26 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY)
+    protected void func_230450_a_(@NotNull final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+        super.func_230450_a_(stack, partialTicks, mouseX, mouseY);
         if (hasScrollbar)
         {
             final int slotsHeight = SCREEN_META.HEIGHT * 18;
             final int scrollbarHeight = slotsHeight + (SCREEN_META.WIDTH > 9 ? 34 : 24);
-            blit(guiLeft + xSize - 4, guiTop, xSize, 0, 22, scrollbarHeight, SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
+            func_238463_a_(stack, guiLeft + xSize - 4, guiTop, xSize, 0, 22, scrollbarHeight, SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
             int yOffset = MathHelper.floor((slotsHeight - 17) * (((double) topRow) / (SCREEN_META.TOTAL_ROWS - SCREEN_META.HEIGHT)));
-            blit(guiLeft + xSize - 2, guiTop + yOffset + 18, xSize, scrollbarHeight, 12, 15, SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
+            func_238463_a_(stack, guiLeft + xSize - 2, guiTop + yOffset + 18, xSize, scrollbarHeight, 12, 15, SCREEN_META.TEXTURE_WIDTH,
+                    SCREEN_META.TEXTURE_HEIGHT);
         }
-        if (blankArea != null) { blankArea.render(); }
+        if (blankArea != null) { blankArea.render(stack); }
     }
 
     @Override
-    public void render(final int mouseX, final int mouseY, final float partialTicks)
+    public void func_230430_a_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
-        super.render(mouseX, mouseY, partialTicks);
-        screenSelectButton.renderTooltip(mouseX, mouseY, this::renderTooltip);
+        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
+        screenSelectButton.renderTooltip(stack, mouseX, mouseY);
     }
 
     private boolean isMouseOverScrollbar(final double mouseX, final double mouseY)
@@ -89,7 +92,7 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     { return super.hasClickedOutside(mouseX, mouseY, left, top, button) && !isMouseOverScrollbar(mouseX, mouseY); }
 
     @Override
-    public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
+    public boolean func_231046_a_(final int keyCode, final int scanCode, final int modifiers)
     {
         if (hasScrollbar)
         {
@@ -97,7 +100,7 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
             {
                 if (topRow != SCREEN_META.TOTAL_ROWS - SCREEN_META.HEIGHT)
                 {
-                    if (hasShiftDown()) { setTopRow(topRow, Math.min(topRow + SCREEN_META.HEIGHT, SCREEN_META.TOTAL_ROWS - SCREEN_META.HEIGHT)); }
+                    if (func_231173_s_()) { setTopRow(topRow, Math.min(topRow + SCREEN_META.HEIGHT, SCREEN_META.TOTAL_ROWS - SCREEN_META.HEIGHT)); }
                     else {setTopRow(topRow, topRow + 1);}
                 }
                 return true;
@@ -106,27 +109,27 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
             {
                 if (topRow != 0)
                 {
-                    if (hasShiftDown()) { setTopRow(topRow, Math.max(topRow - SCREEN_META.HEIGHT, 0)); }
+                    if (func_231173_s_()) { setTopRow(topRow, Math.max(topRow - SCREEN_META.HEIGHT, 0)); }
                     else {setTopRow(topRow, topRow - 1);}
                 }
                 return true;
             }
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.func_231046_a_(keyCode, scanCode, modifiers);
     }
 
     @Override
-    public boolean mouseClicked(final double mouseX, final double mouseY, final int button)
+    public boolean func_231044_a_(final double mouseX, final double mouseY, final int button)
     {
         if (hasScrollbar && isMouseOverScrollbar(mouseX, mouseY) && button == 0) { isDragging = true; updateTopRow(mouseY); }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.func_231044_a_(mouseX, mouseY, button);
     }
 
     @Override
-    public boolean mouseDragged(final double mouseX, final double mouseY, final int button, final double deltaX, final double deltaY)
+    public boolean func_231045_a_(final double mouseX, final double mouseY, final int button, final double deltaX, final double deltaY)
     {
         if (hasScrollbar && isDragging) { updateTopRow(mouseY); }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.func_231045_a_(mouseX, mouseY, button, deltaX, deltaY);
     }
 
     private void updateTopRow(final double mouseY)
@@ -138,17 +141,17 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     }
 
     @Override
-    public boolean mouseScrolled(final double mouseX, final double mouseY, final double delta)
+    public boolean func_231043_a_(final double mouseX, final double mouseY, final double delta)
     {
         if (hasScrollbar && (!ExpandedStorageConfig.CLIENT.restrictiveScrolling.get() || isMouseOverScrollbar(mouseX, mouseY)))
         {
             int newTop;
-            if (delta < 0) { newTop = Math.min(topRow + (hasShiftDown() ? SCREEN_META.HEIGHT : 1), SCREEN_META.TOTAL_ROWS - SCREEN_META.HEIGHT); }
-            else { newTop = Math.max(topRow - (hasShiftDown() ? SCREEN_META.HEIGHT : 1), 0); }
+            if (delta < 0) { newTop = Math.min(topRow + (func_231173_s_() ? SCREEN_META.HEIGHT : 1), SCREEN_META.TOTAL_ROWS - SCREEN_META.HEIGHT); }
+            else { newTop = Math.max(topRow - (func_231173_s_() ? SCREEN_META.HEIGHT : 1), 0); }
             setTopRow(topRow, newTop);
             return true;
         }
-        return super.mouseScrolled(mouseX, mouseY, delta);
+        return super.func_231043_a_(mouseX, mouseY, delta);
     }
 
     private void setTopRow(final int oldTopRow, final int newTopRow)
@@ -205,22 +208,22 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     }
 
     @Override
-    public void resize(@NotNull final Minecraft minecraft, final int width, final int height)
+    public void func_231152_a_(@NotNull final Minecraft minecraft, final int width, final int height)
     {
-        super.resize(minecraft, width, height);
+        super.func_231152_a_(minecraft, width, height);
         if (hasScrollbar)
         {
             int row = topRow;
-            super.resize(minecraft, width, height);
+            super.func_231152_a_(minecraft, width, height);
             setTopRow(topRow, row);
         }
-        else { super.resize(minecraft, width, height); }
+        else { super.func_231152_a_(minecraft, width, height); }
     }
 
     @Override
-    public boolean mouseReleased(final double mouseX, final double mouseY, final int button)
+    public boolean func_231048_c_(final double mouseX, final double mouseY, final int button)
     {
         if (hasScrollbar && isDragging) { isDragging = false; return true; }
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.func_231048_c_(mouseX, mouseY, button);
     }
 }

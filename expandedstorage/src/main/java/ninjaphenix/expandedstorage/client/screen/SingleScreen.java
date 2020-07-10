@@ -1,5 +1,6 @@
 package ninjaphenix.expandedstorage.client.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.ModList;
@@ -19,12 +20,13 @@ public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMe
     }
 
     @Override
-    protected void init()
+    protected void func_231160_c_()
     {
-        super.init();
+        super.func_231160_c_();
         int settingsXOffset = -19;
         if(ModList.get().isLoaded("quark") && SCREEN_META.WIDTH <= 9) { settingsXOffset -= 24; }
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4));
+        screenSelectButton = func_230480_a_(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4,
+                (button, stack, x, y) -> func_238652_a_(stack, button.func_230458_i_(), x, y)));
         final int blanked = SCREEN_META.BLANK_SLOTS;
         if (blanked > 0)
         {
@@ -35,10 +37,13 @@ public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMe
     }
 
     @Override
-    public void render(final int mouseX, final int mouseY, final float partialTicks)
-    { super.render(mouseX, mouseY, partialTicks); screenSelectButton.renderTooltip(mouseX, mouseY, this::renderTooltip); }
+    public void func_230430_a_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+    {
+        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
+        screenSelectButton.renderTooltip(stack, mouseX, mouseY);
+    }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY)
-    { super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY); if (blankArea != null) { blankArea.render(); } }
+    protected void func_230450_a_(@NotNull final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    { super.func_230450_a_(stack, partialTicks, mouseX, mouseY); if (blankArea != null) { blankArea.render(stack); } }
 }
