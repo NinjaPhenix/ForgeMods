@@ -23,6 +23,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import torcherino.Torcherino;
 import torcherino.api.TierSupplier;
 import torcherino.blocks.tile.TorcherinoTileEntity;
@@ -37,9 +39,10 @@ public class LanterinoBlock extends LanternBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 
-    public LanterinoBlock(ResourceLocation tierName)
+    public LanterinoBlock(@NotNull final ResourceLocation tierName, @NotNull final ResourceLocation registryName)
     {
         super(Block.Properties.from(Blocks.LANTERN));
+        setRegistryName(registryName);
         this.tierName = tierName;
     }
 
@@ -47,27 +50,29 @@ public class LanterinoBlock extends LanternBlock implements TierSupplier
     public ResourceLocation getTierName() { return tierName; }
 
     @Override
-    public boolean hasTileEntity(BlockState state) { return true; }
+    public boolean hasTileEntity(@NotNull final BlockState state) { return true; }
 
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) { return new TorcherinoTileEntity(); }
+    public TileEntity createTileEntity(@NotNull final BlockState state, @NotNull final IBlockReader world) { return new TorcherinoTileEntity(); }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(@NotNull final StateContainer.Builder<Block, BlockState> builder)
     {
         super.fillStateContainer(builder);
         builder.add(POWERED);
     }
 
-    @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+    @NotNull @Override @SuppressWarnings("deprecation")
+    public ActionResultType onBlockActivated(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos,
+            @NotNull final PlayerEntity player, @NotNull final Hand hand, @NotNull final BlockRayTraceResult hit)
     {
         if (!world.isRemote) Networker.INSTANCE.openScreenServer(world, (ServerPlayerEntity) player, pos);
         return ActionResultType.SUCCESS;
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public void onBlockPlacedBy(@NotNull final World world, @NotNull final BlockPos pos, @NotNull final BlockState state, @Nullable final LivingEntity placer,
+            @NotNull final ItemStack stack)
     {
         if (world.isRemote) return;
         if (stack.hasDisplayName())
@@ -86,38 +91,39 @@ public class LanterinoBlock extends LanternBlock implements TierSupplier
         }
     }
 
-    @Override
-    public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+    @Override @SuppressWarnings("deprecation")
+    public void tick(@NotNull final BlockState state, @NotNull final ServerWorld world, @NotNull final BlockPos pos, @NotNull final Random random)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TorcherinoTileEntity) ((TorcherinoTileEntity) tileEntity).tick();
     }
 
-    @Override
-    public PushReaction getPushReaction(BlockState state) { return PushReaction.IGNORE; }
+    @NotNull @Override @SuppressWarnings("deprecation")
+    public PushReaction getPushReaction(@NotNull final BlockState state) { return PushReaction.IGNORE; }
 
-    @Override
-    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean b)
+    @Override @SuppressWarnings("deprecation")
+    public void onBlockAdded(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos, @NotNull final BlockState oldState,
+            boolean b)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TorcherinoTileEntity) ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(state.get(POWERED));
     }
 
-    @Override
-    public ResourceLocation getLootTable()
-    {
-        ResourceLocation registryName = getRegistryName();
-        return new ResourceLocation(registryName.getNamespace(), "blocks/" + registryName.getPath());
-    }
+    //@Override
+    //public ResourceLocation getLootTable()
+    //{
+    //    ResourceLocation registryName = getRegistryName();
+    //    return new ResourceLocation(registryName.getNamespace(), "blocks/" + registryName.getPath());
+    //}
 
-    @Override
-    public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean b)
+    @Override @SuppressWarnings("deprecation")
+    public void neighborChanged(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos, @NotNull final Block block,
+            @NotNull final BlockPos fromPos, final boolean b)
     {
         if (world.isRemote) return;
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TorcherinoTileEntity)
         {
-            if (state == null) return;
             boolean powered;
             if (state.get(BlockStateProperties.HANGING).equals(true))
             {
@@ -138,8 +144,8 @@ public class LanterinoBlock extends LanternBlock implements TierSupplier
         }
     }
 
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    @NotNull @Override
+    public BlockState getStateForPlacement(@NotNull final BlockItemUseContext context)
     {
         boolean powered;
         BlockState state = super.getStateForPlacement(context);
@@ -160,9 +166,6 @@ public class LanterinoBlock extends LanternBlock implements TierSupplier
         return state.with(POWERED, powered);
     }
 
-    private static boolean isEmittingStrongRedstonePower(World world, BlockPos pos, Direction direction)
-    {
-        BlockState state = world.getBlockState(pos);
-        return state.getStrongPower(world, pos, direction) > 0;
-    }
+    private static boolean isEmittingStrongRedstonePower(@NotNull final World world, @NotNull final BlockPos pos, @NotNull final Direction direction)
+    { return world.getBlockState(pos).getStrongPower(world, pos, direction) > 0; }
 }
