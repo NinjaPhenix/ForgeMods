@@ -11,10 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
-/**
- * TODO:
- *  Fix shift + arrow key unlocking the right page button on last page ( when pressed twice )
- */
 public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends ScreenMeta> extends ContainerScreen<T>
 {
     protected final R SCREEN_META;
