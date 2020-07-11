@@ -1,1 +1,2 @@
 - Adds Netherite chests which I forgot in last release.
+- Updated translations, especially upside down ones.
