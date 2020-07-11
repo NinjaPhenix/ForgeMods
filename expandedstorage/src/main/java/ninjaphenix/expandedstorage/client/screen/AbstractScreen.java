@@ -13,7 +13,6 @@ import java.util.function.Function;
 
 /**
  * TODO:
- *  Fix text appearing grey
  *  Fix shift + arrow key unlocking the right page button on last page ( when pressed twice )
  */
 public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends ScreenMeta> extends ContainerScreen<T>
@@ -47,8 +46,8 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     @Override
     protected void func_230451_b_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY)
     {
-        field_230712_o_.func_238407_a_(stack, field_230704_d_, 8, 6, 4210752);
-        field_230712_o_.func_238407_a_(stack, playerInventory.getDisplayName(), INVENTORY_LABEL_LEFT, this.ySize - 96 + 2, 4210752);
+        field_230712_o_.func_238422_b_(stack, field_230704_d_, 8, 6, 0x404040);
+        field_230712_o_.func_238422_b_(stack, playerInventory.getDisplayName(), INVENTORY_LABEL_LEFT, this.ySize - 96 + 2, 0x404040);
     }
 
     @Override @SuppressWarnings("ConstantConditions")

@@ -129,7 +129,7 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
     protected void func_230451_b_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY)
     {
         super.func_230451_b_(stack, mouseX, mouseY);
-        if (currentPageText != null) { field_230712_o_.func_238407_a_(stack, currentPageText, pageTextX - guiLeft, ySize - 94, 4210752); }
+        if (currentPageText != null) { field_230712_o_.func_238422_b_(stack, currentPageText, pageTextX - guiLeft, ySize - 94, 0x404040); }
     }
 
     @Override
