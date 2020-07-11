@@ -27,11 +27,13 @@ public class Recipes extends RecipeProvider
         final CursedChestBlock GOLD_CHEST = ModContent.GOLD_CHEST.getFirst();
         final CursedChestBlock DIAMOND_CHEST = ModContent.DIAMOND_CHEST.getFirst();
         final CursedChestBlock OBSIDIAN_CHEST = ModContent.OBSIDIAN_CHEST.getFirst();
+        final CursedChestBlock NETHERITE_CHEST = ModContent.NETHERITE_CHEST.getFirst();
         final OldChestBlock OLD_WOOD_CHEST = ModContent.OLD_WOOD_CHEST.getFirst();
         final OldChestBlock OLD_IRON_CHEST = ModContent.OLD_IRON_CHEST.getFirst();
         final OldChestBlock OLD_GOLD_CHEST = ModContent.OLD_GOLD_CHEST.getFirst();
         final OldChestBlock OLD_DIAMOND_CHEST = ModContent.OLD_DIAMOND_CHEST.getFirst();
         final OldChestBlock OLD_OBSIDIAN_CHEST = ModContent.OLD_OBSIDIAN_CHEST.getFirst();
+        final OldChestBlock OLD_NETHERITE_CHEST = ModContent.OLD_NETHERITE_CHEST.getFirst();
         // </editor-fold>
         // <editor-fold desc="Mutator Item Recipe">
         ShapedRecipeBuilder.shapedRecipe(ModContent.CHEST_MUTATOR)
@@ -100,6 +102,11 @@ public class Recipes extends RecipeProvider
                            .key('C', DIAMOND_CHEST)
                            .addCriterion("has_chest", hasItem(DIAMOND_CHEST))
                            .build(consumer);
+        ShapelessRecipeBuilder.shapelessRecipe(NETHERITE_CHEST)
+                              .addIngredient(OBSIDIAN_CHEST)
+                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addCriterion("has_chest", hasItem(OBSIDIAN_CHEST))
+                              .build(consumer);
         // </editor-fold>
         // <editor-fold desc="Regular <-> Old Converison Recipes">
         ShapelessRecipeBuilder.shapelessRecipe(OLD_WOOD_CHEST).addIngredient(WOOD_CHEST)
@@ -122,6 +129,10 @@ public class Recipes extends RecipeProvider
                               .addCriterion("has_chest", hasItem(OBSIDIAN_CHEST)).build(consumer, ExpandedStorage.getRl("obsidian_to_old_obsidian"));
         ShapelessRecipeBuilder.shapelessRecipe(OBSIDIAN_CHEST).addIngredient(OLD_OBSIDIAN_CHEST)
                               .addCriterion("has_chest", hasItem(OLD_OBSIDIAN_CHEST)).build(consumer, ExpandedStorage.getRl("old_obsidian_to_obsidian"));
+        ShapelessRecipeBuilder.shapelessRecipe(OLD_NETHERITE_CHEST).addIngredient(NETHERITE_CHEST)
+                              .addCriterion("has_chest", hasItem(NETHERITE_CHEST)).build(consumer, ExpandedStorage.getRl("netherite_to_old_netherite"));
+        ShapelessRecipeBuilder.shapelessRecipe(NETHERITE_CHEST).addIngredient(OLD_NETHERITE_CHEST)
+                              .addCriterion("has_chest", hasItem(OLD_NETHERITE_CHEST)).build(consumer, ExpandedStorage.getRl("old_netherite_to_netherite"));
         // </editor-fold>
         // <editor-fold desc="Wood Conversion Kits">
         ShapedRecipeBuilder.shapedRecipe(ModContent.CONVERSION_KIT_WOOD_IRON)
@@ -157,6 +168,11 @@ public class Recipes extends RecipeProvider
                            .key('U', ModContent.CONVERSION_KIT_WOOD_DIAMOND)
                            .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_WOOD_DIAMOND))
                            .build(consumer);
+        ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_WOOD_NETHERITE)
+                              .addIngredient(ModContent.CONVERSION_KIT_WOOD_OBSIDIAN)
+                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_WOOD_OBSIDIAN))
+                              .build(consumer);
         // </editor-fold>
         // <editor-fold desc="Iron Converison Kits">
         ShapedRecipeBuilder.shapedRecipe(ModContent.CONVERSION_KIT_IRON_GOLD)
@@ -184,6 +200,11 @@ public class Recipes extends RecipeProvider
                            .key('U', ModContent.CONVERSION_KIT_IRON_DIAMOND)
                            .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_IRON_DIAMOND))
                            .build(consumer);
+        ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_IRON_NETHERITE)
+                              .addIngredient(ModContent.CONVERSION_KIT_IRON_OBSIDIAN)
+                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_IRON_OBSIDIAN))
+                              .build(consumer);
         // </editor-fold>
         // <editor-fold desc="Gold Conversion Kits">
         ShapedRecipeBuilder.shapedRecipe(ModContent.CONVERSION_KIT_GOLD_DIAMOND)
@@ -203,6 +224,11 @@ public class Recipes extends RecipeProvider
                            .key('U', ModContent.CONVERSION_KIT_GOLD_DIAMOND)
                            .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_GOLD_DIAMOND))
                            .build(consumer);
+        ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_GOLD_NETHERITE)
+                              .addIngredient(ModContent.CONVERSION_KIT_GOLD_OBSIDIAN)
+                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_GOLD_OBSIDIAN))
+                              .build(consumer);
         // </editor-fold>
         // <editor-fold desc="Diamond Conversion Kits">
         ShapedRecipeBuilder.shapedRecipe(ModContent.CONVERSION_KIT_DIAMOND_OBSIDIAN)
@@ -213,6 +239,18 @@ public class Recipes extends RecipeProvider
                            .key('D', Tags.Items.GEMS_DIAMOND)
                            .addCriterion("has_diamond", hasItem(Tags.Items.GEMS_DIAMOND))
                            .build(consumer);
+        ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_DIAMOND_NETHERITE)
+                              .addIngredient(ModContent.CONVERSION_KIT_DIAMOND_OBSIDIAN)
+                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_DIAMOND_OBSIDIAN))
+                              .build(consumer);
+        // </editor-fold>
+        // <editor-fold desc="Obsidian Conversion Kits">
+        ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_OBSIDIAN_NETHERITE)
+                              .addIngredient(Tags.Items.OBSIDIAN)
+                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addCriterion("has_obsidian", hasItem(Tags.Items.OBSIDIAN))
+                              .build(consumer);
         // </editor-fold>
     }
 

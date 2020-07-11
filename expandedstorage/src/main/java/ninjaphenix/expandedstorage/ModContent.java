@@ -44,6 +44,7 @@ public class ModContent
     public static final Pair<OldChestBlock, BlockItem> OLD_GOLD_CHEST;
     public static final Pair<OldChestBlock, BlockItem> OLD_DIAMOND_CHEST;
     public static final Pair<OldChestBlock, BlockItem> OLD_OBSIDIAN_CHEST;
+    public static final Pair<OldChestBlock, BlockItem> OLD_NETHERITE_CHEST;
     public static final Pair<CursedChestBlock, BlockItem> WOOD_CHEST;
     public static final Pair<CursedChestBlock, BlockItem> PUMPKIN_CHEST;
     public static final Pair<CursedChestBlock, BlockItem> CHRISTMAS_CHEST;
@@ -51,17 +52,23 @@ public class ModContent
     public static final Pair<CursedChestBlock, BlockItem> GOLD_CHEST;
     public static final Pair<CursedChestBlock, BlockItem> DIAMOND_CHEST;
     public static final Pair<CursedChestBlock, BlockItem> OBSIDIAN_CHEST;
+    public static final Pair<CursedChestBlock, BlockItem> NETHERITE_CHEST;
     public static final Item CHEST_MUTATOR;
     public static final ChestConversionItem CONVERSION_KIT_WOOD_IRON;
     public static final ChestConversionItem CONVERSION_KIT_WOOD_GOLD;
     public static final ChestConversionItem CONVERSION_KIT_WOOD_DIAMOND;
     public static final ChestConversionItem CONVERSION_KIT_WOOD_OBSIDIAN;
+    public static final ChestConversionItem CONVERSION_KIT_WOOD_NETHERITE;
     public static final ChestConversionItem CONVERSION_KIT_IRON_GOLD;
     public static final ChestConversionItem CONVERSION_KIT_IRON_DIAMOND;
     public static final ChestConversionItem CONVERSION_KIT_IRON_OBSIDIAN;
+    public static final ChestConversionItem CONVERSION_KIT_IRON_NETHERITE;
     public static final ChestConversionItem CONVERSION_KIT_GOLD_DIAMOND;
     public static final ChestConversionItem CONVERSION_KIT_GOLD_OBSIDIAN;
+    public static final ChestConversionItem CONVERSION_KIT_GOLD_NETHERITE;
     public static final ChestConversionItem CONVERSION_KIT_DIAMOND_OBSIDIAN;
+    public static final ChestConversionItem CONVERSION_KIT_DIAMOND_NETHERITE;
+    public static final ChestConversionItem CONVERSION_KIT_OBSIDIAN_NETHERITE;
     // @formatter:off
 	public static final CustomTileEntityType<CursedChestTileEntity> CURSED_CHEST_TE = new CustomTileEntityType<>(CursedChestTileEntity::new, (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
 	public static final CustomTileEntityType<OldChestTileEntity> OLD_CHEST_TE = new CustomTileEntityType<>(OldChestTileEntity::new, (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
@@ -74,6 +81,7 @@ public class ModContent
         OLD_GOLD_CHEST = registerOld(Blocks.GOLD_BLOCK, "gold_chest", 9);
         OLD_DIAMOND_CHEST = registerOld(Blocks.DIAMOND_BLOCK, "diamond_chest", 12);
         OLD_OBSIDIAN_CHEST = registerOld(Blocks.OBSIDIAN, "obsidian_chest", 12);
+        OLD_NETHERITE_CHEST = registerOld(Blocks.field_235397_ng_, "netherite_chest", 15); // Netherite Block
         WOOD_CHEST = register(Blocks.OAK_PLANKS, "wood_chest", 3);
         PUMPKIN_CHEST = register(Blocks.CARVED_PUMPKIN, "pumpkin_chest", 3);
         CHRISTMAS_CHEST = register(Blocks.OAK_PLANKS, "christmas_chest", 3);
@@ -81,6 +89,7 @@ public class ModContent
         GOLD_CHEST = register(Blocks.GOLD_BLOCK, "gold_chest", 9);
         DIAMOND_CHEST = register(Blocks.DIAMOND_BLOCK, "diamond_chest", 12);
         OBSIDIAN_CHEST = register(Blocks.OBSIDIAN, "obsidian_chest", 12);
+        NETHERITE_CHEST = register(Blocks.field_235397_ng_, "netherite_chest", 15);
         PAGED_CONTAINER_TYPE = new ContainerType<>(new PagedContainer.Factory());
         SINGLE_CONTAINER_TYPE = new ContainerType<>(new SingleContainer.Factory());
         SCROLLABLE_CONTAINER_TYPE = new ContainerType<>(new ScrollableContainer.Factory());
@@ -93,16 +102,22 @@ public class ModContent
         final Pair<ResourceLocation, String> gold = new Pair<>(ExpandedStorage.getRl("gold_chest"), "gold");
         final Pair<ResourceLocation, String> diamond = new Pair<>(ExpandedStorage.getRl("diamond_chest"), "diamond");
         final Pair<ResourceLocation, String> obsidian = new Pair<>(ExpandedStorage.getRl("obsidian_chest"), "obsidian");
+        final Pair<ResourceLocation, String> netherite = new Pair<>(ExpandedStorage.getRl("netherite_chest"), "netherite");
         CONVERSION_KIT_WOOD_IRON = new ChestConversionItem(wood, iron);
         CONVERSION_KIT_WOOD_GOLD = new ChestConversionItem(wood, gold);
         CONVERSION_KIT_WOOD_DIAMOND = new ChestConversionItem(wood, diamond);
         CONVERSION_KIT_WOOD_OBSIDIAN = new ChestConversionItem(wood, obsidian);
+        CONVERSION_KIT_WOOD_NETHERITE = new ChestConversionItem(wood, netherite);
         CONVERSION_KIT_IRON_GOLD = new ChestConversionItem(iron, gold);
         CONVERSION_KIT_IRON_DIAMOND = new ChestConversionItem(iron, diamond);
         CONVERSION_KIT_IRON_OBSIDIAN = new ChestConversionItem(iron, obsidian);
+        CONVERSION_KIT_IRON_NETHERITE = new ChestConversionItem(iron, netherite);
         CONVERSION_KIT_GOLD_DIAMOND = new ChestConversionItem(gold, diamond);
         CONVERSION_KIT_GOLD_OBSIDIAN = new ChestConversionItem(gold, obsidian);
+        CONVERSION_KIT_GOLD_NETHERITE = new ChestConversionItem(gold, netherite);
         CONVERSION_KIT_DIAMOND_OBSIDIAN = new ChestConversionItem(diamond, obsidian);
+        CONVERSION_KIT_DIAMOND_NETHERITE = new ChestConversionItem(diamond, netherite);
+        CONVERSION_KIT_OBSIDIAN_NETHERITE = new ChestConversionItem(obsidian, netherite);
     }
 
     private static Pair<CursedChestBlock, BlockItem> register(final Block copy, final String name, final int rows)
@@ -140,11 +155,13 @@ public class ModContent
                 GOLD_CHEST.getFirst(),
                 DIAMOND_CHEST.getFirst(),
                 OBSIDIAN_CHEST.getFirst(),
+                NETHERITE_CHEST.getFirst(),
                 OLD_WOOD_CHEST.getFirst(),
                 OLD_IRON_CHEST.getFirst(),
                 OLD_GOLD_CHEST.getFirst(),
                 OLD_DIAMOND_CHEST.getFirst(),
-                OLD_OBSIDIAN_CHEST.getFirst()
+                OLD_OBSIDIAN_CHEST.getFirst(),
+                OLD_NETHERITE_CHEST.getFirst()
         );
     }
 
@@ -159,21 +176,28 @@ public class ModContent
                 GOLD_CHEST.getSecond(),
                 DIAMOND_CHEST.getSecond(),
                 OBSIDIAN_CHEST.getSecond(),
+                NETHERITE_CHEST.getSecond(),
                 OLD_WOOD_CHEST.getSecond(),
                 OLD_IRON_CHEST.getSecond(),
                 OLD_GOLD_CHEST.getSecond(),
                 OLD_DIAMOND_CHEST.getSecond(),
                 OLD_OBSIDIAN_CHEST.getSecond(),
+                OLD_NETHERITE_CHEST.getSecond(),
                 CONVERSION_KIT_WOOD_IRON,
                 CONVERSION_KIT_WOOD_GOLD,
                 CONVERSION_KIT_WOOD_DIAMOND,
                 CONVERSION_KIT_WOOD_OBSIDIAN,
+                CONVERSION_KIT_WOOD_NETHERITE,
                 CONVERSION_KIT_IRON_GOLD,
                 CONVERSION_KIT_IRON_DIAMOND,
                 CONVERSION_KIT_IRON_OBSIDIAN,
+                CONVERSION_KIT_IRON_NETHERITE,
                 CONVERSION_KIT_GOLD_DIAMOND,
                 CONVERSION_KIT_GOLD_OBSIDIAN,
+                CONVERSION_KIT_GOLD_NETHERITE,
                 CONVERSION_KIT_DIAMOND_OBSIDIAN,
+                CONVERSION_KIT_DIAMOND_NETHERITE,
+                CONVERSION_KIT_OBSIDIAN_NETHERITE,
                 CHEST_MUTATOR
         );
     }

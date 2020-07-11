@@ -28,8 +28,10 @@ public final class ScrollableContainer extends AbstractContainer<ScrollableScree
             .put(54, new ScrollableScreenMeta(9, 6, 54, getTexture("shared", 9, 6), 208, 240)) // Iron / Large Wood
             .put(81, new ScrollableScreenMeta(9, 9, 81, getTexture("shared", 9, 9), 208, 304)) // Gold
             .put(108, new ScrollableScreenMeta(9, 9, 108, getTexture("shared", 9, 9), 208, 304)) // Diamond / Large Iron
+            .put(135, new ScrollableScreenMeta(9, 9, 135, getTexture("shared", 9, 9), 208, 304)) // Netherite
             .put(162, new ScrollableScreenMeta(9, 9, 162, getTexture("shared", 9, 9), 208, 304)) // Large Gold
             .put(216, new ScrollableScreenMeta(9, 9, 216, getTexture("shared", 9, 9), 208, 304)) // Large Diamond
+            .put(270, new ScrollableScreenMeta(9, 9, 270, getTexture("shared", 9, 9), 208, 304)) // Large Netherite
             .build();
     // @formatter:on
 

@@ -32,6 +32,7 @@ public class BlockStatesAndModels extends BlockStateProvider
         chestBlock(ModContent.GOLD_CHEST.getFirst());
         chestBlock(ModContent.DIAMOND_CHEST.getFirst());
         chestBlock(ModContent.OBSIDIAN_CHEST.getFirst());
+        chestBlock(ModContent.NETHERITE_CHEST.getFirst());
         OLD_CHEST_HORIZONTAL = models().getBuilder("block/old_chest/horizontal")
                                        .parent(models().getExistingFile(mcLoc("cube")))
                                        .texture("particle", "#front")
@@ -55,6 +56,7 @@ public class BlockStatesAndModels extends BlockStateProvider
         oldChestBlock(ModContent.OLD_GOLD_CHEST.getFirst());
         oldChestBlock(ModContent.OLD_DIAMOND_CHEST.getFirst());
         oldChestBlock(ModContent.OLD_OBSIDIAN_CHEST.getFirst());
+        oldChestBlock(ModContent.OLD_NETHERITE_CHEST.getFirst());
     }
 
     @NotNull @Override

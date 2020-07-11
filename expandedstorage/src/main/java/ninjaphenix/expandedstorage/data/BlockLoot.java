@@ -21,11 +21,13 @@ public class BlockLoot extends BlockLootTables
         registerLootTable(ModContent.GOLD_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.DIAMOND_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.OBSIDIAN_CHEST.getFirst(), BlockLootTables::droppingWithName);
+        registerLootTable(ModContent.NETHERITE_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.OLD_WOOD_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.OLD_IRON_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.OLD_GOLD_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.OLD_DIAMOND_CHEST.getFirst(), BlockLootTables::droppingWithName);
         registerLootTable(ModContent.OLD_OBSIDIAN_CHEST.getFirst(), BlockLootTables::droppingWithName);
+        registerLootTable(ModContent.OLD_NETHERITE_CHEST.getFirst(), BlockLootTables::droppingWithName);
     }
 
     @NotNull @Override @SuppressWarnings("ConstantConditions")

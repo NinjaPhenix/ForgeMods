@@ -1,2 +1,1 @@
-- Ported from 1.15.2 -> 1.16.1
-- Fixed a bug where shift + right arrow twice on a paged screen would unlock the next page button.
+- Adds Netherite chests which I forgot in last release.

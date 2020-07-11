@@ -20,12 +20,17 @@ public class ItemModels extends ItemModelProvider
         simple(ModContent.CONVERSION_KIT_WOOD_GOLD);
         simple(ModContent.CONVERSION_KIT_WOOD_DIAMOND);
         simple(ModContent.CONVERSION_KIT_WOOD_OBSIDIAN);
+        simple(ModContent.CONVERSION_KIT_WOOD_NETHERITE);
         simple(ModContent.CONVERSION_KIT_IRON_GOLD);
         simple(ModContent.CONVERSION_KIT_IRON_DIAMOND);
         simple(ModContent.CONVERSION_KIT_IRON_OBSIDIAN);
+        simple(ModContent.CONVERSION_KIT_IRON_NETHERITE);
         simple(ModContent.CONVERSION_KIT_GOLD_DIAMOND);
         simple(ModContent.CONVERSION_KIT_GOLD_OBSIDIAN);
+        simple(ModContent.CONVERSION_KIT_GOLD_NETHERITE);
         simple(ModContent.CONVERSION_KIT_DIAMOND_OBSIDIAN);
+        simple(ModContent.CONVERSION_KIT_DIAMOND_NETHERITE);
+        simple(ModContent.CONVERSION_KIT_OBSIDIAN_NETHERITE);
         chest(ModContent.WOOD_CHEST.getSecond());
         chest(ModContent.PUMPKIN_CHEST.getSecond());
         chest(ModContent.CHRISTMAS_CHEST.getSecond());
@@ -33,11 +38,13 @@ public class ItemModels extends ItemModelProvider
         chest(ModContent.GOLD_CHEST.getSecond());
         chest(ModContent.DIAMOND_CHEST.getSecond());
         chest(ModContent.OBSIDIAN_CHEST.getSecond());
+        chest(ModContent.NETHERITE_CHEST.getSecond());
         oldChest(ModContent.OLD_WOOD_CHEST.getSecond());
         oldChest(ModContent.OLD_IRON_CHEST.getSecond());
         oldChest(ModContent.OLD_GOLD_CHEST.getSecond());
         oldChest(ModContent.OLD_DIAMOND_CHEST.getSecond());
         oldChest(ModContent.OLD_OBSIDIAN_CHEST.getSecond());
+        oldChest(ModContent.OLD_NETHERITE_CHEST.getSecond());
     }
 
     @SuppressWarnings("ConstantConditions")

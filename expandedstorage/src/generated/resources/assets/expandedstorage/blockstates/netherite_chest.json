@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "type=single": {
+      "model": "expandedstorage:block/netherite_chest"
+    },
+    "type=top": {
+      "model": "expandedstorage:block/netherite_chest"
+    },
+    "type=back": {
+      "model": "expandedstorage:block/netherite_chest"
+    },
+    "type=right": {
+      "model": "expandedstorage:block/netherite_chest"
+    },
+    "type=bottom": {
+      "model": "expandedstorage:block/netherite_chest"
+    },
+    "type=front": {
+      "model": "expandedstorage:block/netherite_chest"
+    },
+    "type=left": {
+      "model": "expandedstorage:block/netherite_chest"
+    }
+  }
+}
