@@ -15,7 +15,6 @@ import java.util.function.Function;
  * TODO:
  *  Fix text appearing grey
  *  Fix shift + arrow key unlocking the right page button on last page ( when pressed twice )
- *  Fix chest upgrade tooltips ( LShift + Right Button not highlighted gold )
  */
 public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends ScreenMeta> extends ContainerScreen<T>
 {
