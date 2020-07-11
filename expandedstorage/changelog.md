@@ -1,3 +1,2 @@
-- Add new container screen types.
-- Fixed z-fighting and block lighting issue in rendering.
-- Improved mutator tool description.
+- Ported from 1.15.2 -> 1.16.1
+- Fixed a bug where shift + right arrow twice on a paged screen would unlock the next page button.
