@@ -20,7 +20,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.KeybindTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -46,12 +45,9 @@ public class ChestConversionItem extends ChestModifierItem
         super(new Item.Properties().group(ExpandedStorage.group).maxStackSize(16));
         setRegistryName(ExpandedStorage.getRl(from.getSecond() + "_to_" + to.getSecond() + "_conversion_kit"));
         FROM = from.getFirst(); TO = to.getFirst();
-        TOOLTIP = new KeybindTextComponent("key.sneak")
-                .func_240702_b_(" + ")
-                .func_230529_a_(new KeybindTextComponent("key.use")).func_240699_a_(TextFormatting.GOLD)
-                .func_230529_a_(new TranslationTextComponent(String.format("tooltip.expandedstorage.conversion_kit_%s_%s",from.getSecond(), to.getSecond()))
-                        .func_230529_a_(new TranslationTextComponent("tooltip.expandedstorage.conversion_kit_double_requires_2"))
-                        .func_240699_a_(TextFormatting.GRAY));
+        TOOLTIP = new TranslationTextComponent(String.format("tooltip.expandedstorage.conversion_kit_%s_%s", from.getSecond(), to.getSecond()),
+                ExpandedStorage.leftShiftRightClick,
+                new TranslationTextComponent("tooltip.expandedstorage.conversion_kit_double_requires_2")).func_240699_a_(TextFormatting.GRAY);
     }
 
     @SuppressWarnings("unchecked")

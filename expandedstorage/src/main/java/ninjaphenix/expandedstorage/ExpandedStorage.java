@@ -3,6 +3,10 @@ package ninjaphenix.expandedstorage;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.KeybindTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -17,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 public class ExpandedStorage
 {
 	public static final String MOD_ID = "expandedstorage";
+	public static ITextComponent leftShiftRightClick = new TranslationTextComponent("tooltip.expandedstorage.left_shift_right_click",
+            new KeybindTextComponent("key.sneak"), new KeybindTextComponent("key.use")).func_240699_a_(TextFormatting.GOLD);
 	public static final ItemGroup group = new ItemGroup(MOD_ID)
 	{
 		@Override
