@@ -37,10 +37,9 @@ public class TorcherinoBlock extends TorchBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 
-    public TorcherinoBlock(final ResourceLocation tierName, final ResourceLocation registryName, final IParticleData flameParticle)
+    public TorcherinoBlock(final ResourceLocation tierName, final IParticleData flameParticle)
     {
         super(Properties.from(Blocks.TORCH), flameParticle);
-        setRegistryName(registryName);
         this.tierName = tierName;
     }
 

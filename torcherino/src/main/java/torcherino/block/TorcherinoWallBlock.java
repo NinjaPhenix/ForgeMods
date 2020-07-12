@@ -38,10 +38,9 @@ public class TorcherinoWallBlock extends WallTorchBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 
-    public TorcherinoWallBlock(final TorcherinoBlock base, final ResourceLocation registryName, final IParticleData flameParticle)
+    public TorcherinoWallBlock(final TorcherinoBlock base, final IParticleData flameParticle)
     {
         super(Block.Properties.from(Blocks.WALL_TORCH).lootFrom(base), flameParticle);
-        setRegistryName(registryName);
         this.tierName = base.getTierName();
     }
 

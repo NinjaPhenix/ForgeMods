@@ -38,10 +38,9 @@ public class LanterinoBlock extends LanternBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 
-    public LanterinoBlock(final ResourceLocation tierName, final ResourceLocation registryName)
+    public LanterinoBlock(final ResourceLocation tierName)
     {
         super(Block.Properties.from(Blocks.LANTERN));
-        setRegistryName(registryName);
         this.tierName = tierName;
     }
 

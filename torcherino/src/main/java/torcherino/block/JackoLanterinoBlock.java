@@ -37,10 +37,9 @@ public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 
-    public JackoLanterinoBlock(final ResourceLocation tierName, final ResourceLocation registryName)
+    public JackoLanterinoBlock(final ResourceLocation tierName)
     {
         super(Block.Properties.from(Blocks.JACK_O_LANTERN));
-        setRegistryName(registryName);
         this.tierName = tierName;
     }
 

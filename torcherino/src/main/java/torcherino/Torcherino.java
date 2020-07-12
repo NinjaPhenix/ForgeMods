@@ -28,9 +28,8 @@ public class Torcherino
     {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Config.initialise();
-        ModContent.INSTANCE.initialise();
+        ModContent.initialise(eventBus);
         Networker.INSTANCE.initialise();
-        eventBus.register(ModContent.INSTANCE);
         eventBus.addListener(this::processIMC);
         MinecraftForge.EVENT_BUS.addListener(this::processPlayerJoin);
         TorcherinoAPI.INSTANCE.blacklistBlock(Blocks.WATER);
