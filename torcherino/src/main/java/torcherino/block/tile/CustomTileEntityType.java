@@ -1,4 +1,4 @@
-package torcherino.blocks.tile;
+package torcherino.block.tile;
 
 import com.mojang.datafixers.types.Type;
 import net.minecraft.block.Block;
@@ -10,17 +10,15 @@ import java.util.function.Supplier;
 
 public class CustomTileEntityType<T extends TileEntity> extends TileEntityType<T>
 {
-    private final Predicate<Block> predicate;
+    private final Predicate<Block> PREDICATE;
 
-    public CustomTileEntityType(Supplier<? extends T> factory, Predicate<Block> isValidBlock, Type<?> dataFixerType)
+    @SuppressWarnings("ConstantConditions")
+    public CustomTileEntityType(Supplier<? extends T> factory, Predicate<Block> isBlockValid, Type<?> dataFixerType)
     {
         super(factory, null, dataFixerType);
-        predicate = isValidBlock;
+        PREDICATE = isBlockValid;
     }
 
     @Override
-    public boolean isValidBlock(Block block)
-    {
-        return predicate.test(block);
-    }
+    public boolean isValidBlock(Block block) { return PREDICATE.test(block); }
 }

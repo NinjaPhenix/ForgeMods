@@ -1,4 +1,4 @@
-package torcherino.blocks.tile;
+package torcherino.block.tile;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,7 +15,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.server.ServerWorld;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import torcherino.api.TierSupplier;
 import torcherino.api.TorcherinoAPI;
@@ -34,7 +33,7 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
 
     public TorcherinoTileEntity() { super(TORCHERINO_TILE_ENTITY); }
 
-    @NotNull @Override @SuppressWarnings("ConstantConditions")
+    @Override @SuppressWarnings("ConstantConditions")
     public ITextComponent getName()
     { return hasCustomName() ? customName : new TranslationTextComponent(world.getBlockState(pos).getBlock().getTranslationKey()); }
 
@@ -51,7 +50,7 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
     {
         if (tierName == null)
         {
-            Block block = world.getBlockState(pos).getBlock();
+            final Block block = world.getBlockState(pos).getBlock();
             if (block instanceof TierSupplier) { tierName = ((TierSupplier) block).getTierName(); }
         }
         return tierName;
@@ -60,7 +59,7 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
     public OpenScreenMessage createOpenMessage() { return new OpenScreenMessage(pos, getName(), xRange, zRange, yRange, speed, redstoneMode); }
 
     @Override
-    public void func_230337_a_(@NotNull final BlockState state, @NotNull final CompoundNBT tag)
+    public void func_230337_a_(final BlockState state, final CompoundNBT tag)
     {
         super.func_230337_a_(state, tag);
         if (tag.contains("CustomName", 8)) { setCustomName(ITextComponent.Serializer.func_240643_a_(tag.getString("CustomName"))); }
@@ -71,8 +70,8 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
         this.redstoneMode = tag.getInt("RedstoneMode");
     }
 
-    @NotNull @Override
-    public CompoundNBT write(@NotNull final CompoundNBT tag)
+    @Override
+    public CompoundNBT write(final CompoundNBT tag)
     {
         super.write(tag);
         if (hasCustomName()) { tag.putString("CustomName", ITextComponent.Serializer.toJson(getCustomName())); }
@@ -108,8 +107,8 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
         area.forEach(this::tickBlock);
     }
 
-    @SuppressWarnings("ConstantConditions")
-    private void tickBlock(@NotNull final BlockPos blockPos)
+    @SuppressWarnings({ "ConstantConditions", "deprecation" })
+    private void tickBlock(final BlockPos blockPos)
     {
         BlockState blockState = world.getBlockState(blockPos);
         Block block = blockState.getBlock();
@@ -141,8 +140,8 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
     {
         super.onLoad();
         if (world.isRemote) { return; }
-        area = BlockPos.getAllInBoxMutable(pos.getX() - xRange, pos.getY() - yRange, pos.getZ() - zRange,
-                pos.getX() + xRange, pos.getY() + yRange, pos.getZ() + zRange);
+        area = BlockPos.getAllInBoxMutable(pos.getX() - xRange, pos.getY() - yRange, pos.getZ() - zRange, pos.getX() + xRange, pos.getY() + yRange,
+                pos.getZ() + zRange);
         world.getServer().enqueue(new TickDelayedTask(world.getServer().getTickCounter(),
                 () -> setPoweredByRedstone(world.getBlockState(pos).get(BlockStateProperties.POWERED))));
     }

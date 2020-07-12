@@ -3,7 +3,6 @@ package torcherino.config;
 import blue.endless.jankson.Jankson;
 import blue.endless.jankson.JsonElement;
 import blue.endless.jankson.JsonObject;
-import blue.endless.jankson.api.Marshaller;
 import blue.endless.jankson.api.SyntaxError;
 import blue.endless.jankson.impl.MarshallerImpl;
 import org.apache.logging.log4j.LogManager;
@@ -85,7 +84,7 @@ public class ConfigManager
         String result = json.toJson(true, true);
         try
         {
-            if (!configFile.exists()) configFile.createNewFile();
+            if (!configFile.exists()) { configFile.createNewFile(); }
             FileOutputStream out = new FileOutputStream(configFile, false);
             out.write(result.getBytes());
             out.flush();

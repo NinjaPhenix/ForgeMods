@@ -26,7 +26,7 @@ public class Torcherino
 
     public Torcherino()
     {
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Config.initialise();
         ModContent.INSTANCE.initialise();
         Networker.INSTANCE.initialise();
@@ -40,8 +40,7 @@ public class Torcherino
         TorcherinoAPI.INSTANCE.blacklistBlock(Blocks.VOID_AIR);
     }
 
-    @SuppressWarnings("SpellCheckingInspection")
-    public static ResourceLocation resloc(String path) { return new ResourceLocation(MOD_ID, path); }
+    public static ResourceLocation getRl(final String path) { return new ResourceLocation(MOD_ID, path); }
 
     private void processPlayerJoin(final PlayerEvent.PlayerLoggedInEvent event) { Networker.INSTANCE.sendServerTiers((ServerPlayerEntity) event.getPlayer()); }
 
@@ -50,30 +49,21 @@ public class Torcherino
     {
         event.getIMCStream().forEach((message) ->
         {
-            String method = message.getMethod();
-            Object value = message.getMessageSupplier().get();
+            final String method = message.getMethod();
+            final Object value = message.getMessageSupplier().get();
             if (method.equals("blacklist_block"))
             {
                 if (value instanceof ResourceLocation) { TorcherinoAPI.INSTANCE.blacklistBlock((ResourceLocation) value); }
-                else if (value instanceof Block) TorcherinoAPI.INSTANCE.blacklistBlock((Block) value);
-                else
-                {
-                    LOGGER.error("Received blacklist_block message with invalid value, must be either a Block or ResourceLocation.");
-                }
+                else if (value instanceof Block) { TorcherinoAPI.INSTANCE.blacklistBlock((Block) value); }
+                else { LOGGER.error("Received blacklist_block message with invalid value, must be either a Block or ResourceLocation."); }
             }
             else if (method.equals("blacklist_tile"))
             {
                 if (value instanceof ResourceLocation) { TorcherinoAPI.INSTANCE.blacklistTileEntity((ResourceLocation) value); }
-                else if (value instanceof TileEntityType) TorcherinoAPI.INSTANCE.blacklistTileEntity((TileEntityType<?>) value);
-                else
-                {
-                    LOGGER.error("Received blacklist_tile message with invalid value, must be either a TileEntityType or ResourceLocation.");
-                }
+                else if (value instanceof TileEntityType) { TorcherinoAPI.INSTANCE.blacklistTileEntity((TileEntityType<?>) value); }
+                else { LOGGER.error("Received blacklist_tile message with invalid value, must be either a TileEntityType or ResourceLocation."); }
             }
-            else
-            {
-                LOGGER.error("Received IMC message with invalid method, must be either: \"blacklist_block\" or \"blacklist_tile\".");
-            }
+            else { LOGGER.error("Received IMC message with invalid method, must be either: \"blacklist_block\" or \"blacklist_tile\"."); }
         });
     }
 }
