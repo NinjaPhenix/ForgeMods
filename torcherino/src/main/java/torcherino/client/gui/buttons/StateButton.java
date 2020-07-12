@@ -1,21 +1,27 @@
 package torcherino.client.gui.buttons;
 
-import com.google.common.collect.Lists;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.AbstractButton;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
 
 public abstract class StateButton extends AbstractButton
 {
     private final int screenWidth, screenHeight;
     private int state;
-    private String narrationMessage;
+    private ITextComponent narrationMessage;
 
-    public StateButton(int x, int y, int screenWidth, int screenHeight, int state)
+    public StateButton(final int x, final int y, final int screenWidth, final int screenHeight, final int state)
     {
-        super(x, y, 20, 20, "");
+        super(x, y, 20, 20, StringTextComponent.field_240750_d_);
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         setInternalState(state);
@@ -23,37 +29,38 @@ public abstract class StateButton extends AbstractButton
 
     protected abstract ItemStack getButtonIcon();
 
-    protected abstract void setState(int state);
+    protected abstract void setState(final int state);
 
     protected abstract int getMaxStates();
 
-    private void setInternalState(int state)
+    private void setInternalState(final int stateIn)
     {
-        if (state >= getMaxStates()) state = 0;
-        this.state = state;
+        state = (stateIn >= getMaxStates() ? 0 : stateIn);
         setState(state);
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks)
+    public void func_230430_a_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
-        super.render(mouseX, mouseY, partialTicks);
-        if (visible)
+        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
+        if (field_230694_p_)
         {
-            Minecraft.getInstance().getItemRenderer().renderItemIntoGUI(getButtonIcon(), x + 2, y + 2);
-            if (isHovered())
+            Minecraft.getInstance().getItemRenderer().renderItemIntoGUI(getButtonIcon(), field_230690_l_ + 2, field_230691_m_ + 2);
+            if (func_230449_g_())
             {
-                GuiUtils.drawHoveringText(getButtonIcon(), Lists.asList(narrationMessage, new String[]{}), x + width / 2, y + height / 2,
+                GuiUtils.drawHoveringText(getButtonIcon(), stack, Collections.singletonList(narrationMessage), field_230690_l_ + field_230688_j_ / 2, field_230691_m_ + field_230689_k_ / 2,
                         screenWidth, screenHeight, -1, Minecraft.getInstance().fontRenderer);
             }
         }
     }
 
     @Override
-    public void onPress() { setInternalState(++state); }
+    public void func_230930_b_() { setInternalState(++state); }
 
-    @Override
-    public String getNarrationMessage() { return new TranslationTextComponent("gui.narrate.button", this.narrationMessage).getFormattedText(); }
 
-    public void setNarrationMessage(String narrationMessage) { this.narrationMessage = narrationMessage; }
+
+    @NotNull @Override
+    public IFormattableTextComponent func_230442_c_() { return new TranslationTextComponent("gui.narrate.button", this.narrationMessage); }
+
+    public void setNarrationMessage(@NotNull final ITextComponent narrationMessage) { this.narrationMessage = narrationMessage; }
 }

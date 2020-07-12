@@ -3,7 +3,7 @@ package torcherino.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.CarvedPumpkinBlock;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,54 +21,57 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import torcherino.Torcherino;
 import torcherino.api.TierSupplier;
 import torcherino.blocks.tile.TorcherinoTileEntity;
 import torcherino.config.Config;
 import torcherino.network.Networker;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
+import static net.minecraft.state.properties.BlockStateProperties.FACING;
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
-@SuppressWarnings("deprecation")
-public class JackoLanterinoBlock extends CarvedPumpkinBlock implements TierSupplier
+public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 
-    public JackoLanterinoBlock(ResourceLocation tierName)
+    public JackoLanterinoBlock(@NotNull final ResourceLocation tierName, @NotNull final ResourceLocation registryName)
     {
         super(Block.Properties.from(Blocks.JACK_O_LANTERN));
+        setRegistryName(registryName);
         this.tierName = tierName;
     }
 
-    @Override
+    @NotNull @Override
     public ResourceLocation getTierName() { return tierName; }
 
     @Override
-    public boolean hasTileEntity(BlockState state) { return true; }
+    public boolean hasTileEntity(@NotNull final BlockState state) { return true; }
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) { return new TorcherinoTileEntity(); }
+    @Nullable @Override
+    public TileEntity createTileEntity(@NotNull final BlockState state, @NotNull final IBlockReader world) { return new TorcherinoTileEntity(); }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(@NotNull final StateContainer.Builder<Block, BlockState> builder)
     {
         super.fillStateContainer(builder);
-        builder.add(POWERED);
+        builder.add(FACING, POWERED);
     }
 
-    @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+    @NotNull @Override @SuppressWarnings("deprecation")
+    public ActionResultType onBlockActivated(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos,
+            @NotNull final PlayerEntity player, @NotNull final Hand hand, @NotNull final BlockRayTraceResult hit)
     {
         if (!world.isRemote) Networker.INSTANCE.openScreenServer(world, (ServerPlayerEntity) player, pos);
         return ActionResultType.SUCCESS;
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void onBlockPlacedBy(@NotNull final World world, @NotNull final BlockPos pos, @NotNull final BlockState state, @Nullable LivingEntity placer,
+            @NotNull final ItemStack stack)
     {
         if (world.isRemote) return;
         if (stack.hasDisplayName())
@@ -87,39 +90,43 @@ public class JackoLanterinoBlock extends CarvedPumpkinBlock implements TierSuppl
         }
     }
 
-    @Override
-    public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+    @Override @SuppressWarnings("deprecation")
+    public void tick(@NotNull final BlockState state, @NotNull final ServerWorld world, @NotNull final BlockPos pos, @NotNull final Random random)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TorcherinoTileEntity) ((TorcherinoTileEntity) tileEntity).tick();
     }
 
-    @Override
-    public PushReaction getPushReaction(BlockState state) { return PushReaction.IGNORE; }
+    @NotNull @Override @SuppressWarnings("deprecation")
+    public PushReaction getPushReaction(@NotNull final BlockState state) { return PushReaction.IGNORE; }
 
-    @Override
-    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean b)
+    @Override @SuppressWarnings("deprecation")
+    public void onBlockAdded(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos, @NotNull final BlockState oldState,
+            final boolean b)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TorcherinoTileEntity) ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(state.get(POWERED));
     }
 
-    @Override
-    public ResourceLocation getLootTable()
-    {
-        ResourceLocation registryName = getRegistryName();
-        return new ResourceLocation(registryName.getNamespace(), "blocks/" + registryName.getPath());
-    }
 
-    @Override
+
+    //@Override
+    //public ResourceLocation getLootTable()
+    //{
+    //    ResourceLocation registryName = getRegistryName();
+    //    return new ResourceLocation(registryName.getNamespace(), "blocks/" + registryName.getPath());
+    //}
+
+    @NotNull @Override @SuppressWarnings("ConstantConditions")
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         boolean powered = context.getWorld().isBlockPowered(context.getPos());
-        return super.getStateForPlacement(context).with(POWERED, powered);
+        return super.getStateForPlacement(context).with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(POWERED, powered);
     }
 
-    @Override
-    public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean b)
+    @Override @SuppressWarnings("deprecation")
+    public void neighborChanged(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos, @NotNull final Block block,
+            @NotNull final BlockPos fromPos, final boolean b)
     {
         if (world.isRemote) return;
         boolean powered = world.isBlockPowered(pos);
