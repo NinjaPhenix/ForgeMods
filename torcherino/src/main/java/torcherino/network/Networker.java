@@ -4,6 +4,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -39,4 +40,6 @@ public class Networker
         S2CTierSyncMessage message = new S2CTierSyncMessage(TorcherinoAPI.INSTANCE.getTiers());
         torcherinoChannel.sendTo(message, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
     }
+
+    public void processPlayerJoin(final PlayerEvent.PlayerLoggedInEvent event) { sendServerTiers((ServerPlayerEntity) event.getPlayer()); }
 }

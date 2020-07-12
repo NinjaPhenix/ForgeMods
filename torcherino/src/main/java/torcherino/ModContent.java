@@ -20,7 +20,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import torcherino.api.Tier;
 import torcherino.api.TierSupplier;
 import torcherino.api.TorcherinoAPI;
 import torcherino.block.JackoLanterinoBlock;
@@ -30,8 +29,6 @@ import torcherino.block.TorcherinoWallBlock;
 import torcherino.block.tile.CustomTileEntityType;
 import torcherino.block.tile.TorcherinoTileEntity;
 
-import java.util.Map;
-
 @Mod.EventBusSubscriber(modid = Torcherino.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModContent
 {
@@ -39,24 +36,20 @@ public class ModContent
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Torcherino.MOD_ID);
     private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Torcherino.MOD_ID);
     private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Torcherino.MOD_ID);
+    @SuppressWarnings("ConstantConditions")
     public static final TileEntityType<TorcherinoTileEntity> TORCHERINO_TILE_ENTITY = new CustomTileEntityType<>(TorcherinoTileEntity::new,
-            (b) -> b instanceof TierSupplier, null);
+            block -> block instanceof TierSupplier, null);
 
     public static void initialise(final IEventBus bus)
     {
         BLOCKS.register(bus); ITEMS.register(bus); PARTICLE_TYPES.register(bus); TILE_ENTITIES.register(bus);
         TILE_ENTITIES.register("torcherino", TORCHERINO_TILE_ENTITY.delegate);
         TorcherinoAPI.INSTANCE.blacklistTileEntity(TORCHERINO_TILE_ENTITY);
-
-        final Map<ResourceLocation, Tier> tiers = TorcherinoAPI.INSTANCE.getTiers();
-        tiers.keySet().forEach(ModContent::register);
+        TorcherinoAPI.INSTANCE.getTiers().keySet().forEach(ModContent::register);
     }
 
     private static String getPath(final ResourceLocation tierID, final String type)
-    {
-        if (tierID.getPath().equals("normal")) { return type; }
-        return tierID.getPath() + "_" + type;
-    }
+    { return (tierID.getPath().equals("normal") ? "" : tierID.getPath() + "_") + type; }
 
     private static void register(final ResourceLocation tierID)
     {
@@ -101,6 +94,6 @@ public class ModContent
     public static void registerParticleFactories(final ParticleFactoryRegisterEvent event)
     {
         PARTICLE_TYPES.getEntries().forEach(registryObject -> Minecraft.getInstance().particles.registerFactory((BasicParticleType) registryObject.get(),
-                        FlameParticle.Factory::new));
+                FlameParticle.Factory::new));
     }
 }

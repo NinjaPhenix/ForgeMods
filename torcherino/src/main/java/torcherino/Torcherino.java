@@ -2,11 +2,9 @@ package torcherino;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,7 +29,7 @@ public class Torcherino
         ModContent.initialise(eventBus);
         Networker.INSTANCE.initialise();
         eventBus.addListener(this::processIMC);
-        MinecraftForge.EVENT_BUS.addListener(this::processPlayerJoin);
+        MinecraftForge.EVENT_BUS.addListener(Networker.INSTANCE::processPlayerJoin);
         TorcherinoAPI.INSTANCE.blacklistBlock(Blocks.WATER);
         TorcherinoAPI.INSTANCE.blacklistBlock(Blocks.LAVA);
         TorcherinoAPI.INSTANCE.blacklistBlock(Blocks.AIR);
@@ -40,8 +38,6 @@ public class Torcherino
     }
 
     public static ResourceLocation getRl(final String path) { return new ResourceLocation(MOD_ID, path); }
-
-    private void processPlayerJoin(final PlayerEvent.PlayerLoggedInEvent event) { Networker.INSTANCE.sendServerTiers((ServerPlayerEntity) event.getPlayer()); }
 
     @SubscribeEvent
     public void processIMC(final InterModProcessEvent event)
