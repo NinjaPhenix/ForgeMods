@@ -1,1 +1,2 @@
-- No changes.
+- Update to 1.16.1
+- Minor resource pack changes regarding lanterns.

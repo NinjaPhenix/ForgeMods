@@ -1,5 +1,5 @@
 {
-  "parent": "block/template_lantern",
+  "parent": "block/template_hanging_lantern",
   "textures": {
     "lantern": "torcherino:blocks/compressed_lantern"
   }
