@@ -66,16 +66,16 @@ public class TorcherinoScreen extends Screen
     }
 
     @Override
-    protected void func_231160_c_()
+    protected void init()
     {
-        super.func_231160_c_();
-        guiLeft = (field_230708_k_ - xSize) / 2;
-        guiTop = (field_230709_l_ - ySize) / 2;
+        super.init();
+        guiLeft = (width - xSize) / 2;
+        guiTop = (height - ySize) / 2;
         if (speed == 0) { speed = 1; }
-        func_230480_a_(new GradatedSlider(guiLeft + 8, guiTop + 20, 205, (double) (speed - 1) / (tier.MAX_SPEED - 1), tier.MAX_SPEED - 1)
+        addButton(new GradatedSlider(guiLeft + 8, guiTop + 20, 205, (double) (speed - 1) / (tier.MAX_SPEED - 1), tier.MAX_SPEED - 1)
         {
             @Override
-            protected void func_230979_b_() { func_238482_a_(new TranslationTextComponent("gui.torcherino.speed", 100 * TorcherinoScreen.this.speed)); }
+            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.speed", 100 * TorcherinoScreen.this.speed)); }
 
             @Override
             protected void func_230972_a_()
@@ -84,10 +84,10 @@ public class TorcherinoScreen extends Screen
                 field_230683_b_ = (double) (speed - 1) / (tier.MAX_SPEED - 1);
             }
         });
-        func_230480_a_(new GradatedSlider(guiLeft + 8, guiTop + 45, 205, (double) xRange / tier.XZ_RANGE, tier.XZ_RANGE)
+        addButton(new GradatedSlider(guiLeft + 8, guiTop + 45, 205, (double) xRange / tier.XZ_RANGE, tier.XZ_RANGE)
         {
             @Override
-            protected void func_230979_b_() { func_238482_a_(new TranslationTextComponent("gui.torcherino.x_range", TorcherinoScreen.this.xRange * 2 + 1)); }
+            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.x_range", TorcherinoScreen.this.xRange * 2 + 1)); }
 
             @Override
             protected void func_230972_a_()
@@ -96,10 +96,10 @@ public class TorcherinoScreen extends Screen
                 field_230683_b_ = (double) xRange / tier.XZ_RANGE;
             }
         });
-        func_230480_a_(new GradatedSlider(guiLeft + 8, guiTop + 70, 205, (double) zRange / tier.XZ_RANGE, tier.XZ_RANGE)
+        addButton(new GradatedSlider(guiLeft + 8, guiTop + 70, 205, (double) zRange / tier.XZ_RANGE, tier.XZ_RANGE)
         {
             @Override
-            protected void func_230979_b_() { func_238482_a_(new TranslationTextComponent("gui.torcherino.z_range", TorcherinoScreen.this.zRange * 2 + 1)); }
+            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.z_range", TorcherinoScreen.this.zRange * 2 + 1)); }
 
             @Override
             protected void func_230972_a_()
@@ -108,10 +108,10 @@ public class TorcherinoScreen extends Screen
                 field_230683_b_ = (double) zRange / tier.XZ_RANGE;
             }
         });
-        func_230480_a_(new GradatedSlider(guiLeft + 8, guiTop + 95, 205, (double) yRange / tier.Y_RANGE, tier.Y_RANGE)
+        addButton(new GradatedSlider(guiLeft + 8, guiTop + 95, 205, (double) yRange / tier.Y_RANGE, tier.Y_RANGE)
         {
             @Override
-            protected void func_230979_b_() { func_238482_a_(new TranslationTextComponent("gui.torcherino.y_range", TorcherinoScreen.this.yRange * 2 + 1)); }
+            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.y_range", TorcherinoScreen.this.yRange * 2 + 1)); }
 
             @Override
             protected void func_230972_a_()
@@ -120,7 +120,7 @@ public class TorcherinoScreen extends Screen
                 field_230683_b_ = (double) yRange / tier.Y_RANGE;
             }
         });
-        func_230480_a_(new StateButton(guiLeft + 217, guiTop + 20, field_230708_k_, field_230709_l_, redstoneMode)
+        addButton(new StateButton(guiLeft + 217, guiTop + 20, width, height, redstoneMode)
         {
             private ItemStack renderStack;
 
@@ -152,7 +152,7 @@ public class TorcherinoScreen extends Screen
                         break;
                 }
                 setNarrationMessage(new TranslationTextComponent("gui.torcherino.mode", modeText));
-                field_230696_r_ = Util.milliTime() + 250L;
+                nextNarration = Util.milliTime() + 250L;
                 TorcherinoScreen.this.redstoneMode = state;
             }
 
@@ -165,34 +165,31 @@ public class TorcherinoScreen extends Screen
     }
 
     @SuppressWarnings({ "ConstantConditions", "deprecation" })
-    public void func_230430_a_(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+    public void render(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
-        func_230446_a_(stack);
+        renderBackground(stack);
         RenderSystem.color4f(1, 1, 1, 1);
-        field_230706_i_.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
-        func_238474_b_(stack, guiLeft, guiTop, 0, 0, xSize, ySize);
-        field_230712_o_.func_238422_b_(stack, title, guiLeft + (xSize - field_230712_o_.func_238414_a_(title)) / 2.0F, guiTop + 6, 4210752);
-        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
+        minecraft.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
+        blit(stack, guiLeft, guiTop, 0, 0, xSize, ySize);
+        font.func_238422_b_(stack, title, guiLeft + (xSize - font.func_238414_a_(title)) / 2.0F, guiTop + 6, 4210752);
+        super.render(stack, mouseX, mouseY, partialTicks);
     }
 
     @Override
-    public void func_231175_as__()
+    public void onClose()
     {
         Networker.INSTANCE.torcherinoChannel.sendToServer(new ValueUpdateMessage(tileEntity.getPos(), xRange, zRange, yRange, speed, redstoneMode));
-        super.func_231175_as__();
+        super.onClose();
     }
 
     @Override
-    public boolean func_231177_au__() { return false; }
+    public boolean isPauseScreen() { return false; }
 
     @SuppressWarnings("ConstantConditions")
-    public boolean func_231046_a_(final int keyCode, final int scanCode, final int modifiers)
+    public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
     {
-        if (keyCode == 256 || field_230706_i_.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode)))
-        {
-            func_231175_as__();
-            return true;
-        }
-        return super.func_231046_a_(keyCode, scanCode, modifiers);
+        if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode)))
+        { onClose(); return true; }
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 }

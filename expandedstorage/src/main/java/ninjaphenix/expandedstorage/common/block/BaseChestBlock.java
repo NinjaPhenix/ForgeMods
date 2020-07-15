@@ -59,10 +59,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         { return Optional.of(new DoubleSidedInventory(first, second)); }
 
         @NotNull @Override
-        public Optional<ISidedInventory> func_225538_a_(@NotNull final T single)
-        {
-            return Optional.of(single);
-        }
+        public Optional<ISidedInventory> func_225538_a_(@NotNull final T single) { return Optional.of(single); }
 
         @NotNull @Override
         public Optional<ISidedInventory> func_225537_b_() { return Optional.empty(); }

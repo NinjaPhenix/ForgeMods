@@ -77,7 +77,7 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
         return super.updatePostPlacement(state, offset, offsetState, world, pos, offsetPos);
     }
 
-    @NotNull @Override @SuppressWarnings("deprecation")
+    @NotNull @Override
     public BlockRenderType getRenderType(@NotNull final BlockState state) { return BlockRenderType.ENTITYBLOCK_ANIMATED; }
 
     @NotNull @Override @SuppressWarnings("unchecked")

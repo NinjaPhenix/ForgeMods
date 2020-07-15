@@ -59,9 +59,9 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
     public OpenScreenMessage createOpenMessage() { return new OpenScreenMessage(pos, getName(), xRange, zRange, yRange, speed, redstoneMode); }
 
     @Override
-    public void func_230337_a_(final BlockState state, final CompoundNBT tag)
+    public void read(final BlockState state, final CompoundNBT tag)
     {
-        super.func_230337_a_(state, tag);
+        super.read(state, tag);
         if (tag.contains("CustomName", 8)) { setCustomName(ITextComponent.Serializer.func_240643_a_(tag.getString("CustomName"))); }
         this.xRange = tag.getInt("XRange");
         this.zRange = tag.getInt("ZRange");

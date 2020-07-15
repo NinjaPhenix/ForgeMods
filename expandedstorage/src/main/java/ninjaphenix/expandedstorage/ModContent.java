@@ -81,7 +81,7 @@ public class ModContent
         OLD_GOLD_CHEST = registerOld(Blocks.GOLD_BLOCK, "gold_chest", 9);
         OLD_DIAMOND_CHEST = registerOld(Blocks.DIAMOND_BLOCK, "diamond_chest", 12);
         OLD_OBSIDIAN_CHEST = registerOld(Blocks.OBSIDIAN, "obsidian_chest", 12);
-        OLD_NETHERITE_CHEST = registerOld(Blocks.field_235397_ng_, "netherite_chest", 15); // Netherite Block
+        OLD_NETHERITE_CHEST = registerOld(Blocks.NETHERITE_BLOCK, "netherite_chest", 15);
         WOOD_CHEST = register(Blocks.OAK_PLANKS, "wood_chest", 3);
         PUMPKIN_CHEST = register(Blocks.CARVED_PUMPKIN, "pumpkin_chest", 3);
         CHRISTMAS_CHEST = register(Blocks.OAK_PLANKS, "christmas_chest", 3);
@@ -89,7 +89,7 @@ public class ModContent
         GOLD_CHEST = register(Blocks.GOLD_BLOCK, "gold_chest", 9);
         DIAMOND_CHEST = register(Blocks.DIAMOND_BLOCK, "diamond_chest", 12);
         OBSIDIAN_CHEST = register(Blocks.OBSIDIAN, "obsidian_chest", 12);
-        NETHERITE_CHEST = register(Blocks.field_235397_ng_, "netherite_chest", 15);
+        NETHERITE_CHEST = register(Blocks.NETHERITE_BLOCK, "netherite_chest", 15);
         PAGED_CONTAINER_TYPE = new ContainerType<>(new PagedContainer.Factory());
         SINGLE_CONTAINER_TYPE = new ContainerType<>(new SingleContainer.Factory());
         SCROLLABLE_CONTAINER_TYPE = new ContainerType<>(new ScrollableContainer.Factory());
@@ -129,7 +129,7 @@ public class ModContent
         item.setRegistryName(registryRl);
         Registry.register(Registries.MODELED, registryRl, new ModeledTierData(rows * 9, registryRl,
                 new TranslationTextComponent("container.expandedstorage." + name), type -> ExpandedStorage.getRl(String.format("entity/%s/%s", name,
-                type.func_176610_l()))));
+                type.getString()))));
         return new Pair<>(block, item);
     }
 

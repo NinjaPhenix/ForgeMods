@@ -10,14 +10,14 @@ public abstract class GradatedSlider extends AbstractSlider
 
     public GradatedSlider(final int x, final int y, final int width, final double progress, final int permutations)
     {
-        super(x, y, width, 20, StringTextComponent.field_240750_d_, progress);
+        super(x, y, width, 20, StringTextComponent.EMPTY, progress);
         nudgeAmount = 1.0F / permutations;
         func_230972_a_();
         func_230979_b_();
     }
 
     @Override
-    public boolean func_231046_a_(final int keyCode, final int scanCode, final int modifiers)
+    public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
     {
         final boolean leftArrowKeyDown = keyCode == 263;
         if (leftArrowKeyDown || keyCode == 262)

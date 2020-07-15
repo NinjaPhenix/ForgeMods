@@ -64,8 +64,9 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     public boolean isEmpty() { return inventory.stream().allMatch(ItemStack::isEmpty); }
 
     @Override
-    public void func_230337_a_(@NotNull final BlockState state, @NotNull final CompoundNBT tag) {
-        super.func_230337_a_(state, tag);
+    public void read(@NotNull final BlockState state, @NotNull final CompoundNBT tag)
+    {
+        super.read(state, tag);
         this.initialize(new ResourceLocation(tag.getString("type")));
         if (!checkLootAndRead(tag)) { ItemStackHelper.loadAllItems(tag, inventory); }
     }
