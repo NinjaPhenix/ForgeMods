@@ -1,2 +1,1 @@
-- Adds Netherite chests which I forgot in last release.
-- Updated translations, especially upside down ones.
+- Fix bug preventing the game from launching on dedicated servers.

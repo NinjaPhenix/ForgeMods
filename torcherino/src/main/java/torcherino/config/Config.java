@@ -38,13 +38,13 @@ public class Config
                 (it) -> (it instanceof String) ? new ResourceLocation((String) it) : new ResourceLocation(it.toString()));
         ConfigManager.getMarshaller().registerTypeAdapter(Tier.class, (it) ->
         {
-            String name = it.get(String.class, "name");
-            Integer max_speed = it.get(Integer.class, "max_speed");
-            Integer xz_range = it.get(Integer.class, "xz_range");
-            Integer y_range = it.get(Integer.class, "y_range");
+            final String name = it.get(String.class, "name");
+            final Integer max_speed = it.get(Integer.class, "max_speed");
+            final Integer xz_range = it.get(Integer.class, "xz_range");
+            final Integer y_range = it.get(Integer.class, "y_range");
             return new Tier(name, max_speed < 1 ? 1 : max_speed, xz_range < 0 ? 0 : xz_range, y_range < 0 ? 0 : y_range);
         });
-        Path sci4meDirectory = FMLPaths.CONFIGDIR.get().resolve("sci4me");
+        final Path sci4meDirectory = FMLPaths.CONFIGDIR.get().resolve("sci4me");
         if (!sci4meDirectory.toFile().exists())
         {
             try
@@ -52,24 +52,21 @@ public class Config
                 Files.createDirectory(sci4meDirectory);
                 INSTANCE = ConfigManager.loadConfig(Config.class, sci4meDirectory.resolve("Torcherino.cfg").toFile());
             }
-            catch (IOException e)
+            catch (final IOException e)
             {
                 Torcherino.LOGGER.error("Failed to create sci4me folder, config won't be saved.");
                 INSTANCE = new Config();
             }
         }
-        else
-        {
-            INSTANCE = ConfigManager.loadConfig(Config.class, sci4meDirectory.resolve("Torcherino.cfg").toFile());
-        }
+        else { INSTANCE = ConfigManager.loadConfig(Config.class, sci4meDirectory.resolve("Torcherino.cfg").toFile()); }
         INSTANCE.onConfigLoaded();
     }
 
     private void onConfigLoaded()
     {
-        for (Tier tier : tiers) TorcherinoAPI.INSTANCE.registerTier(Torcherino.resloc(tier.name), tier.max_speed, tier.xz_range, tier.y_range);
-        for (ResourceLocation block : blacklisted_blocks) TorcherinoAPI.INSTANCE.blacklistBlock(block);
-        for (ResourceLocation tile : blacklisted_tiles) TorcherinoAPI.INSTANCE.blacklistTileEntity(tile);
+        for (Tier tier : tiers) { TorcherinoAPI.INSTANCE.registerTier(Torcherino.getRl(tier.name), tier.max_speed, tier.xz_range, tier.y_range); }
+        for (ResourceLocation block : blacklisted_blocks) { TorcherinoAPI.INSTANCE.blacklistBlock(block); }
+        for (ResourceLocation tile : blacklisted_tiles) { TorcherinoAPI.INSTANCE.blacklistTileEntity(tile); }
     }
 
     private static class Tier
@@ -77,7 +74,7 @@ public class Config
         final String name;
         final int max_speed, xz_range, y_range;
 
-        Tier(String name, int max_speed, int xz_range, int y_range)
+        Tier(final String name, final int max_speed, final int xz_range, final int y_range)
         {
             this.name = name;
             this.max_speed = max_speed;

@@ -20,13 +20,12 @@ public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMe
     }
 
     @Override
-    protected void func_231160_c_()
+    protected void init()
     {
-        super.func_231160_c_();
+        super.init();
         int settingsXOffset = -19;
-        if(ModList.get().isLoaded("quark") && SCREEN_META.WIDTH <= 9) { settingsXOffset -= 24; }
-        screenSelectButton = func_230480_a_(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4,
-                (button, stack, x, y) -> func_238652_a_(stack, button.func_230458_i_(), x, y)));
+        if (ModList.get().isLoaded("quark") && SCREEN_META.WIDTH <= 9) { settingsXOffset -= 24; }
+        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4, this::renderButtonTooltip));
         final int blanked = SCREEN_META.BLANK_SLOTS;
         if (blanked > 0)
         {
@@ -37,11 +36,8 @@ public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMe
     }
 
     @Override
-    public void func_230430_a_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
-    {
-        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
-        screenSelectButton.renderTooltip(stack, mouseX, mouseY);
-    }
+    public void render(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+    { super.render(stack, mouseX, mouseY, partialTicks); screenSelectButton.renderTooltip(stack, mouseX, mouseY); }
 
     @Override
     protected void func_230450_a_(@NotNull final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)

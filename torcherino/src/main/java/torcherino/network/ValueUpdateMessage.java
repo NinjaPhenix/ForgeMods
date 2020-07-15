@@ -8,7 +8,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import torcherino.Torcherino;
 import torcherino.api.Tier;
 import torcherino.api.TorcherinoAPI;
-import torcherino.blocks.tile.TorcherinoTileEntity;
+import torcherino.block.tile.TorcherinoTileEntity;
 
 import java.util.function.Supplier;
 
@@ -17,7 +17,7 @@ public class ValueUpdateMessage
     private final BlockPos pos;
     private final int xRange, zRange, yRange, speed, redstoneMode;
 
-    public ValueUpdateMessage(BlockPos pos, int xRange, int zRange, int yRange, int speed, int redstoneMode)
+    public ValueUpdateMessage(final BlockPos pos, final int xRange, final int zRange, final int yRange, final int speed, final int redstoneMode)
     {
         this.pos = pos;
         this.xRange = xRange;
@@ -27,43 +27,36 @@ public class ValueUpdateMessage
         this.redstoneMode = redstoneMode;
     }
 
-    static void encode(ValueUpdateMessage msg, PacketBuffer buf)
+    static void encode(final ValueUpdateMessage message, final PacketBuffer buffer)
     {
-        buf.writeBlockPos(msg.pos).writeInt(msg.xRange).writeInt(msg.zRange).writeInt(msg.yRange).writeInt(msg.speed).writeInt(msg.redstoneMode);
+        buffer.writeBlockPos(message.pos).writeInt(message.xRange).writeInt(message.zRange).writeInt(message.yRange).writeInt(message.speed)
+              .writeInt(message.redstoneMode);
     }
 
-    static ValueUpdateMessage decode(PacketBuffer buf)
-    {
-        return new ValueUpdateMessage(buf.readBlockPos(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt());
-    }
+    static ValueUpdateMessage decode(final PacketBuffer buffer)
+    { return new ValueUpdateMessage(buffer.readBlockPos(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt()); }
 
-    static void handle(ValueUpdateMessage msg, Supplier<NetworkEvent.Context> ctx)
+    @SuppressWarnings("ConstantConditions")
+    static void handle(final ValueUpdateMessage message, final Supplier<NetworkEvent.Context> contextSupplier)
     {
-        NetworkEvent.Context context = ctx.get();
+        final NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() ->
         {
-            @SuppressWarnings("ConstantConditions") World world = context.getSender().world;
-            TileEntity tileEntity = world.getTileEntity(msg.pos);
+            World world = context.getSender().world;
+            TileEntity tileEntity = world.getTileEntity(message.pos);
             if (tileEntity instanceof TorcherinoTileEntity)
             {
                 TorcherinoTileEntity torcherinoTileEntity = (TorcherinoTileEntity) tileEntity;
-                if (msg.withinBounds(TorcherinoAPI.INSTANCE.getTiers().get(torcherinoTileEntity.getTierName())))
-                {
-                    torcherinoTileEntity.readClientData(msg.xRange, msg.zRange, msg.yRange, msg.speed, msg.redstoneMode);
-                }
+                if (message.withinBounds(TorcherinoAPI.INSTANCE.getTiers().get(torcherinoTileEntity.getTierName())))
+                { torcherinoTileEntity.readClientData(message.xRange, message.zRange, message.yRange, message.speed, message.redstoneMode); }
             }
         });
         context.setPacketHandled(true);
     }
 
-    private boolean withinBounds(Tier tier)
+    private boolean withinBounds(final Tier tier)
     {
-        if (tier == null)
-        {
-            Torcherino.LOGGER.error("Torcherino tile entity does not have a valid tier.");
-            return false;
-        }
-        if (xRange > tier.getXZRange() || zRange > tier.getXZRange() || yRange > tier.getYRange() || speed > tier.getMaxSpeed() || redstoneMode > 3 ||
+        if (xRange > tier.XZ_RANGE || zRange > tier.XZ_RANGE || yRange > tier.Y_RANGE || speed > tier.MAX_SPEED || redstoneMode > 3 ||
                 xRange < 0 || zRange < 0 || yRange < 0 || speed < 1 || redstoneMode < 0)
         {
             Torcherino.LOGGER.error("Data received from client is invalid.");

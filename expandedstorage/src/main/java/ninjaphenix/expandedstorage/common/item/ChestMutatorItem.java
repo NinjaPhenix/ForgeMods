@@ -109,7 +109,7 @@ public class ChestMutatorItem extends ChestModifierItem
                 switch (mainState.get(CursedChestBlock.TYPE))
                 {
                     case SINGLE:
-                        if (!world.isRemote) { world.setBlockState(mainPos, mainState.rotate(CLOCKWISE_90)); }
+                        if (!world.isRemote) { world.setBlockState(mainPos, mainState.rotate(world, mainPos, CLOCKWISE_90)); }
                         player.getCooldownTracker().setCooldown(this, 5);
                         return ActionResultType.SUCCESS;
                     case FRONT:
@@ -118,8 +118,8 @@ public class ChestMutatorItem extends ChestModifierItem
                     case RIGHT:
                         if (!world.isRemote)
                         {
-                            world.setBlockState(mainPos, mainState.rotate(CLOCKWISE_180).with(TYPE, mainState.get(TYPE).getOpposite()));
-                            world.setBlockState(otherPos, otherState.rotate(CLOCKWISE_180).with(TYPE, otherState.get(TYPE).getOpposite()));
+                            world.setBlockState(mainPos, mainState.rotate(world, mainPos, CLOCKWISE_180).with(TYPE, mainState.get(TYPE).getOpposite()));
+                            world.setBlockState(otherPos, otherState.rotate(world, otherPos, CLOCKWISE_180).with(TYPE, otherState.get(TYPE).getOpposite()));
                         }
                         player.getCooldownTracker().setCooldown(this, 5);
                         return ActionResultType.SUCCESS;
@@ -127,8 +127,8 @@ public class ChestMutatorItem extends ChestModifierItem
                     case BOTTOM:
                         if (!world.isRemote)
                         {
-                            world.setBlockState(mainPos, mainState.rotate(CLOCKWISE_90));
-                            world.setBlockState(otherPos, otherState.rotate(CLOCKWISE_90));
+                            world.setBlockState(mainPos, mainState.rotate(world, mainPos, CLOCKWISE_90));
+                            world.setBlockState(otherPos, otherState.rotate(world, otherPos, CLOCKWISE_90));
                         }
                         player.getCooldownTracker().setCooldown(this, 5);
                         return ActionResultType.SUCCESS;
@@ -176,7 +176,7 @@ public class ChestMutatorItem extends ChestModifierItem
                                     world.removeTileEntity(mainPos);
                                     world.setBlockState(mainPos, defState);
                                     blockEntity = world.getTileEntity(mainPos);
-                                    blockEntity.func_230337_a_(defState, ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
+                                    blockEntity.read(defState, ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
                                     blockEntity = world.getTileEntity(otherPos);
                                     invData = NonNullList.withSize(entry.getSlotCount(), ItemStack.EMPTY);
                                     ItemStackHelper.loadAllItems(blockEntity.write(new CompoundNBT()), invData);
@@ -184,7 +184,7 @@ public class ChestMutatorItem extends ChestModifierItem
                                     defState = defState.with(WATERLOGGED, state.get(WATERLOGGED)).with(TYPE, mainChestType.getOpposite());
                                     world.setBlockState(otherPos, defState);
                                     blockEntity = world.getTileEntity(otherPos);
-                                    blockEntity.func_230337_a_(defState, ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
+                                    blockEntity.read(defState, ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
                                     tag.remove("pos");
                                     player.sendStatusMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_end"), true);
                                     player.getCooldownTracker().setCooldown(this, 5);
@@ -231,7 +231,7 @@ public class ChestMutatorItem extends ChestModifierItem
                     case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY()); break;
                     case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW()); break;
                     case SINGLE:
-                        if (!world.isRemote) { world.setBlockState(mainPos, state.rotate(CLOCKWISE_90)); }
+                        if (!world.isRemote) { world.setBlockState(mainPos, state.rotate(world, mainPos, CLOCKWISE_90)); }
                         player.getCooldownTracker().setCooldown(this, 5);
                         return ActionResultType.SUCCESS;
                     default: return ActionResultType.FAIL;
@@ -239,8 +239,9 @@ public class ChestMutatorItem extends ChestModifierItem
                 if (!world.isRemote)
                 {
                     final BlockState otherState = world.getBlockState(otherPos);
-                    world.setBlockState(mainPos, state.rotate(CLOCKWISE_180).with(ChestBlock.TYPE, state.get(ChestBlock.TYPE).opposite()));
-                    world.setBlockState(otherPos, otherState.rotate(CLOCKWISE_180).with(ChestBlock.TYPE, otherState.get(ChestBlock.TYPE).opposite()));
+                    world.setBlockState(mainPos, state.rotate(world, mainPos, CLOCKWISE_180).with(ChestBlock.TYPE, state.get(ChestBlock.TYPE).opposite()));
+                    world.setBlockState(otherPos, otherState.rotate(world, otherPos, CLOCKWISE_180)
+                                                            .with(ChestBlock.TYPE, otherState.get(ChestBlock.TYPE).opposite()));
                 }
                 player.getCooldownTracker().setCooldown(this, 5);
                 return ActionResultType.SUCCESS;
@@ -250,7 +251,7 @@ public class ChestMutatorItem extends ChestModifierItem
         {
             if (mode == MutatorMode.ROTATE)
             {
-                if (!world.isRemote) { world.setBlockState(mainPos, state.rotate(CLOCKWISE_90)); }
+                if (!world.isRemote) { world.setBlockState(mainPos, state.rotate(world, mainPos, CLOCKWISE_90)); }
                 player.getCooldownTracker().setCooldown(this, 5);
                 return ActionResultType.SUCCESS;
             }

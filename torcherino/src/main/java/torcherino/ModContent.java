@@ -14,72 +14,63 @@ import net.minecraft.particles.ParticleType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.registries.IForgeRegistry;
-import org.jetbrains.annotations.NotNull;
-import torcherino.api.Tier;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import torcherino.api.TierSupplier;
 import torcherino.api.TorcherinoAPI;
-import torcherino.blocks.JackoLanterinoBlock;
-import torcherino.blocks.LanterinoBlock;
-import torcherino.blocks.TorcherinoBlock;
-import torcherino.blocks.TorcherinoWallBlock;
-import torcherino.blocks.tile.CustomTileEntityType;
-import torcherino.blocks.tile.TorcherinoTileEntity;
+import torcherino.block.JackoLanterinoBlock;
+import torcherino.block.LanterinoBlock;
+import torcherino.block.TorcherinoBlock;
+import torcherino.block.TorcherinoWallBlock;
+import torcherino.block.tile.CustomTileEntityType;
+import torcherino.block.tile.TorcherinoTileEntity;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
+@Mod.EventBusSubscriber(modid = Torcherino.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModContent
 {
-    public static final ModContent INSTANCE = new ModContent();
-    private HashSet<Block> blocks;
-    private HashSet<Item> items;
-    private HashMap<ResourceLocation, BasicParticleType> particles;
-    public static final TileEntityType<TorcherinoTileEntity> TORCHERINO_TILE_ENTITY;
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Torcherino.MOD_ID);
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Torcherino.MOD_ID);
+    private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Torcherino.MOD_ID);
+    private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Torcherino.MOD_ID);
+    @SuppressWarnings("ConstantConditions")
+    public static final TileEntityType<TorcherinoTileEntity> TORCHERINO_TILE_ENTITY = new CustomTileEntityType<>(TorcherinoTileEntity::new,
+            block -> block instanceof TierSupplier, null);
 
-    static
+    public static void initialise(final IEventBus bus)
     {
-        TORCHERINO_TILE_ENTITY = new CustomTileEntityType<>(TorcherinoTileEntity::new, (b) -> b instanceof TierSupplier, null);
-        TORCHERINO_TILE_ENTITY.setRegistryName(Torcherino.resloc("torcherino"));
+        BLOCKS.register(bus); ITEMS.register(bus); PARTICLE_TYPES.register(bus); TILE_ENTITIES.register(bus);
+        TILE_ENTITIES.register("torcherino", TORCHERINO_TILE_ENTITY.delegate);
         TorcherinoAPI.INSTANCE.blacklistTileEntity(TORCHERINO_TILE_ENTITY);
+        TorcherinoAPI.INSTANCE.getTiers().keySet().forEach(ModContent::register);
     }
 
-    public void initialise()
-    {
-        blocks = new HashSet<>();
-        items = new HashSet<>();
-        particles = new HashMap<>();
-        Map<ResourceLocation, Tier> tiers = TorcherinoAPI.INSTANCE.getTiers();
-        tiers.keySet().forEach(this::register);
-    }
+    private static String getPath(final ResourceLocation tierID, final String type)
+    { return (tierID.getPath().equals("normal") ? "" : tierID.getPath() + "_") + type; }
 
-    private ResourceLocation getRl(@NotNull final ResourceLocation tierID, @NotNull final String type)
-    {
-        if (tierID.getPath().equals("normal")) return new ResourceLocation(Torcherino.MOD_ID, type);
-        return new ResourceLocation(Torcherino.MOD_ID, tierID.getPath() + "_" + type);
-    }
-
-    private void register(@NotNull final ResourceLocation tierID)
+    private static void register(final ResourceLocation tierID)
     {
         if (tierID.getNamespace().equals(Torcherino.MOD_ID))
         {
-            final BasicParticleType particleType = new BasicParticleType(false); particleType.setRegistryName(getRl(tierID, "flame"));
-            particles.put(particleType.getRegistryName(), particleType);
-            TorcherinoBlock standingBlock = new TorcherinoBlock(tierID, getRl(tierID, "torcherino"), particleType);
-            TorcherinoWallBlock wallBlock = new TorcherinoWallBlock(standingBlock, Torcherino.resloc("wall_" + standingBlock.getRegistryName().getPath()), particleType);
-            Item torcherinoItem = new WallOrFloorItem(standingBlock, wallBlock, new Item.Properties().group(ItemGroup.DECORATIONS)).setRegistryName(standingBlock.getRegistryName());
-            JackoLanterinoBlock jackoLanterinoBlock = new JackoLanterinoBlock(tierID, getRl(tierID, "lanterino"));
-            Item jackoLanterinoItem = new BlockItem(jackoLanterinoBlock, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(jackoLanterinoBlock.getRegistryName());
-            LanterinoBlock lanterinoBlock = new LanterinoBlock(tierID, getRl(tierID, "lantern"));
-            Item lanterinoItem = new BlockItem(lanterinoBlock, new Item.Properties().group(ItemGroup.DECORATIONS)).setRegistryName(lanterinoBlock.getRegistryName());
-            blocks.add(standingBlock);
-            blocks.add(wallBlock);
-            blocks.add(jackoLanterinoBlock);
-            blocks.add(lanterinoBlock);
+            final BasicParticleType particleType = new BasicParticleType(false);
+            PARTICLE_TYPES.register(getPath(tierID, "flame"), particleType.delegate);
+            final TorcherinoBlock standingBlock = new TorcherinoBlock(tierID, particleType);
+            final TorcherinoWallBlock wallBlock = new TorcherinoWallBlock(standingBlock, particleType);
+            final Item torcherinoItem = new WallOrFloorItem(standingBlock, wallBlock, new Item.Properties().group(ItemGroup.DECORATIONS));
+            final JackoLanterinoBlock jackoLanterinoBlock = new JackoLanterinoBlock(tierID);
+            final Item jackoLanterinoItem = new BlockItem(jackoLanterinoBlock, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
+            final LanterinoBlock lanterinoBlock = new LanterinoBlock(tierID);
+            final Item lanterinoItem = new BlockItem(lanterinoBlock, new Item.Properties().group(ItemGroup.DECORATIONS));
+            final String torcherinoPath = getPath(tierID, "torcherino");
+            final String jackoLanterinoPath = getPath(tierID, "lanterino");
+            final String lanterinoPath = getPath(tierID, "lantern");
+            BLOCKS.register(torcherinoPath, standingBlock.delegate);
+            BLOCKS.register("wall_" + torcherinoPath, wallBlock.delegate);
+            BLOCKS.register(jackoLanterinoPath, jackoLanterinoBlock.delegate);
+            BLOCKS.register(lanterinoPath, lanterinoBlock.delegate);
             TorcherinoAPI.INSTANCE.blacklistBlock(standingBlock);
             TorcherinoAPI.INSTANCE.blacklistBlock(wallBlock);
             TorcherinoAPI.INSTANCE.blacklistBlock(jackoLanterinoBlock);
@@ -93,40 +84,16 @@ public class ModContent
                     RenderTypeLookup.setRenderLayer(lanterinoBlock, RenderType.getCutout());
                 });
             }
-            items.add(torcherinoItem);
-            items.add(jackoLanterinoItem);
-            items.add(lanterinoItem);
+            ITEMS.register(torcherinoPath, torcherinoItem.delegate);
+            ITEMS.register(jackoLanterinoPath, jackoLanterinoItem.delegate);
+            ITEMS.register(lanterinoPath, lanterinoItem.delegate);
         }
     }
 
     @SubscribeEvent
-    public void registerBlocks(@NotNull final RegistryEvent.Register<Block> registryEvent)
+    public static void registerParticleFactories(final ParticleFactoryRegisterEvent event)
     {
-        IForgeRegistry<Block> registry = registryEvent.getRegistry();
-        blocks.forEach(registry::register);
-        blocks = null;
+        PARTICLE_TYPES.getEntries().forEach(registryObject -> Minecraft.getInstance().particles.registerFactory((BasicParticleType) registryObject.get(),
+                FlameParticle.Factory::new));
     }
-
-    @SubscribeEvent
-    public void registerItems(@NotNull final RegistryEvent.Register<Item> registryEvent)
-    {
-        IForgeRegistry<Item> registry = registryEvent.getRegistry();
-        items.forEach(registry::register);
-        items = null;
-    }
-
-    @SubscribeEvent
-    public void registerTileEntityTypes(@NotNull final RegistryEvent.Register<TileEntityType<?>> registryEvent)
-    { registryEvent.getRegistry().register(TORCHERINO_TILE_ENTITY); }
-
-    @SubscribeEvent
-    public void registerParticleTypes(@NotNull final RegistryEvent.Register<ParticleType<?>> registryEvent)
-    {
-        final IForgeRegistry<ParticleType<?>> registry = registryEvent.getRegistry();
-        particles.forEach((resourceLocation, particleType) -> registry.register(particleType));
-    }
-
-    @SubscribeEvent
-    public void registerParticleFactories(@NotNull final ParticleFactoryRegisterEvent event)
-    { particles.forEach((resourceLocation, particleType) -> Minecraft.getInstance().particles.registerFactory(particleType, FlameParticle.Factory::new)); }
 }

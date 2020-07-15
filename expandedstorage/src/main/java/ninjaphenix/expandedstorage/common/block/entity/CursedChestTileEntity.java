@@ -13,6 +13,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
@@ -22,6 +24,7 @@ import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
 public class CursedChestTileEntity extends AbstractChestTileEntity implements IChestLid, ITickableTileEntity
 {
     private float animationAngle, lastAnimationAngle;
@@ -66,7 +69,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     }
 
     @Override
-    public float getLidAngle(float partialTicks) { return MathHelper.lerp(partialTicks, lastAnimationAngle, animationAngle); }
+    public float getLidAngle(final float partialTicks) { return MathHelper.lerp(partialTicks, lastAnimationAngle, animationAngle); }
 
     @Override @SuppressWarnings("ConstantConditions")
     public void tick()

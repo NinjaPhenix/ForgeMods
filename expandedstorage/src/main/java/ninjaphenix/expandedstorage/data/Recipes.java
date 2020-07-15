@@ -104,7 +104,7 @@ public class Recipes extends RecipeProvider
                            .build(consumer);
         ShapelessRecipeBuilder.shapelessRecipe(NETHERITE_CHEST)
                               .addIngredient(OBSIDIAN_CHEST)
-                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addIngredient(Items.NETHERITE_INGOT)
                               .addCriterion("has_chest", hasItem(OBSIDIAN_CHEST))
                               .build(consumer);
         // </editor-fold>
@@ -170,7 +170,7 @@ public class Recipes extends RecipeProvider
                            .build(consumer);
         ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_WOOD_NETHERITE)
                               .addIngredient(ModContent.CONVERSION_KIT_WOOD_OBSIDIAN)
-                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addIngredient(Items.NETHERITE_INGOT)
                               .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_WOOD_OBSIDIAN))
                               .build(consumer);
         // </editor-fold>
@@ -202,7 +202,7 @@ public class Recipes extends RecipeProvider
                            .build(consumer);
         ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_IRON_NETHERITE)
                               .addIngredient(ModContent.CONVERSION_KIT_IRON_OBSIDIAN)
-                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addIngredient(Items.NETHERITE_INGOT)
                               .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_IRON_OBSIDIAN))
                               .build(consumer);
         // </editor-fold>
@@ -226,7 +226,7 @@ public class Recipes extends RecipeProvider
                            .build(consumer);
         ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_GOLD_NETHERITE)
                               .addIngredient(ModContent.CONVERSION_KIT_GOLD_OBSIDIAN)
-                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addIngredient(Items.NETHERITE_INGOT)
                               .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_GOLD_OBSIDIAN))
                               .build(consumer);
         // </editor-fold>
@@ -241,14 +241,14 @@ public class Recipes extends RecipeProvider
                            .build(consumer);
         ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_DIAMOND_NETHERITE)
                               .addIngredient(ModContent.CONVERSION_KIT_DIAMOND_OBSIDIAN)
-                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addIngredient(Items.NETHERITE_INGOT)
                               .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_DIAMOND_OBSIDIAN))
                               .build(consumer);
         // </editor-fold>
         // <editor-fold desc="Obsidian Conversion Kits">
         ShapelessRecipeBuilder.shapelessRecipe(ModContent.CONVERSION_KIT_OBSIDIAN_NETHERITE)
                               .addIngredient(Tags.Items.OBSIDIAN)
-                              .addIngredient(Items.field_234759_km_) // Netherite Ingot
+                              .addIngredient(Items.NETHERITE_INGOT)
                               .addCriterion("has_obsidian", hasItem(Tags.Items.OBSIDIAN))
                               .build(consumer);
         // </editor-fold>

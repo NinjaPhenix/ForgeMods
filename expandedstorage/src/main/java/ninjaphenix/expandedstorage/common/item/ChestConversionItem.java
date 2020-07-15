@@ -65,7 +65,7 @@ public class ChestConversionItem extends ChestModifierItem
                            .with(BaseChestBlock.TYPE, state.get(BaseChestBlock.TYPE));
         world.setBlockState(pos, newState);
         tileEntity = (AbstractChestTileEntity) world.getTileEntity(pos);
-        tileEntity.func_230337_a_(newState, ItemStackHelper.saveAllItems(tileEntity.write(new CompoundNBT()), inventoryData));
+        tileEntity.read(newState, ItemStackHelper.saveAllItems(tileEntity.write(new CompoundNBT()), inventoryData));
     }
 
     private void upgradeChest(@NotNull final World world, @NotNull final BlockPos pos, @NotNull final BlockState state)
@@ -80,7 +80,7 @@ public class ChestConversionItem extends ChestModifierItem
                                                           .with(BaseChestBlock.TYPE, CursedChestType.valueOf(state.get(BlockStateProperties.CHEST_TYPE)));
         world.setBlockState(pos, newState);
         tileEntity = world.getTileEntity(pos);
-        tileEntity.func_230337_a_(newState, ItemStackHelper.saveAllItems(tileEntity.write(new CompoundNBT()), inventoryData));
+        tileEntity.read(newState, ItemStackHelper.saveAllItems(tileEntity.write(new CompoundNBT()), inventoryData));
     }
 
     @NotNull @Override @SuppressWarnings("unchecked")

@@ -15,7 +15,8 @@ public class OpenScreenMessage
     public final ITextComponent title;
     public final int xRange, zRange, yRange, speed, redstoneMode;
 
-    public OpenScreenMessage(BlockPos pos, ITextComponent title, int xRange, int zRange, int yRange, int speed, int redstoneMode)
+    public OpenScreenMessage(final BlockPos pos, final ITextComponent title, final int xRange, final int zRange, final int yRange, final int speed,
+            final int redstoneMode)
     {
         this.pos = pos;
         this.title = title;
@@ -26,21 +27,25 @@ public class OpenScreenMessage
         this.redstoneMode = redstoneMode;
     }
 
-    static void encode(OpenScreenMessage msg, PacketBuffer buf)
+    static void encode(final OpenScreenMessage message, final PacketBuffer buffer)
     {
-        buf.writeBlockPos(msg.pos).writeTextComponent(msg.title).writeInt(msg.xRange)
-           .writeInt(msg.zRange).writeInt(msg.yRange).writeInt(msg.speed).writeInt(msg.redstoneMode);
+        buffer.writeBlockPos(message.pos).writeTextComponent(message.title).writeInt(message.xRange)
+              .writeInt(message.zRange).writeInt(message.yRange).writeInt(message.speed).writeInt(message.redstoneMode);
     }
 
-    static OpenScreenMessage decode(PacketBuffer buf)
+    static OpenScreenMessage decode(final PacketBuffer buffer)
     {
-        return new OpenScreenMessage(buf.readBlockPos(), buf.readTextComponent(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt());
+        return new OpenScreenMessage(buffer.readBlockPos(), buffer.readTextComponent(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(),
+                buffer.readInt());
     }
 
-    static void handle(OpenScreenMessage msg, Supplier<NetworkEvent.Context> ctx)
+    static void handle(final OpenScreenMessage message, final Supplier<NetworkEvent.Context> contextSupplier)
     {
-        NetworkEvent.Context context = ctx.get();
-        if (context.getDirection().getOriginationSide() == LogicalSide.SERVER) TorcherinoScreen.open(msg);
-        context.setPacketHandled(true);
+        final NetworkEvent.Context context = contextSupplier.get();
+        if (context.getDirection().getOriginationSide() == LogicalSide.SERVER)
+        {
+            TorcherinoScreen.open(message);
+            context.setPacketHandled(true);
+        }
     }
 }
