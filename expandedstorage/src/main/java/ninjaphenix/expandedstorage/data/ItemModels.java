@@ -6,7 +6,7 @@ import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import ninjaphenix.expandedstorage.ModContent;
 
-public class ItemModels extends ItemModelProvider
+public final class ItemModels extends ItemModelProvider
 {
     public ItemModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper) { super(generator, modId, fileHelper); }
 

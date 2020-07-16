@@ -21,7 +21,7 @@ import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
-public class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntity>
+public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntity>
 {
     private static final BlockState defaultState = ModContent.WOOD_CHEST.getFirst().getDefaultState().with(CursedChestBlock.FACING, Direction.SOUTH)
                                                                         .with(CursedChestBlock.TYPE, CursedChestType.SINGLE);

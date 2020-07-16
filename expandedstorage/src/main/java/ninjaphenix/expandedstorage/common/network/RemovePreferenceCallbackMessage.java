@@ -6,7 +6,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class RemovePreferenceCallbackMessage
+public final class RemovePreferenceCallbackMessage
 {
     @SuppressWarnings("unused")
     public static void encode(final RemovePreferenceCallbackMessage message, final PacketBuffer buffer) {}

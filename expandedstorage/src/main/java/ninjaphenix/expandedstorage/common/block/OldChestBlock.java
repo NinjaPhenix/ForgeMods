@@ -15,7 +15,7 @@ import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.entity.OldChestTileEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
+public final class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
 {
     public OldChestBlock(final Properties properties, final ResourceLocation registryName)
     {

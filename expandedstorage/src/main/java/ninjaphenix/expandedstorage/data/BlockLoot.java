@@ -8,7 +8,7 @@ import ninjaphenix.expandedstorage.ModContent;
 
 import java.util.stream.Collectors;
 
-public class BlockLoot extends BlockLootTables
+public final class BlockLoot extends BlockLootTables
 {
     @Override
     protected void addTables()

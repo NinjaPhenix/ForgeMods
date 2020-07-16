@@ -6,7 +6,7 @@ import net.minecraft.data.ItemTagsProvider;
 import net.minecraftforge.common.Tags;
 import ninjaphenix.expandedstorage.ModContent;
 
-public class ItemTags extends ItemTagsProvider
+public final class ItemTags extends ItemTagsProvider
 {
     public ItemTags(final DataGenerator generator, final BlockTagsProvider blockTagsProvider) { super(generator, blockTagsProvider); }
 

@@ -16,7 +16,7 @@ import ninjaphenix.expandedstorage.common.network.Networker;
 
 import java.util.HashMap;
 
-public class SelectContainerScreen extends Screen
+public final class SelectContainerScreen extends Screen
 {
     private static final ImmutableMap<ResourceLocation, Pair<ResourceLocation, ITextComponent>> OPTIONS = new
             ImmutableMap.Builder<ResourceLocation, Pair<ResourceLocation, ITextComponent>>()

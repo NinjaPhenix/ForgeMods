@@ -27,7 +27,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
-import ninjaphenix.expandedstorage.common.block.entity.AbstractChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.entity.BaseChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,8 +53,8 @@ public class ChestConversionItem extends ChestModifierItem
     @SuppressWarnings("unchecked")
     private void upgradeCursedChest(final World world, final BlockPos pos, final BlockState state)
     {
-        AbstractChestTileEntity tileEntity = (AbstractChestTileEntity) world.getTileEntity(pos);
-        final SimpleRegistry<Registries.TierData> registry = ((BaseChestBlock<AbstractChestTileEntity>) state.getBlock()).getDataRegistry();
+        BaseChestTileEntity tileEntity = (BaseChestTileEntity) world.getTileEntity(pos);
+        final SimpleRegistry<Registries.TierData> registry = ((BaseChestBlock<BaseChestTileEntity>) state.getBlock()).getDataRegistry();
         final NonNullList<ItemStack> inventoryData = NonNullList.withSize(registry.getValue(TO).get().getSlotCount(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(tileEntity.write(new CompoundNBT()), inventoryData);
         world.removeTileEntity(pos);
@@ -64,7 +64,7 @@ public class ChestConversionItem extends ChestModifierItem
         newState = newState.with(BlockStateProperties.HORIZONTAL_FACING, state.get(BlockStateProperties.HORIZONTAL_FACING))
                            .with(BaseChestBlock.TYPE, state.get(BaseChestBlock.TYPE));
         world.setBlockState(pos, newState);
-        tileEntity = (AbstractChestTileEntity) world.getTileEntity(pos);
+        tileEntity = (BaseChestTileEntity) world.getTileEntity(pos);
         tileEntity.read(newState, ItemStackHelper.saveAllItems(tileEntity.write(new CompoundNBT()), inventoryData));
     }
 
@@ -89,7 +89,7 @@ public class ChestConversionItem extends ChestModifierItem
     {
         final World world = context.getWorld();
         final PlayerEntity player = context.getPlayer();
-        final BaseChestBlock<AbstractChestTileEntity> chestBlock = (BaseChestBlock<AbstractChestTileEntity>) mainState.getBlock();
+        final BaseChestBlock<BaseChestTileEntity> chestBlock = (BaseChestBlock<BaseChestTileEntity>) mainState.getBlock();
         if (!chestBlock.getRegistryName().equals(chestBlock.getDataRegistry().getValue(FROM).get().getBlockId())) { return ActionResultType.FAIL; }
         final ItemStack handStack = player.getHeldItem(context.getHand());
         if (otherPos == null)
@@ -134,7 +134,7 @@ public class ChestConversionItem extends ChestModifierItem
             }
             else if (handStack.getCount() > 1 || player.isCreative())
             {
-                BlockPos otherPos;
+                final BlockPos otherPos;
                 if (state.get(BlockStateProperties.CHEST_TYPE) == ChestType.RIGHT)
                 { otherPos = mainPos.offset(state.get(BlockStateProperties.HORIZONTAL_FACING).rotateYCCW()); }
                 else if (state.get(BlockStateProperties.CHEST_TYPE) == ChestType.LEFT)

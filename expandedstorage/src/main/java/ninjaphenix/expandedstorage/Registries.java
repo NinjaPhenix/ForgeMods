@@ -9,7 +9,7 @@ import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 import java.util.function.Function;
 
-public class Registries
+public final class Registries
 {
     public static final SimpleRegistry<ModeledTierData> MODELED = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
             ExpandedStorage.getRl("modeled")), Lifecycle.experimental());

@@ -25,7 +25,7 @@ import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import org.jetbrains.annotations.Nullable;
 
-public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> implements IWaterLoggable
+public final class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> implements IWaterLoggable
 {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape SINGLE_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 14, 15);

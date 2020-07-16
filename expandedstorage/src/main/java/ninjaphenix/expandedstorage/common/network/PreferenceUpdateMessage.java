@@ -7,7 +7,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PreferenceUpdateMessage
+public final class PreferenceUpdateMessage
 {
     private final ResourceLocation preference;
 

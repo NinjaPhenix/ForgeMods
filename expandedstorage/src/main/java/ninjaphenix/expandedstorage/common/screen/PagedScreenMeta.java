@@ -2,7 +2,7 @@ package ninjaphenix.expandedstorage.common.screen;
 
 import net.minecraft.util.ResourceLocation;
 
-public class PagedScreenMeta extends ScreenMeta
+public final class PagedScreenMeta extends ScreenMeta
 {
     public final int BLANK_SLOTS, PAGES;
 

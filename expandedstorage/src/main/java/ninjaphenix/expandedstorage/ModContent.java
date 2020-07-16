@@ -34,7 +34,7 @@ import ninjaphenix.expandedstorage.common.item.ChestMutatorItem;
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
 @Mod.EventBusSubscriber(modid = ExpandedStorage.MOD_ID, bus = MOD)
-public class ModContent
+public final class ModContent
 {
     public static final ContainerType<PagedContainer> PAGED_CONTAINER_TYPE;
     public static final ContainerType<SingleContainer> SINGLE_CONTAINER_TYPE;

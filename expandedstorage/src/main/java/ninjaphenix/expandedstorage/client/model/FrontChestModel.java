@@ -1,6 +1,6 @@
 package ninjaphenix.expandedstorage.client.model;
 
-public class FrontChestModel extends SingleChestModel
+public final class FrontChestModel extends SingleChestModel
 {
     public FrontChestModel()
     {

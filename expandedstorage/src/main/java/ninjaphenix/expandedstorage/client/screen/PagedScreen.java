@@ -14,7 +14,7 @@ import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.inventory.PagedContainer;
 import ninjaphenix.expandedstorage.common.screen.PagedScreenMeta;
 
-public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
+public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
 {
     private Rectangle blankArea = null;
     private PageButtonWidget leftPageButton, rightPageButton;

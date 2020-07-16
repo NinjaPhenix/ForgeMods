@@ -11,7 +11,7 @@ import ninjaphenix.expandedstorage.common.block.OldChestBlock;
 
 import java.util.function.Consumer;
 
-public class Recipes extends RecipeProvider
+public final class Recipes extends RecipeProvider
 {
     public Recipes(final DataGenerator generator) { super(generator); }
 

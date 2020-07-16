@@ -5,7 +5,7 @@ import net.minecraftforge.common.data.LanguageProvider;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.ModContent;
 
-public class Language extends LanguageProvider
+public final class Language extends LanguageProvider
 {
     public Language(final DataGenerator generator, final String modId, final String locale) { super(generator, modId, locale); }
 

@@ -14,7 +14,7 @@ import ninjaphenix.expandedstorage.common.screen.ScrollableScreenMeta;
 import java.util.Collections;
 import java.util.List;
 
-public class ScrollableScreen extends AbstractScreen<ScrollableContainer, ScrollableScreenMeta>
+public final class ScrollableScreen extends AbstractScreen<ScrollableContainer, ScrollableScreenMeta>
 {
     protected final boolean hasScrollbar;
     private Rectangle blankArea = null;

@@ -5,7 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.Tags;
 import ninjaphenix.expandedstorage.ModContent;
 
-public class BlockTags extends BlockTagsProvider
+public final class BlockTags extends BlockTagsProvider
 {
     public BlockTags(final DataGenerator generator) { super(generator); }
 

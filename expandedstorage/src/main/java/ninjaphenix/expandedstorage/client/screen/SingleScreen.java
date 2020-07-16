@@ -7,7 +7,7 @@ import net.minecraftforge.fml.ModList;
 import ninjaphenix.expandedstorage.common.inventory.SingleContainer;
 import ninjaphenix.expandedstorage.common.screen.SingleScreenMeta;
 
-public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMeta>
+public final class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMeta>
 {
     private Rectangle blankArea = null;
     private ScreenTypeSelectionScreenButton screenSelectButton;

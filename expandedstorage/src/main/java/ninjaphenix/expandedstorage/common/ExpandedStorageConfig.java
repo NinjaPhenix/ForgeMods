@@ -9,7 +9,7 @@ import ninjaphenix.expandedstorage.ExpandedStorage;
 import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber(modid = ExpandedStorage.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ExpandedStorageConfig
+public final class ExpandedStorageConfig
 {
     public static final ExpandedStorageConfig.Client CLIENT;
     private static final ForgeConfigSpec clientSpec;

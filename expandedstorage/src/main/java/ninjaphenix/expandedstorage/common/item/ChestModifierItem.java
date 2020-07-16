@@ -39,32 +39,32 @@ public abstract class ChestModifierItem extends Item
             if (type == CursedChestType.SINGLE) { result = useModifierOnChestBlock(context, state, pos, null, null); }
             else if (type == CursedChestType.BOTTOM)
             {
-                BlockPos otherPos = pos.offset(Direction.UP);
+                final BlockPos otherPos = pos.offset(Direction.UP);
                 result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos);
             }
             else if (type == CursedChestType.TOP)
             {
-                BlockPos otherPos = pos.offset(Direction.DOWN);
+                final BlockPos otherPos = pos.offset(Direction.DOWN);
                 result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos);
             }
             else if (type == CursedChestType.LEFT)
             {
-                BlockPos otherPos = pos.offset(facing.rotateYCCW());
+                final BlockPos otherPos = pos.offset(facing.rotateYCCW());
                 result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos);
             }
             else if (type == CursedChestType.RIGHT)
             {
-                BlockPos otherPos = pos.offset(facing.rotateY());
+                final BlockPos otherPos = pos.offset(facing.rotateY());
                 result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos);
             }
             else if (type == CursedChestType.FRONT)
             {
-                BlockPos otherPos = pos.offset(facing.getOpposite());
+                final BlockPos otherPos = pos.offset(facing.getOpposite());
                 result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos);
             }
             else if (type == CursedChestType.BACK)
             {
-                BlockPos otherPos = pos.offset(facing);
+                final BlockPos otherPos = pos.offset(facing);
                 result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos);
             }
             return result;

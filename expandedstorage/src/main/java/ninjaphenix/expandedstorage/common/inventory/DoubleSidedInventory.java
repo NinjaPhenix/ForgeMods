@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import org.jetbrains.annotations.Nullable;
 
-public class DoubleSidedInventory implements ISidedInventory
+public final class DoubleSidedInventory implements ISidedInventory
 {
     private final ISidedInventory first;
     private final ISidedInventory second;

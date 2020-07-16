@@ -159,7 +159,7 @@ public class ChestMutatorItem extends ChestModifierItem
                                 realOtherState.get(ChestBlock.TYPE) == ChestType.SINGLE)
                         {
                             final BlockPos vec = otherPos.subtract(mainPos);
-                            int sum = vec.getX() + vec.getY() + vec.getZ();
+                            final int sum = vec.getX() + vec.getY() + vec.getZ();
                             if (sum == 1 || sum == -1)
                             {
                                 if (!world.isRemote)
@@ -207,7 +207,7 @@ public class ChestMutatorItem extends ChestModifierItem
             }
             else if (mode == MutatorMode.UNMERGE)
             {
-                BlockPos otherPos;
+                final BlockPos otherPos;
                 switch (state.get(ChestBlock.TYPE))
                 {
                     case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY());
@@ -226,7 +226,7 @@ public class ChestMutatorItem extends ChestModifierItem
             }
             else if (mode == MutatorMode.ROTATE)
             {
-                BlockPos otherPos;
+                final BlockPos otherPos;
                 switch (state.get(ChestBlock.TYPE))
                 {
                     case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY());
@@ -294,8 +294,7 @@ public class ChestMutatorItem extends ChestModifierItem
     }
 
     @Override
-    public void fillItemGroup(final ItemGroup itemGroup, final NonNullList<ItemStack> stackList)
-    { if (isInGroup(itemGroup)) { stackList.add(getDefaultInstance()); } }
+    public void fillItemGroup(final ItemGroup group, final NonNullList<ItemStack> items) { if (isInGroup(group)) { items.add(getDefaultInstance()); } }
 
     private MutatorMode getMode(final ItemStack stack)
     {

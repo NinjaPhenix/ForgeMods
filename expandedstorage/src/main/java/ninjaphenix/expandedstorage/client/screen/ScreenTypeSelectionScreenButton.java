@@ -10,7 +10,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.network.Networker;
 
-public class ScreenTypeSelectionScreenButton extends Button
+public final class ScreenTypeSelectionScreenButton extends Button
 {
     private final ResourceLocation TEXTURE;
 

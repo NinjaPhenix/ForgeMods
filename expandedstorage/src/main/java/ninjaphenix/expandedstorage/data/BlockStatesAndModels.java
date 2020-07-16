@@ -12,7 +12,7 @@ import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 import java.util.HashMap;
 
-public class BlockStatesAndModels extends BlockStateProvider
+public final class BlockStatesAndModels extends BlockStateProvider
 {
     public final static HashMap<Item, ModelFile> SINGLE_OLD_MODELS = new HashMap<>();
     private ModelFile OLD_CHEST_HORIZONTAL;

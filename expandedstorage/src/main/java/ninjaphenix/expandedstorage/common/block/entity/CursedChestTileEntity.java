@@ -24,7 +24,7 @@ import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
-public class CursedChestTileEntity extends AbstractChestTileEntity implements IChestLid, ITickableTileEntity
+public final class CursedChestTileEntity extends BaseChestTileEntity implements IChestLid, ITickableTileEntity
 {
     private float animationAngle, lastAnimationAngle;
     private int viewerCount, ticksOpen;

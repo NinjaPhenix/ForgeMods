@@ -12,7 +12,7 @@ import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.client.render.CursedChestRenderer;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
-public class ExpandedStorageClient
+public final class ExpandedStorageClient
 {
     @SubscribeEvent
     public static void setup(final FMLClientSetupEvent event) { ClientRegistry.bindTileEntityRenderer(ModContent.CURSED_CHEST_TE, CursedChestRenderer::new); }

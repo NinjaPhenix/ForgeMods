@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
 
-public class CursedChestTileEntityItemStackRenderer extends ItemStackTileEntityRenderer
+public final class CursedChestTileEntityItemStackRenderer extends ItemStackTileEntityRenderer
 {
     private static final CursedChestTileEntity cursedChestRenderEntity = new CursedChestTileEntity();
 

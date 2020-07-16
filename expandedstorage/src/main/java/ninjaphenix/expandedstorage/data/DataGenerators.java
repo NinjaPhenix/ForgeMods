@@ -9,7 +9,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class DataGenerators
+public final class DataGenerators
 {
     @SubscribeEvent
     public static void gatherData(final GatherDataEvent event)

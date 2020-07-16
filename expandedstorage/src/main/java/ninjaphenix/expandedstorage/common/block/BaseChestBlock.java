@@ -35,7 +35,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import ninjaphenix.expandedstorage.Registries;
-import ninjaphenix.expandedstorage.common.block.entity.AbstractChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.entity.BaseChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
 import ninjaphenix.expandedstorage.common.inventory.IDataNamedContainerProvider;
@@ -46,7 +46,7 @@ import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
-public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends ContainerBlock
+public abstract class BaseChestBlock<T extends BaseChestTileEntity> extends ContainerBlock
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<CursedChestType> TYPE = EnumProperty.create("type", CursedChestType.class);
@@ -213,7 +213,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         if (stack.hasDisplayName())
         {
             final TileEntity tileEntity = world.getTileEntity(pos);
-            if (tileEntity instanceof AbstractChestTileEntity) { ((AbstractChestTileEntity) tileEntity).setCustomName(stack.getDisplayName()); }
+            if (tileEntity instanceof BaseChestTileEntity) { ((BaseChestTileEntity) tileEntity).setCustomName(stack.getDisplayName()); }
         }
     }
 

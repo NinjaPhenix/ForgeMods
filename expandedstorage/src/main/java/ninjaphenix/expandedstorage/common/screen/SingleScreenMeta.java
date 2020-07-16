@@ -2,7 +2,7 @@ package ninjaphenix.expandedstorage.common.screen;
 
 import net.minecraft.util.ResourceLocation;
 
-public class SingleScreenMeta extends ScreenMeta
+public final class SingleScreenMeta extends ScreenMeta
 {
     public final int BLANK_SLOTS;
 

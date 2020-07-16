@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class OpenSelectScreenMessage
+public final class OpenSelectScreenMessage
 {
     @SuppressWarnings("unused")
     static void encode(final OpenSelectScreenMessage message, final PacketBuffer buffer) { }

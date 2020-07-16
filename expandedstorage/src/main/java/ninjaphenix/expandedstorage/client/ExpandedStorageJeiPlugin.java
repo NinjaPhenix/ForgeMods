@@ -12,7 +12,7 @@ import ninjaphenix.expandedstorage.client.screen.ScrollableScreen;
 import java.util.List;
 
 @JeiPlugin
-public class ExpandedStorageJeiPlugin implements IModPlugin
+public final class ExpandedStorageJeiPlugin implements IModPlugin
 {
     @Override
     public ResourceLocation getPluginUid() { return ExpandedStorage.getRl("jei_plugin"); }

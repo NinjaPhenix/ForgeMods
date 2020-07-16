@@ -17,7 +17,7 @@ import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
 import ninjaphenix.expandedstorage.common.network.Networker;
 
 @Mod("expandedstorage")
-public class ExpandedStorage
+public final class ExpandedStorage
 {
     public static final String MOD_ID = "expandedstorage";
     public static final ItemGroup group = new ItemGroup(MOD_ID)

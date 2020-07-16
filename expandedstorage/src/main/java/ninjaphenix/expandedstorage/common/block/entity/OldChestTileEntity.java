@@ -7,7 +7,7 @@ import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 import org.jetbrains.annotations.Nullable;
 
-public class OldChestTileEntity extends AbstractChestTileEntity
+public final class OldChestTileEntity extends BaseChestTileEntity
 {
     public OldChestTileEntity() { this(null); }
 

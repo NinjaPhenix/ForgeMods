@@ -16,7 +16,7 @@ import net.minecraft.util.text.ITextComponent;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({ "WeakerAccess", "NullableProblems" })
-public abstract class AbstractChestTileEntity extends LockableLootTileEntity implements ISidedInventory
+public abstract class BaseChestTileEntity extends LockableLootTileEntity implements ISidedInventory
 {
     protected ITextComponent defaultContainerName;
     protected int inventorySize;
@@ -24,7 +24,7 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     protected int[] SLOTS;
     protected ResourceLocation block;
 
-    public AbstractChestTileEntity(final TileEntityType type, @Nullable final ResourceLocation block)
+    public BaseChestTileEntity(final TileEntityType type, @Nullable final ResourceLocation block)
     {
         super(type);
         if (block != null) { initialize(block); }

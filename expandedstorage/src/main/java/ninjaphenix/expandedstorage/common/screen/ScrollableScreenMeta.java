@@ -3,7 +3,7 @@ package ninjaphenix.expandedstorage.common.screen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-public class ScrollableScreenMeta extends ScreenMeta
+public final class ScrollableScreenMeta extends ScreenMeta
 {
     public final int BLANK_SLOTS, TOTAL_ROWS;
 

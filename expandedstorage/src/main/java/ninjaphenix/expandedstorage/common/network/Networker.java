@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class Networker
+public final class Networker
 {
     public static final Networker INSTANCE = new Networker();
     private final SimpleChannel channel;
