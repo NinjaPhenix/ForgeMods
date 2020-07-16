@@ -10,7 +10,6 @@ import net.minecraftforge.fml.ModList;
 import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
 import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
 import ninjaphenix.expandedstorage.common.screen.ScrollableScreenMeta;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +22,7 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     private int topRow;
     private ScreenTypeSelectionScreenButton screenSelectButton;
 
-    public ScrollableScreen(@NotNull final ScrollableContainer container, @NotNull final PlayerInventory playerInventory, @NotNull final ITextComponent title)
+    public ScrollableScreen(final ScrollableContainer container, final PlayerInventory playerInventory, final ITextComponent title)
     {
         super(container, playerInventory, title, (screenMeta) -> (screenMeta.WIDTH * 18 + 14) / 2 - 80);
         xSize = 14 + 18 * SCREEN_META.WIDTH;
@@ -63,7 +62,7 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     }
 
     @Override
-    protected void func_230450_a_(@NotNull final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    protected void func_230450_a_(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
         super.func_230450_a_(stack, partialTicks, mouseX, mouseY);
         if (hasScrollbar)
@@ -78,7 +77,7 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     }
 
     @Override
-    public void render(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+    public void render(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
         super.render(stack, mouseX, mouseY, partialTicks);
         screenSelectButton.renderTooltip(stack, mouseX, mouseY);
@@ -162,6 +161,7 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
         return super.mouseScrolled(mouseX, mouseY, delta);
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     private void setTopRow(final int oldTopRow, final int newTopRow)
     {
         if (oldTopRow == newTopRow) { return; }
@@ -216,7 +216,7 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     }
 
     @Override
-    public void resize(@NotNull final Minecraft minecraft, final int width, final int height)
+    public void resize(final Minecraft minecraft, final int width, final int height)
     {
         super.resize(minecraft, width, height);
         if (hasScrollbar)

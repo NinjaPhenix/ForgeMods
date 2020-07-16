@@ -8,16 +8,15 @@ import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.OldChestBlock;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
 public class Recipes extends RecipeProvider
 {
-    public Recipes(@NotNull final DataGenerator generator) { super(generator); }
+    public Recipes(final DataGenerator generator) { super(generator); }
 
     @Override
-    protected void registerRecipes(@NotNull final Consumer<IFinishedRecipe> consumer)
+    protected void registerRecipes(final Consumer<IFinishedRecipe> consumer)
     {
         // <editor-fold desc="local copy of blocks cause they're stored as Pair<Block, Item> in my class">
         final CursedChestBlock WOOD_CHEST = ModContent.WOOD_CHEST.getFirst();
@@ -108,7 +107,7 @@ public class Recipes extends RecipeProvider
                               .addCriterion("has_chest", hasItem(OBSIDIAN_CHEST))
                               .build(consumer);
         // </editor-fold>
-        // <editor-fold desc="Regular <-> Old Converison Recipes">
+        // <editor-fold desc="Regular <-> Old Conversion Recipes">
         ShapelessRecipeBuilder.shapelessRecipe(OLD_WOOD_CHEST).addIngredient(WOOD_CHEST)
                               .addCriterion("has_chest", hasItem(WOOD_CHEST)).build(consumer, ExpandedStorage.getRl("wood_to_old_wood"));
         ShapelessRecipeBuilder.shapelessRecipe(WOOD_CHEST).addIngredient(OLD_WOOD_CHEST)
@@ -174,7 +173,7 @@ public class Recipes extends RecipeProvider
                               .addCriterion("has_kit", hasItem(ModContent.CONVERSION_KIT_WOOD_OBSIDIAN))
                               .build(consumer);
         // </editor-fold>
-        // <editor-fold desc="Iron Converison Kits">
+        // <editor-fold desc="Iron Conversion Kits">
         ShapedRecipeBuilder.shapedRecipe(ModContent.CONVERSION_KIT_IRON_GOLD)
                            .patternLine("GGG")
                            .patternLine("GIG")
@@ -254,6 +253,6 @@ public class Recipes extends RecipeProvider
         // </editor-fold>
     }
 
-    @NotNull @Override
+    @Override
     public String getName() { return "Expanded Storage - Recipes"; }
 }

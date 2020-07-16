@@ -29,7 +29,6 @@ import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.entity.AbstractChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class ChestConversionItem extends ChestModifierItem
     private final ITextComponent TOOLTIP;
     private final ResourceLocation FROM, TO;
 
-    public ChestConversionItem(@NotNull final Pair<ResourceLocation, String> from, @NotNull final Pair<ResourceLocation, String> to)
+    public ChestConversionItem(final Pair<ResourceLocation, String> from, final Pair<ResourceLocation, String> to)
     {
         super(new Item.Properties().group(ExpandedStorage.group).maxStackSize(16));
         setRegistryName(ExpandedStorage.getRl(from.getSecond() + "_to_" + to.getSecond() + "_conversion_kit"));
@@ -52,7 +51,7 @@ public class ChestConversionItem extends ChestModifierItem
     }
 
     @SuppressWarnings("unchecked")
-    private void upgradeCursedChest(@NotNull final World world, @NotNull final BlockPos pos, @NotNull final BlockState state)
+    private void upgradeCursedChest(final World world, final BlockPos pos, final BlockState state)
     {
         AbstractChestTileEntity tileEntity = (AbstractChestTileEntity) world.getTileEntity(pos);
         final SimpleRegistry<Registries.TierData> registry = ((BaseChestBlock<AbstractChestTileEntity>) state.getBlock()).getDataRegistry();
@@ -69,7 +68,7 @@ public class ChestConversionItem extends ChestModifierItem
         tileEntity.read(newState, ItemStackHelper.saveAllItems(tileEntity.write(new CompoundNBT()), inventoryData));
     }
 
-    private void upgradeChest(@NotNull final World world, @NotNull final BlockPos pos, @NotNull final BlockState state)
+    private void upgradeChest(final World world, final BlockPos pos, final BlockState state)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         final NonNullList<ItemStack> inventoryData = NonNullList.withSize(Registries.MODELED.getValue(FROM).get().getSlotCount(), ItemStack.EMPTY);
@@ -84,9 +83,9 @@ public class ChestConversionItem extends ChestModifierItem
         tileEntity.read(newState, ItemStackHelper.saveAllItems(tileEntity.write(new CompoundNBT()), inventoryData));
     }
 
-    @NotNull @Override @SuppressWarnings("unchecked")
-    protected ActionResultType useModifierOnChestBlock(@NotNull final ItemUseContext context, @NotNull final BlockState mainState,
-            @NotNull final BlockPos mainPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
+    @Override @SuppressWarnings("unchecked")
+    protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainPos,
+            @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
     {
         final World world = context.getWorld();
         final PlayerEntity player = context.getPlayer();
@@ -115,8 +114,8 @@ public class ChestConversionItem extends ChestModifierItem
         return ActionResultType.FAIL;
     }
 
-    @NotNull @Override
-    protected ActionResultType useModifierOnBlock(@NotNull final ItemUseContext context, @NotNull final BlockState state)
+    @Override
+    protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state)
     {
         if (state.getBlock() == Blocks.CHEST && FROM.equals(ExpandedStorage.getRl("wood_chest")))
         {
@@ -154,8 +153,7 @@ public class ChestConversionItem extends ChestModifierItem
     }
 
     @Override
-    public void addInformation(@NotNull final ItemStack stack, @Nullable final World world, @NotNull final List<ITextComponent> tooltip,
-            @NotNull final ITooltipFlag flag)
+    public void addInformation(final ItemStack stack, @Nullable final World world, final List<ITextComponent> tooltip, final ITooltipFlag flag)
     {
         super.addInformation(stack, world, tooltip, flag);
         tooltip.add(TOOLTIP);

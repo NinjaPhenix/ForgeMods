@@ -20,7 +20,6 @@ import ninjaphenix.expandedstorage.client.model.*;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
-import org.jetbrains.annotations.NotNull;
 
 public class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntity>
 {
@@ -40,7 +39,7 @@ public class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntit
     public CursedChestRenderer(final TileEntityRendererDispatcher dispatcher) { super(dispatcher); }
 
     @Override @SuppressWarnings({ "ConstantConditions", "OptionalGetWithoutIsPresent" })
-    public void render(@NotNull final CursedChestTileEntity te, final float v, @NotNull final MatrixStack stack, @NotNull final IRenderTypeBuffer buffer,
+    public void render(final CursedChestTileEntity te, final float v, final MatrixStack stack, final IRenderTypeBuffer buffer,
             final int light, final int overlay)
     {
         final BlockState state = te.hasWorld() ? te.getBlockState() : defaultState;
@@ -63,6 +62,5 @@ public class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntit
         }
     }
 
-    @NotNull
-    public SingleChestModel getModel(@NotNull final CursedChestType type) { return MODELS.get(type); }
+    public SingleChestModel getModel(final CursedChestType type) { return MODELS.get(type); }
 }

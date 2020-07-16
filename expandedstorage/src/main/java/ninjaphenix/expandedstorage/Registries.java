@@ -6,7 +6,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.util.text.ITextComponent;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -21,8 +20,8 @@ public class Registries
     {
         private final ResourceLocation singleTexture, topTexture, backTexture, rightTexture, bottomTexture, frontTexture, leftTexture;
 
-        public ModeledTierData(final int slots, @NotNull final ResourceLocation blockId, @NotNull final ITextComponent containerName,
-                @NotNull final Function<CursedChestType, ResourceLocation> textureFunction)
+        public ModeledTierData(final int slots, final ResourceLocation blockId, final ITextComponent containerName,
+                final Function<CursedChestType, ResourceLocation> textureFunction)
         {
             super(slots, blockId, containerName);
             singleTexture = textureFunction.apply(CursedChestType.SINGLE);
@@ -34,8 +33,7 @@ public class Registries
             leftTexture = textureFunction.apply(CursedChestType.LEFT);
         }
 
-        @NotNull
-        public ResourceLocation getChestTexture(@NotNull final CursedChestType type)
+        public ResourceLocation getChestTexture(final CursedChestType type)
         {
             switch (type)
             {
@@ -66,10 +64,8 @@ public class Registries
 
         public int getSlotCount() { return slots; }
 
-        @NotNull
         public ITextComponent getContainerName() { return containerName; }
 
-        @NotNull
         public ResourceLocation getBlockId() { return blockId; }
     }
 }

@@ -15,7 +15,6 @@ import net.minecraftforge.fml.loading.FMLLoader;
 import ninjaphenix.expandedstorage.client.ExpandedStorageClient;
 import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
 import ninjaphenix.expandedstorage.common.network.Networker;
-import org.jetbrains.annotations.NotNull;
 
 @Mod("expandedstorage")
 public class ExpandedStorage
@@ -42,5 +41,5 @@ public class ExpandedStorage
         }
     }
 
-    public static ResourceLocation getRl(@NotNull final String path) { return new ResourceLocation(MOD_ID, path); }
+    public static ResourceLocation getRl(final String path) { return new ResourceLocation(MOD_ID, path); }
 }

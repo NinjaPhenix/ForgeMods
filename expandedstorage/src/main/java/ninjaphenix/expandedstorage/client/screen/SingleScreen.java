@@ -6,14 +6,13 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.ModList;
 import ninjaphenix.expandedstorage.common.inventory.SingleContainer;
 import ninjaphenix.expandedstorage.common.screen.SingleScreenMeta;
-import org.jetbrains.annotations.NotNull;
 
 public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMeta>
 {
     private Rectangle blankArea = null;
     private ScreenTypeSelectionScreenButton screenSelectButton;
 
-    public SingleScreen(@NotNull final SingleContainer container, @NotNull final PlayerInventory playerInventory, @NotNull final ITextComponent title)
+    public SingleScreen(final SingleContainer container, final PlayerInventory playerInventory, final ITextComponent title)
     {
         super(container, playerInventory, title, (screenMeta) -> (screenMeta.WIDTH * 18 + 14) / 2 - 80);
         xSize = 14 + 18 * SCREEN_META.WIDTH;
@@ -37,14 +36,14 @@ public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMe
     }
 
     @Override
-    public void render(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+    public void render(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
         super.render(stack, mouseX, mouseY, partialTicks);
         screenSelectButton.renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void func_230450_a_(@NotNull final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    protected void func_230450_a_(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
         super.func_230450_a_(stack, partialTicks, mouseX, mouseY);
         if (blankArea != null) { blankArea.render(stack); }

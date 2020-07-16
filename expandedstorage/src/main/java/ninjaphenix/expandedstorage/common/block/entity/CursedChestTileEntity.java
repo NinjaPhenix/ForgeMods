@@ -21,7 +21,6 @@ import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.inventory.AbstractContainer;
 import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
@@ -34,8 +33,8 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 
     public CursedChestTileEntity(@Nullable final ResourceLocation block) { super(ModContent.CURSED_CHEST_TE, block); }
 
-    private static int tickViewerCount(@NotNull final World world, @NotNull final CursedChestTileEntity instance, final int ticksOpen, final int x,
-            final int y, final int z, final int viewCount)
+    private static int tickViewerCount(final World world, final CursedChestTileEntity instance, final int ticksOpen, final int x, final int y, final int z,
+            final int viewCount)
     {
         if (!world.isRemote && viewCount != 0 && (ticksOpen + x + y + z) % 200 == 0)
         {
@@ -50,7 +49,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     }
 
     @Override @SuppressWarnings("OptionalGetWithoutIsPresent")
-    protected void initialize(@NotNull final ResourceLocation block)
+    protected void initialize(final ResourceLocation block)
     {
         this.block = block;
         final Registries.ModeledTierData data = Registries.MODELED.getValue(block).get();
@@ -89,7 +88,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void playSound(@NotNull final SoundEvent soundEvent)
+    private void playSound(final SoundEvent soundEvent)
     {
         final BlockState state = getBlockState();
         if (BaseChestBlock.getMergeType(state) == TileEntityMerger.Type.SECOND) { return; }
@@ -99,7 +98,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     }
 
     @Override
-    public void openInventory(@NotNull final PlayerEntity player)
+    public void openInventory(final PlayerEntity player)
     {
         if (player.isSpectator()) { return; }
         if (viewerCount < 0) { viewerCount = 0; }
@@ -108,7 +107,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     }
 
     @Override
-    public void closeInventory(@NotNull final PlayerEntity player)
+    public void closeInventory(final PlayerEntity player)
     {
         if (player.isSpectator()) { return; }
         viewerCount--;

@@ -12,7 +12,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.IContainerFactory;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.common.screen.SingleScreenMeta;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -31,7 +30,7 @@ public final class SingleContainer extends AbstractContainer<SingleScreenMeta>
             .put(270, new SingleScreenMeta(18, 15, 270, getTexture("shared", 18, 15), 368, 416)) // Large Netherite
             .build();
 
-    public SingleContainer(final int windowId, @NotNull final BlockPos pos, @NotNull final IInventory inventory, @NotNull final PlayerEntity player,
+    public SingleContainer(final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player,
             @Nullable final ITextComponent displayName)
     {
         super(ModContent.SINGLE_CONTAINER_TYPE, windowId, pos, inventory, player, getNearestSize(inventory.getSizeInventory()), displayName);
@@ -59,8 +58,8 @@ public final class SingleContainer extends AbstractContainer<SingleScreenMeta>
 
     public static class Factory implements IContainerFactory<SingleContainer>
     {
-        @Override
-        public SingleContainer create(final int windowId, @NotNull final PlayerInventory playerInventory, @Nullable final PacketBuffer data)
+        @Nullable @Override
+        public SingleContainer create(final int windowId, final PlayerInventory playerInventory, @Nullable final PacketBuffer data)
         {
             if (data == null) { return null;}
             return new SingleContainer(windowId, data.readBlockPos(), new Inventory(data.readInt()), playerInventory.player, null);

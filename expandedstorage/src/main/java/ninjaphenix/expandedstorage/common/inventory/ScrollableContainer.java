@@ -13,7 +13,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.IContainerFactory;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.common.screen.ScrollableScreenMeta;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -35,7 +34,7 @@ public final class ScrollableContainer extends AbstractContainer<ScrollableScree
             .build();
     // @formatter:on
 
-    public ScrollableContainer(final int windowId, @NotNull final BlockPos pos, @NotNull final IInventory inventory, @NotNull final PlayerEntity player,
+    public ScrollableContainer(final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player,
             @Nullable final ITextComponent displayName)
     {
         super(ModContent.SCROLLABLE_CONTAINER_TYPE, windowId, pos, inventory, player, getNearestSize(inventory.getSizeInventory()), displayName);
@@ -66,13 +65,13 @@ public final class ScrollableContainer extends AbstractContainer<ScrollableScree
 
     public void moveSlotRange(final int min, final int max, final int yChange) { for (int i = min; i < max; i++) { inventorySlots.get(i).yPos += yChange; } }
 
-    public void setSlotRange(final int min, final int max, @NotNull final IntUnaryOperator yPos)
+    public void setSlotRange(final int min, final int max, final IntUnaryOperator yPos)
     { for (int i = min; i < max; i++) { inventorySlots.get(i).yPos = yPos.applyAsInt(i); } }
 
     public static class Factory implements IContainerFactory<ScrollableContainer>
     {
-        @Override
-        public ScrollableContainer create(final int windowId, @NotNull final PlayerInventory playerInventory, @Nullable final PacketBuffer data)
+        @Nullable @Override
+        public ScrollableContainer create(final int windowId, final PlayerInventory playerInventory, @Nullable final PacketBuffer data)
         {
             if (data == null) { return null; }
             return new ScrollableContainer(windowId, data.readBlockPos(), new Inventory(data.readInt()), playerInventory.player, null);

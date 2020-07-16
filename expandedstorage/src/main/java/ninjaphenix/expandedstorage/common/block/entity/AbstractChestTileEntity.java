@@ -13,7 +13,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({ "WeakerAccess", "NullableProblems" })
@@ -25,40 +24,39 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     protected int[] SLOTS;
     protected ResourceLocation block;
 
-    public AbstractChestTileEntity(@NotNull final TileEntityType type, @Nullable final ResourceLocation block)
+    public AbstractChestTileEntity(final TileEntityType type, @Nullable final ResourceLocation block)
     {
         super(type);
         if (block != null) { initialize(block); }
     }
 
     @Nullable @Override
-    protected Container createMenu(final int windowId, @NotNull final PlayerInventory playerInventory) { return null; }
+    protected Container createMenu(final int windowId, final PlayerInventory playerInventory) { return null; }
 
-    @NotNull @Override
+    @Override
     protected ITextComponent getDefaultName() { return defaultContainerName; }
 
-    protected abstract void initialize(@NotNull final ResourceLocation block);
+    protected abstract void initialize(final ResourceLocation block);
 
-    @NotNull
     public ResourceLocation getBlock() { return block; }
 
-    public void setBlock(@NotNull final ResourceLocation block) { this.block = block; }
+    public void setBlock(final ResourceLocation block) { this.block = block; }
 
-    @NotNull @Override
+    @Override
     protected NonNullList<ItemStack> getItems() { return inventory; }
 
     @Override
-    public void setItems(@NotNull final NonNullList<ItemStack> inventory) { this.inventory = inventory; }
-
-    @NotNull @Override
-    public int[] getSlotsForFace(@NotNull final Direction direction) { return SLOTS; }
+    public void setItems(final NonNullList<ItemStack> inventory) { this.inventory = inventory; }
 
     @Override
-    public boolean canInsertItem(final int slot, @NotNull final ItemStack stack, @NotNull final Direction direction)
+    public int[] getSlotsForFace(final Direction direction) { return SLOTS; }
+
+    @Override
+    public boolean canInsertItem(final int slot, final ItemStack stack, final Direction direction)
     { return this.isItemValidForSlot(slot, stack); }
 
     @Override
-    public boolean canExtractItem(final int slot, @NotNull final ItemStack stack, @NotNull final Direction direction) { return true; }
+    public boolean canExtractItem(final int slot, final ItemStack stack, final Direction direction) { return true; }
 
     @Override
     public int getSizeInventory() { return inventorySize; }
@@ -67,15 +65,15 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     public boolean isEmpty() { return inventory.stream().allMatch(ItemStack::isEmpty); }
 
     @Override
-    public void read(@NotNull final BlockState state, @NotNull final CompoundNBT tag)
+    public void read(final BlockState state, final CompoundNBT tag)
     {
         super.read(state, tag);
         this.initialize(new ResourceLocation(tag.getString("type")));
         if (!checkLootAndRead(tag)) { ItemStackHelper.loadAllItems(tag, inventory); }
     }
 
-    @NotNull @Override
-    public CompoundNBT write(@NotNull final CompoundNBT tag)
+    @Override
+    public CompoundNBT write(final CompoundNBT tag)
     {
         super.write(tag);
         tag.putString("type", block.toString());
@@ -83,7 +81,7 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
         return tag;
     }
 
-    @NotNull @Override
+    @Override
     public CompoundNBT getUpdateTag()
     {
         CompoundNBT tag = this.write(new CompoundNBT());

@@ -5,12 +5,10 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import ninjaphenix.expandedstorage.ModContent;
-import org.jetbrains.annotations.NotNull;
 
 public class ItemModels extends ItemModelProvider
 {
-    public ItemModels(@NotNull final DataGenerator generator, @NotNull final String modId, @NotNull final ExistingFileHelper fileHelper)
-    { super(generator, modId, fileHelper); }
+    public ItemModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper) { super(generator, modId, fileHelper); }
 
     @Override
     protected void registerModels()
@@ -48,18 +46,18 @@ public class ItemModels extends ItemModelProvider
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void oldChest(@NotNull final Item item) { getBuilder(item.getRegistryName().getPath()).parent(BlockStatesAndModels.SINGLE_OLD_MODELS.get(item)); }
+    private void oldChest(final Item item) { getBuilder(item.getRegistryName().getPath()).parent(BlockStatesAndModels.SINGLE_OLD_MODELS.get(item)); }
 
     @SuppressWarnings("ConstantConditions")
-    private void simple(@NotNull final Item item)
+    private void simple(final Item item)
     {
         final String itemId = item.getRegistryName().getPath();
         withExistingParent(itemId, mcLoc("item/generated")).texture("layer0", "item/" + itemId);
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void chest(@NotNull final Item item) { withExistingParent(item.getRegistryName().getPath(), mcLoc("item/chest")); }
+    private void chest(final Item item) { withExistingParent(item.getRegistryName().getPath(), mcLoc("item/chest")); }
 
-    @NotNull @Override
+    @Override
     public String getName() { return "Expanded Storage - Item Models"; }
 }

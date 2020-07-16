@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import org.jetbrains.annotations.NotNull;
 
 public class SingleChestModel extends Model
 {
@@ -36,12 +35,12 @@ public class SingleChestModel extends Model
         lid.rotateAngleX = -((1.0F - inversePitch * inversePitch * inversePitch) * 1.5707964F);
     }
 
-    public void render(@NotNull final MatrixStack stack, @NotNull final IVertexBuilder builder, final int light, final int overlay)
+    public void render(final MatrixStack stack, final IVertexBuilder builder, final int light, final int overlay)
     { render(stack, builder, light, overlay, 1, 1, 1, 1); }
 
     @Override
-    public void render(@NotNull final MatrixStack stack, @NotNull final IVertexBuilder builder, final int light, final int overlay, final float r,
-            final float g, final float b, final float f)
+    public void render(final MatrixStack stack, final IVertexBuilder builder, final int light, final int overlay, final float r, final float g, final float b,
+            final float f)
     {
         base.render(stack, builder, light, overlay);
         lid.render(stack, builder, light, overlay);

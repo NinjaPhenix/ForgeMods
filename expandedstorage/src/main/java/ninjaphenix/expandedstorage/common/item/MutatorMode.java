@@ -5,7 +5,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import ninjaphenix.expandedstorage.ExpandedStorage;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -21,8 +20,7 @@ public enum MutatorMode
     public final ITextComponent title, description;
     public final byte next;
 
-    MutatorMode(@NotNull final ITextComponent title, @NotNull final Function<ITextComponent, IFormattableTextComponent> description,
-            final int next)
+    MutatorMode(final ITextComponent title, final Function<ITextComponent, IFormattableTextComponent> description, final int next)
     {
         this.title = title;
         this.description = description.apply(ExpandedStorage.leftShiftRightClick).mergeStyle(TextFormatting.GRAY);

@@ -5,7 +5,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class OldChestTileEntity extends AbstractChestTileEntity
@@ -15,7 +14,7 @@ public class OldChestTileEntity extends AbstractChestTileEntity
     public OldChestTileEntity(@Nullable final ResourceLocation block) { super(ModContent.OLD_CHEST_TE, block); }
 
     @Override @SuppressWarnings("OptionalGetWithoutIsPresent")
-    protected void initialize(@NotNull final ResourceLocation block)
+    protected void initialize(final ResourceLocation block)
     {
         this.block = block;
         Registries.TierData data = Registries.OLD.getValue(block).get();

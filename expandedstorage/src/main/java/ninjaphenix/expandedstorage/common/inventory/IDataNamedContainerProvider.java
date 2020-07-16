@@ -2,9 +2,8 @@ package ninjaphenix.expandedstorage.common.inventory;
 
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.network.PacketBuffer;
-import org.jetbrains.annotations.NotNull;
 
 public interface IDataNamedContainerProvider extends INamedContainerProvider
 {
-    void writeExtraData(@NotNull final PacketBuffer buffer);
+    void writeExtraData(final PacketBuffer buffer);
 }

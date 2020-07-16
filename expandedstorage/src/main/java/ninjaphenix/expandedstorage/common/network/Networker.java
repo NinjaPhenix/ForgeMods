@@ -20,7 +20,6 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
 import ninjaphenix.expandedstorage.common.inventory.*;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -65,10 +64,10 @@ public class Networker
     public void requestOpenSelectionScreen() { channel.sendToServer(new OpenSelectScreenMessage()); }
 
     @SuppressWarnings("InstantiationOfUtilityClass")
-    public void openSelectionScreen(@NotNull final ServerPlayerEntity player)
+    public void openSelectionScreen(final ServerPlayerEntity player)
     { channel.send(PacketDistributor.PLAYER.with(() -> player), new OpenSelectScreenMessage()); }
 
-    public void setPlayerPreference(@NotNull final PlayerEntity player, @Nullable final ResourceLocation containerType)
+    public void setPlayerPreference(final PlayerEntity player, @Nullable final ResourceLocation containerType)
     {
         final UUID uuid = player.getUniqueID();
         if (containerFactories.containsKey(containerType))
@@ -87,9 +86,9 @@ public class Networker
         }
     }
 
-    void removePlayerPreferenceCallback(@NotNull final PlayerEntity player) { preferenceCallbacks.remove(player.getUniqueID()); }
+    void removePlayerPreferenceCallback(final PlayerEntity player) { preferenceCallbacks.remove(player.getUniqueID()); }
 
-    public void openContainer(@NotNull final ServerPlayerEntity player, @NotNull final IDataNamedContainerProvider containerProvider)
+    public void openContainer(final ServerPlayerEntity player, final IDataNamedContainerProvider containerProvider)
     {
         final UUID uuid = player.getUniqueID();
         if (playerPreferences.containsKey(uuid) && containerFactories.containsKey(playerPreferences.get(uuid)))
@@ -97,14 +96,15 @@ public class Networker
         else { openSelectScreen(player, (type) -> openContainer(player, containerProvider)); }
     }
 
-    void openSelectScreen(@NotNull final ServerPlayerEntity player, @Nullable final Consumer<ResourceLocation> preferenceSetCallback)
+    void openSelectScreen(final ServerPlayerEntity player, @Nullable final Consumer<ResourceLocation> preferenceSetCallback)
     {
         if (preferenceSetCallback != null) { preferenceCallbacks.put(player.getUniqueID(), preferenceSetCallback); }
         Networker.INSTANCE.openSelectionScreen(player);
     }
 
-    public Container getContainer(final int windowId, @NotNull final BlockPos pos, @NotNull final IInventory inventory, @NotNull final PlayerEntity player,
-            @NotNull final ITextComponent displayName)
+    @Nullable
+    public Container getContainer(final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player,
+            final ITextComponent displayName)
     {
         final UUID uuid = player.getUniqueID();
         final ResourceLocation playerPreference;
@@ -114,8 +114,8 @@ public class Networker
     }
 
     @SubscribeEvent @OnlyIn(Dist.CLIENT)
-    public void onPlayerConnected(@NotNull final ClientPlayerNetworkEvent.LoggedInEvent event) { Networker.INSTANCE.sendPreferenceToServer(); }
+    public void onPlayerConnected(final ClientPlayerNetworkEvent.LoggedInEvent event) { Networker.INSTANCE.sendPreferenceToServer(); }
 
     @SubscribeEvent
-    public void onPlayerDisconnected(@NotNull final PlayerEvent.PlayerLoggedOutEvent event) { setPlayerPreference(event.getPlayer(), null); }
+    public void onPlayerDisconnected(final PlayerEvent.PlayerLoggedOutEvent event) { setPlayerPreference(event.getPlayer(), null); }
 }

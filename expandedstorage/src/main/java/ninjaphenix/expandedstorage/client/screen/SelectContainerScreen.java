@@ -13,7 +13,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
 import ninjaphenix.expandedstorage.common.network.Networker;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -44,7 +43,7 @@ public class SelectContainerScreen extends Screen
         int y = 0;
         int leftPadding = MathHelper.ceil((width - 96 * maxColumns - PADDING * (maxColumns - 1)) / 2D);
         TOP = MathHelper.ceil((height - 96 * totalRows - PADDING * (totalRows - 1)) / 2D);
-        for (@NotNull final HashMap.Entry<ResourceLocation, Pair<ResourceLocation, ITextComponent>> entry : OPTIONS.entrySet())
+        for (final HashMap.Entry<ResourceLocation, Pair<ResourceLocation, ITextComponent>> entry : OPTIONS.entrySet())
         {
             final ResourceLocation id = entry.getKey();
             final Pair<ResourceLocation, ITextComponent> settings = entry.getValue();
@@ -70,7 +69,7 @@ public class SelectContainerScreen extends Screen
         super.onClose();
     }
 
-    private void updatePlayerPreference(@NotNull final ResourceLocation selection)
+    private void updatePlayerPreference(final ResourceLocation selection)
     {
         ExpandedStorageConfig.CLIENT.preferredContainerType.set(selection.toString());
         Networker.INSTANCE.sendPreferenceToServer();
@@ -84,7 +83,7 @@ public class SelectContainerScreen extends Screen
     public boolean isPauseScreen() { return false; }
 
     @Override
-    public void render(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+    public void render(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
         renderBackground(stack);
         buttons.forEach(button -> button.render(stack, mouseX, mouseY, partialTicks));
@@ -97,21 +96,21 @@ public class SelectContainerScreen extends Screen
     {
         private final ResourceLocation TEXTURE;
 
-        public ScreenTypeButton(final int x, final int y, final int width, final int height, @NotNull final ResourceLocation texture,
-                final ITextComponent message, @NotNull final Button.IPressable onPress, @NotNull final ITooltip onTooltip)
+        public ScreenTypeButton(final int x, final int y, final int width, final int height, final ResourceLocation texture, final ITextComponent message,
+                final Button.IPressable onPress, final ITooltip onTooltip)
         {
             super(x, y, width, height, message, onPress, onTooltip);
             TEXTURE = texture;
         }
 
         @Override
-        public void renderButton(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+        public void renderButton(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
         {
             Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
             blit(stack, x, y, 0, isHovered() ? height : 0, width, height, width, height * 2);
         }
 
-        public void renderTooltip(@NotNull final MatrixStack stack, final int mouseX, final int mouseY)
+        public void renderTooltip(final MatrixStack stack, final int mouseX, final int mouseY)
         {
             if (active)
             {

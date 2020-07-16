@@ -29,7 +29,6 @@ import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,9 +44,9 @@ public class ChestMutatorItem extends ChestModifierItem
 
     public ChestMutatorItem() { super(new Item.Properties().maxStackSize(1).group(ExpandedStorage.group)); }
 
-    @NotNull @Override @SuppressWarnings("ConstantConditions")
-    protected ActionResultType useModifierOnChestBlock(@NotNull final ItemUseContext context, @NotNull final BlockState mainState,
-            @NotNull final BlockPos mainPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
+    @Override @SuppressWarnings("ConstantConditions")
+    protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainPos,
+            @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
     {
         final PlayerEntity player = context.getPlayer();
         final World world = context.getWorld();
@@ -137,8 +136,8 @@ public class ChestMutatorItem extends ChestModifierItem
         return ActionResultType.FAIL;
     }
 
-    @NotNull @Override @SuppressWarnings({ "ConstantConditions", "OptionalGetWithoutIsPresent" })
-    protected ActionResultType useModifierOnBlock(@NotNull final ItemUseContext context, @NotNull final BlockState state)
+    @Override @SuppressWarnings({ "ConstantConditions", "OptionalGetWithoutIsPresent" })
+    protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state)
     {
         final PlayerEntity player = context.getPlayer();
         final ItemStack stack = context.getItem();
@@ -264,8 +263,8 @@ public class ChestMutatorItem extends ChestModifierItem
         return super.useModifierOnBlock(context, state);
     }
 
-    @NotNull @Override
-    protected ActionResult<ItemStack> useModifierInAir(@NotNull final World world, @NotNull final PlayerEntity player, @NotNull final Hand hand)
+    @Override
+    protected ActionResult<ItemStack> useModifierInAir(final World world, final PlayerEntity player, final Hand hand)
     {
         if (player.isCrouching())
         {
@@ -280,13 +279,13 @@ public class ChestMutatorItem extends ChestModifierItem
     }
 
     @Override
-    public void onCreated(@NotNull final ItemStack stack, @NotNull final World world, @NotNull final PlayerEntity player)
+    public void onCreated(final ItemStack stack, final World world, final PlayerEntity player)
     {
         super.onCreated(stack, world, player);
         getMode(stack);
     }
 
-    @NotNull @Override
+    @Override
     public ItemStack getDefaultInstance()
     {
         final ItemStack stack = super.getDefaultInstance();
@@ -295,11 +294,10 @@ public class ChestMutatorItem extends ChestModifierItem
     }
 
     @Override
-    public void fillItemGroup(@NotNull final ItemGroup itemGroup, @NotNull final NonNullList<ItemStack> stackList)
+    public void fillItemGroup(final ItemGroup itemGroup, final NonNullList<ItemStack> stackList)
     { if (isInGroup(itemGroup)) { stackList.add(getDefaultInstance()); } }
 
-    @NotNull
-    private MutatorMode getMode(@NotNull final ItemStack stack)
+    private MutatorMode getMode(final ItemStack stack)
     {
         final CompoundNBT tag = stack.getOrCreateTag();
         if (!tag.contains("mode", 1)) { tag.putByte("mode", (byte) 0); }
@@ -307,8 +305,7 @@ public class ChestMutatorItem extends ChestModifierItem
     }
 
     @Override
-    public void addInformation(@NotNull final ItemStack stack, @Nullable final World world, @NotNull final List<ITextComponent> tooltip,
-            @NotNull final ITooltipFlag flag)
+    public void addInformation(final ItemStack stack, @Nullable final World world, final List<ITextComponent> tooltip, final ITooltipFlag flag)
     {
         final MutatorMode mode = getMode(stack);
         tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", mode.title).mergeStyle(TextFormatting.GRAY));
