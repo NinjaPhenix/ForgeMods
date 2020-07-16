@@ -12,7 +12,7 @@ import torcherino.Torcherino;
 import torcherino.api.TorcherinoAPI;
 import torcherino.block.tile.TorcherinoTileEntity;
 
-public class Networker
+public final class Networker
 {
     public static final Networker INSTANCE = new Networker();
 

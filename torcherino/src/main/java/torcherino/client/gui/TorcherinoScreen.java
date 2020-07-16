@@ -25,7 +25,7 @@ import torcherino.network.OpenScreenMessage;
 import torcherino.network.ValueUpdateMessage;
 
 @OnlyIn(Dist.CLIENT)
-public class TorcherinoScreen extends Screen
+public final class TorcherinoScreen extends Screen
 {
     private static final ResourceLocation BACKGROUND_TEXTURE = Torcherino.getRl("textures/gui/container/torcherino.png");
     private static final int xSize = 245;
@@ -50,16 +50,16 @@ public class TorcherinoScreen extends Screen
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void open(final OpenScreenMessage msg)
+    public static void open(final OpenScreenMessage message)
     {
         final Minecraft minecraft = Minecraft.getInstance();
         minecraft.deferTask(() ->
         {
-            TileEntity tileEntity = minecraft.player.world.getTileEntity(msg.pos);
+            final TileEntity tileEntity = minecraft.player.world.getTileEntity(message.pos);
             if (tileEntity instanceof TorcherinoTileEntity)
             {
-                final TorcherinoScreen screen = new TorcherinoScreen((TorcherinoTileEntity) tileEntity, msg.title, msg.xRange, msg.zRange, msg.yRange,
-                        msg.speed, msg.redstoneMode);
+                final TorcherinoScreen screen = new TorcherinoScreen((TorcherinoTileEntity) tileEntity, message.title, message.xRange, message.zRange,
+                        message.yRange, message.speed, message.redstoneMode);
                 minecraft.displayGuiScreen(screen);
             }
         });
@@ -75,10 +75,10 @@ public class TorcherinoScreen extends Screen
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 20, 205, (double) (speed - 1) / (tier.MAX_SPEED - 1), tier.MAX_SPEED - 1)
         {
             @Override
-            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.speed", 100 * TorcherinoScreen.this.speed)); }
+            protected final void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.speed", 100 * TorcherinoScreen.this.speed)); }
 
             @Override
-            protected void func_230972_a_()
+            protected final void func_230972_a_()
             {
                 TorcherinoScreen.this.speed = 1 + (int) Math.round(field_230683_b_ * (TorcherinoScreen.this.tier.MAX_SPEED - 1));
                 field_230683_b_ = (double) (speed - 1) / (tier.MAX_SPEED - 1);
@@ -87,10 +87,10 @@ public class TorcherinoScreen extends Screen
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 45, 205, (double) xRange / tier.XZ_RANGE, tier.XZ_RANGE)
         {
             @Override
-            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.x_range", TorcherinoScreen.this.xRange * 2 + 1)); }
+            protected final void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.x_range", TorcherinoScreen.this.xRange * 2 + 1)); }
 
             @Override
-            protected void func_230972_a_()
+            protected final void func_230972_a_()
             {
                 TorcherinoScreen.this.xRange = (int) Math.round(field_230683_b_ * TorcherinoScreen.this.tier.XZ_RANGE);
                 field_230683_b_ = (double) xRange / tier.XZ_RANGE;
@@ -99,10 +99,10 @@ public class TorcherinoScreen extends Screen
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 70, 205, (double) zRange / tier.XZ_RANGE, tier.XZ_RANGE)
         {
             @Override
-            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.z_range", TorcherinoScreen.this.zRange * 2 + 1)); }
+            protected final void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.z_range", TorcherinoScreen.this.zRange * 2 + 1)); }
 
             @Override
-            protected void func_230972_a_()
+            protected final void func_230972_a_()
             {
                 TorcherinoScreen.this.zRange = (int) Math.round(field_230683_b_ * TorcherinoScreen.this.tier.XZ_RANGE);
                 field_230683_b_ = (double) zRange / tier.XZ_RANGE;
@@ -111,10 +111,10 @@ public class TorcherinoScreen extends Screen
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 95, 205, (double) yRange / tier.Y_RANGE, tier.Y_RANGE)
         {
             @Override
-            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.y_range", TorcherinoScreen.this.yRange * 2 + 1)); }
+            protected final void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.y_range", TorcherinoScreen.this.yRange * 2 + 1)); }
 
             @Override
-            protected void func_230972_a_()
+            protected final void func_230972_a_()
             {
                 TorcherinoScreen.this.yRange = (int) Math.round(field_230683_b_ * TorcherinoScreen.this.tier.Y_RANGE);
                 field_230683_b_ = (double) yRange / tier.Y_RANGE;
@@ -125,7 +125,7 @@ public class TorcherinoScreen extends Screen
             private ItemStack renderStack;
 
             @Override
-            protected void setState(final int state)
+            protected final void setState(final int state)
             {
                 final TranslationTextComponent modeText;
                 switch (state)
@@ -157,10 +157,10 @@ public class TorcherinoScreen extends Screen
             }
 
             @Override
-            protected int getMaxStates() { return 4; }
+            protected final int getMaxStates() { return 4; }
 
             @Override
-            protected ItemStack getButtonIcon() { return renderStack; }
+            protected final ItemStack getButtonIcon() { return renderStack; }
         });
     }
 
@@ -189,7 +189,10 @@ public class TorcherinoScreen extends Screen
     public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
     {
         if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode)))
-        { onClose(); return true; }
+        {
+            onClose();
+            return true;
+        }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 }

@@ -12,7 +12,7 @@ import torcherino.block.tile.TorcherinoTileEntity;
 
 import java.util.function.Supplier;
 
-public class ValueUpdateMessage
+public final class ValueUpdateMessage
 {
     private final BlockPos pos;
     private final int xRange, zRange, yRange, speed, redstoneMode;

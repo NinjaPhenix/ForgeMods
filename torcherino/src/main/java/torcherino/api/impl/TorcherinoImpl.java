@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class TorcherinoImpl implements TorcherinoAPI
+public final class TorcherinoImpl implements TorcherinoAPI
 {
     private final Logger LOGGER = LogManager.getLogger("torcherino-api");
     private final Map<ResourceLocation, Tier> localTiers = new HashMap<>();
@@ -24,6 +24,7 @@ public class TorcherinoImpl implements TorcherinoAPI
     private final Set<TileEntityType<?>> blacklistedTiles = new HashSet<>();
     private Map<ResourceLocation, Tier> remoteTiers = new HashMap<>();
 
+    @Override
     public boolean registerTier(final ResourceLocation name, final int maxSpeed, final int xzRange, final int yRange)
     {
         Tier tier = new Tier(maxSpeed, xzRange, yRange);
@@ -36,6 +37,7 @@ public class TorcherinoImpl implements TorcherinoAPI
         return true;
     }
 
+    @Override
     public boolean blacklistBlock(final ResourceLocation block)
     {
         if (ForgeRegistries.BLOCKS.containsKey(block))
@@ -99,12 +101,12 @@ public class TorcherinoImpl implements TorcherinoAPI
     public boolean isBlockBlacklisted(final Block block) { return blacklistedBlocks.contains(block); }
 
     @Override
-    public boolean isTileEntityBlacklisted(final TileEntityType<? extends TileEntity> tileEntityType)
-    { return blacklistedTiles.contains(tileEntityType); }
+    public boolean isTileEntityBlacklisted(final TileEntityType<? extends TileEntity> tileEntityType) { return blacklistedTiles.contains(tileEntityType); }
 
     // Do not use
     public void setRemoteTiers(final Map<ResourceLocation, Tier> tiers) { remoteTiers = tiers; }
 
+    @Override
     public ImmutableMap<ResourceLocation, Tier> getTiers() { return ImmutableMap.copyOf(localTiers); }
 
     @Override

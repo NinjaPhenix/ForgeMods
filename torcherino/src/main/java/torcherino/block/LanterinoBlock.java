@@ -34,7 +34,7 @@ import java.util.Random;
 
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
-public class LanterinoBlock extends LanternBlock implements TierSupplier
+public final class LanterinoBlock extends LanternBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 

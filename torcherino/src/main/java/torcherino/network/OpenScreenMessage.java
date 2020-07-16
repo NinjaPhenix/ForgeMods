@@ -9,7 +9,7 @@ import torcherino.client.gui.TorcherinoScreen;
 
 import java.util.function.Supplier;
 
-public class OpenScreenMessage
+public final class OpenScreenMessage
 {
     public final BlockPos pos;
     public final ITextComponent title;

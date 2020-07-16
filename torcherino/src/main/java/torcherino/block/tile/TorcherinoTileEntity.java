@@ -23,7 +23,7 @@ import torcherino.network.OpenScreenMessage;
 
 import static torcherino.ModContent.TORCHERINO_TILE_ENTITY;
 
-public class TorcherinoTileEntity extends TileEntity implements INameable, ITickableTileEntity
+public final class TorcherinoTileEntity extends TileEntity implements INameable, ITickableTileEntity
 {
     private ITextComponent customName;
     private int xRange, yRange, zRange, speed, redstoneMode, randomTicks;

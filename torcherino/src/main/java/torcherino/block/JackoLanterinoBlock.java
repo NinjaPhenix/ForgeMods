@@ -33,7 +33,7 @@ import java.util.Random;
 import static net.minecraft.state.properties.BlockStateProperties.FACING;
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
-public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
+public final class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 

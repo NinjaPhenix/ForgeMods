@@ -33,7 +33,7 @@ import java.util.Random;
 
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
-public class TorcherinoBlock extends TorchBlock implements TierSupplier
+public final class TorcherinoBlock extends TorchBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 

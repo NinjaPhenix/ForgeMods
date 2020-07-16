@@ -34,7 +34,7 @@ import java.util.Random;
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 @SuppressWarnings("deprecation")
-public class TorcherinoWallBlock extends WallTorchBlock implements TierSupplier
+public final class TorcherinoWallBlock extends WallTorchBlock implements TierSupplier
 {
     private final ResourceLocation tierName;
 

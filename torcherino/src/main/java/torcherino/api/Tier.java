@@ -1,6 +1,6 @@
 package torcherino.api;
 
-public class Tier
+public final class Tier
 {
     public final int MAX_SPEED;
     public final int XZ_RANGE;
