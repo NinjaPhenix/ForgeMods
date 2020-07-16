@@ -32,17 +32,20 @@ import torcherino.block.tile.TorcherinoTileEntity;
 @Mod.EventBusSubscriber(modid = Torcherino.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModContent
 {
+    @SuppressWarnings("ConstantConditions")
+    public static final TileEntityType<TorcherinoTileEntity> TORCHERINO_TILE_ENTITY = new CustomTileEntityType<>(TorcherinoTileEntity::new,
+            block -> block instanceof TierSupplier, null);
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Torcherino.MOD_ID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Torcherino.MOD_ID);
     private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Torcherino.MOD_ID);
     private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Torcherino.MOD_ID);
-    @SuppressWarnings("ConstantConditions")
-    public static final TileEntityType<TorcherinoTileEntity> TORCHERINO_TILE_ENTITY = new CustomTileEntityType<>(TorcherinoTileEntity::new,
-            block -> block instanceof TierSupplier, null);
 
     public static void initialise(final IEventBus bus)
     {
-        BLOCKS.register(bus); ITEMS.register(bus); PARTICLE_TYPES.register(bus); TILE_ENTITIES.register(bus);
+        BLOCKS.register(bus);
+        ITEMS.register(bus);
+        PARTICLE_TYPES.register(bus);
+        TILE_ENTITIES.register(bus);
         TILE_ENTITIES.register("torcherino", TORCHERINO_TILE_ENTITY.delegate);
         TorcherinoAPI.INSTANCE.blacklistTileEntity(TORCHERINO_TILE_ENTITY);
         TorcherinoAPI.INSTANCE.getTiers().keySet().forEach(ModContent::register);
