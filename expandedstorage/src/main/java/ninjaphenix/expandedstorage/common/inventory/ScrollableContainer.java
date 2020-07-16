@@ -74,12 +74,8 @@ public final class ScrollableContainer extends AbstractContainer<ScrollableScree
         @Override
         public ScrollableContainer create(final int windowId, @NotNull final PlayerInventory playerInventory, @Nullable final PacketBuffer data)
         {
-            if (data != null)
-            {
-                final int inventorySize = data.readInt(); final BlockPos pos = data.readBlockPos();
-                return new ScrollableContainer(windowId, pos, new Inventory(inventorySize), playerInventory.player, null);
-            }
-            return null;
+            if (data == null) { return null; }
+            return new ScrollableContainer(windowId, data.readBlockPos(), new Inventory(data.readInt()), playerInventory.player, null);
         }
     }
 }

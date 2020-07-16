@@ -74,11 +74,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                 private final DoubleSidedInventory inventory = new DoubleSidedInventory(first, second);
 
                 @Override
-                public void writeExtraData(@NotNull final PacketBuffer buffer)
-                {
-                    buffer.writeInt(inventory.getSizeInventory());
-                    buffer.writeBlockPos(first.getPos());
-                }
+                public void writeExtraData(@NotNull final PacketBuffer buffer) { buffer.writeBlockPos(first.getPos()).writeInt(inventory.getSizeInventory()); }
 
                 @NotNull @Override
                 public ITextComponent getDisplayName()
