@@ -64,7 +64,7 @@ public abstract class ChestModifierItem extends Item
         else { return useModifierOnBlock(context, state); }
     }
 
-    @Override
+    @NotNull @Override
     public ActionResultType itemInteractionForEntity(@NotNull final ItemStack stack, @NotNull final PlayerEntity player, @NotNull final LivingEntity entity,
             @NotNull final Hand hand)
     { return useModifierOnEntity(stack, player, entity, hand); }
@@ -85,6 +85,7 @@ public abstract class ChestModifierItem extends Item
     @NotNull
     protected ActionResultType useModifierOnBlock(@NotNull final ItemUseContext context, @NotNull final BlockState state) { return ActionResultType.PASS; }
 
+    @SuppressWarnings("unused")
     protected ActionResultType useModifierOnEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
     { return ActionResultType.PASS; }
 

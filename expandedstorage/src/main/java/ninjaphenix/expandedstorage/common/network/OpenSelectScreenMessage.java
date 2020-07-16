@@ -21,12 +21,13 @@ import java.util.function.Supplier;
 
 public class OpenSelectScreenMessage
 {
+    @SuppressWarnings("unused")
     static void encode(@NotNull final OpenSelectScreenMessage message, @NotNull final PacketBuffer buffer) { }
 
-    @SuppressWarnings("InstantiationOfUtilityClass")
+    @SuppressWarnings({ "InstantiationOfUtilityClass", "unused" })
     static OpenSelectScreenMessage decode(@NotNull final PacketBuffer buffer) { return new OpenSelectScreenMessage(); }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({ "ConstantConditions", "unused" })
     static void handle(@NotNull final OpenSelectScreenMessage message, @NotNull final Supplier<NetworkEvent.Context> ctx)
     {
         NetworkEvent.Context context = ctx.get();
@@ -37,10 +38,7 @@ public class OpenSelectScreenMessage
         {
             @Override
             public void writeExtraData(@NotNull final PacketBuffer buffer)
-            {
-                buffer.writeInt(container.getInv().getSizeInventory());
-                buffer.writeBlockPos(container.ORIGIN);
-            }
+            { buffer.writeBlockPos(container.ORIGIN).writeInt(container.getInv().getSizeInventory()); }
 
             @Nullable @Override
             public Container createMenu(final int windowId, @NotNull final PlayerInventory playerInventory, @NotNull final PlayerEntity player)

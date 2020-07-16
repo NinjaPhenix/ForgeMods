@@ -15,16 +15,16 @@ import java.util.List;
 @JeiPlugin
 public class ExpandedStorageJeiPlugin implements IModPlugin
 {
-	@NotNull @Override
-	public ResourceLocation getPluginUid() { return ExpandedStorage.getRl("jei_plugin"); }
+    @NotNull @Override
+    public ResourceLocation getPluginUid() { return ExpandedStorage.getRl("jei_plugin"); }
 
-	@Override
-	public void registerGuiHandlers(@NotNull final IGuiHandlerRegistration registration)
-	{
-		registration.addGuiContainerHandler(ScrollableScreen.class, new IGuiContainerHandler<ScrollableScreen>()
-		{
-			@NotNull @Override
-			public List<Rectangle2d> getGuiExtraAreas(@NotNull final ScrollableScreen screen) { return screen.getJeiRectangle(); }
-		});
-	}
+    @Override
+    public void registerGuiHandlers(@NotNull final IGuiHandlerRegistration registration)
+    {
+        registration.addGuiContainerHandler(ScrollableScreen.class, new IGuiContainerHandler<ScrollableScreen>()
+        {
+            @NotNull @Override
+            public List<Rectangle2d> getGuiExtraAreas(@NotNull final ScrollableScreen screen) { return screen.getJeiRectangle(); }
+        });
+    }
 }

@@ -39,5 +39,5 @@ public class ScreenTypeSelectionScreenButton extends Button
     }
 
     public void renderTooltip(@NotNull final MatrixStack stack, final int x, final int y)
-    { if (isHovered()) { onTooltip.onTooltip(this, stack, x, y); } }
+    { if (isHovered()) { field_238487_u_.onTooltip(this, stack, x, y); } }
 }

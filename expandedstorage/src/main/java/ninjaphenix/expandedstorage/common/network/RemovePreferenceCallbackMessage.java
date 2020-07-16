@@ -9,17 +9,17 @@ import java.util.function.Supplier;
 
 public class RemovePreferenceCallbackMessage
 {
+    @SuppressWarnings("unused")
     public static void encode(@NotNull final RemovePreferenceCallbackMessage message, @NotNull final PacketBuffer buffer) {}
 
-    @SuppressWarnings("InstantiationOfUtilityClass")
+    @SuppressWarnings({ "InstantiationOfUtilityClass", "unused" })
     public static RemovePreferenceCallbackMessage decode(@NotNull final PacketBuffer buffer) { return new RemovePreferenceCallbackMessage(); }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({ "ConstantConditions", "unused" })
     public static void handle(@NotNull final RemovePreferenceCallbackMessage message, @NotNull final Supplier<NetworkEvent.Context> contextSupplier)
     {
         final NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getOriginationSide() == LogicalSide.CLIENT)
-        { Networker.INSTANCE.removePlayerPreferenceCallback(context.getSender()); }
+        if (context.getDirection().getOriginationSide() == LogicalSide.CLIENT) { Networker.INSTANCE.removePlayerPreferenceCallback(context.getSender()); }
         context.setPacketHandled(true);
     }
 }

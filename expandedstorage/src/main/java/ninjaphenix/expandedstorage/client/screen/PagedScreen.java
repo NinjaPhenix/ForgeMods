@@ -48,7 +48,7 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
             }
             if (!leftPageButton.active) { leftPageButton.setActive(true); }
         }
-        else if(newPage < oldPage)
+        else if (newPage < oldPage)
         {
             if (page == 1) { leftPageButton.setActive(false); }
             if (blankArea != null) {blankArea = null; }
@@ -186,8 +186,8 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
         {
             if (active)
             {
-                if (isHovered) { onTooltip.onTooltip(this, stack, mouseX, mouseY); }
-                else if (isHovered()) { onTooltip.onTooltip(this, stack, x, y); }
+                if (isHovered) { field_238487_u_.onTooltip(this, stack, mouseX, mouseY); }
+                else if (isHovered()) { field_238487_u_.onTooltip(this, stack, x, y); }
             }
         }
     }

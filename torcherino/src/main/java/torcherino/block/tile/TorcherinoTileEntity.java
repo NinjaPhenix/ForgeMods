@@ -94,7 +94,7 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
         this.speed = speed;
         this.redstoneMode = redstoneMode;
         BlockState state = world.getBlockState(pos);
-        if (state.func_235901_b_(BlockStateProperties.POWERED)) { setPoweredByRedstone(state.get(BlockStateProperties.POWERED)); }
+        if (state.hasProperty(BlockStateProperties.POWERED)) { setPoweredByRedstone(state.get(BlockStateProperties.POWERED)); }
         this.markDirty();
     }
 

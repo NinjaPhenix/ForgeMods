@@ -23,9 +23,7 @@ public class PreferenceUpdateMessage
     {
         final NetworkEvent.Context context = contextSupplier.get();
         if (context.getDirection().getOriginationSide() == LogicalSide.CLIENT)
-        {
-            Networker.INSTANCE.setPlayerPreference(context.getSender(), message.preference);
-        }
+        { Networker.INSTANCE.setPlayerPreference(context.getSender(), message.preference); }
         context.setPacketHandled(true);
     }
 }

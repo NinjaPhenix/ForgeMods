@@ -12,9 +12,9 @@ import java.util.function.Function;
 
 public class Registries
 {
-	public static final SimpleRegistry<ModeledTierData> MODELED = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
+    public static final SimpleRegistry<ModeledTierData> MODELED = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
             ExpandedStorage.getRl("modeled")), Lifecycle.experimental());
-	public static final SimpleRegistry<TierData> OLD = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
+    public static final SimpleRegistry<TierData> OLD = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
             ExpandedStorage.getRl("old")), Lifecycle.experimental());
 
     public static class ModeledTierData extends TierData
@@ -37,7 +37,8 @@ public class Registries
         @NotNull
         public ResourceLocation getChestTexture(@NotNull final CursedChestType type)
         {
-            switch(type) {
+            switch (type)
+            {
                 case TOP: return topTexture;
                 case BACK: return backTexture;
                 case RIGHT: return rightTexture;
@@ -50,25 +51,25 @@ public class Registries
         }
     }
 
-	public static class TierData
-	{
-		private final int slots;
-		private final ITextComponent containerName;
-		private final ResourceLocation blockId;
+    public static class TierData
+    {
+        private final int slots;
+        private final ITextComponent containerName;
+        private final ResourceLocation blockId;
 
-		public TierData(int slots, ResourceLocation blockId, ITextComponent containerName)
-		{
-			this.slots = slots;
-			this.containerName = containerName;
-			this.blockId = blockId;
-		}
+        public TierData(int slots, ResourceLocation blockId, ITextComponent containerName)
+        {
+            this.slots = slots;
+            this.containerName = containerName;
+            this.blockId = blockId;
+        }
 
-		public int getSlotCount() { return slots; }
+        public int getSlotCount() { return slots; }
 
-		@NotNull
-		public ITextComponent getContainerName() { return containerName; }
+        @NotNull
+        public ITextComponent getContainerName() { return containerName; }
 
-		@NotNull
-		public ResourceLocation getBlockId() { return blockId; }
-	}
+        @NotNull
+        public ResourceLocation getBlockId() { return blockId; }
+    }
 }

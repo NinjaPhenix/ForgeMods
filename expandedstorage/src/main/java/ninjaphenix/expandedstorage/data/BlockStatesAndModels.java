@@ -73,7 +73,7 @@ public class BlockStatesAndModels extends BlockStateProvider
                     .rotationY(((state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalIndex() + 2) % 4) * 90)
                     .modelFile(oldChestGetModel(blockPath, chestType))
                     .build();
-            if(chestType == CursedChestType.SINGLE) { SINGLE_OLD_MODELS.put(block.asItem(), result[0].model); }
+            if (chestType == CursedChestType.SINGLE) { SINGLE_OLD_MODELS.put(block.asItem(), result[0].model); }
             return result;
         }, BlockStateProperties.WATERLOGGED);
     }

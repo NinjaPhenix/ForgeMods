@@ -12,7 +12,7 @@ public class ItemTags extends ItemTagsProvider
     public ItemTags(@NotNull final DataGenerator generator, @NotNull final BlockTagsProvider blockTagsProvider) { super(generator, blockTagsProvider); }
 
     @Override
-    protected void registerTags() { func_240522_a_(Tags.Items.CHESTS_WOODEN).func_240532_a_(ModContent.WOOD_CHEST.getSecond()); }
+    protected void registerTags() { getOrCreateBuilder(Tags.Items.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getSecond()); }
 
     @NotNull @Override
     public String getName() { return "Expanded Storage - Item Tags"; }

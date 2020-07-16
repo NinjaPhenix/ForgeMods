@@ -42,7 +42,7 @@ public class Networker
 
     private Networker()
     {
-        final String channelVersion = "1";
+        final String channelVersion = "2";
         channel = NetworkRegistry.newSimpleChannel(ExpandedStorage.getRl("channel"), () -> channelVersion, channelVersion::equals, channelVersion::equals);
     }
 
