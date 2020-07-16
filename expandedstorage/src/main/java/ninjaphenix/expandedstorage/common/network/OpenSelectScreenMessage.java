@@ -31,7 +31,12 @@ public class OpenSelectScreenMessage
     static void handle(@NotNull final OpenSelectScreenMessage message, @NotNull final Supplier<NetworkEvent.Context> ctx)
     {
         NetworkEvent.Context context = ctx.get();
-        if (context.getDirection().getOriginationSide() == LogicalSide.SERVER) { handleClient(); context.setPacketHandled(true); return; }
+        if (context.getDirection().getOriginationSide() == LogicalSide.SERVER)
+        {
+            handleClient();
+            context.setPacketHandled(true);
+            return;
+        }
         final ServerPlayerEntity sender = context.getSender();
         AbstractContainer<?> container = (AbstractContainer<?>) sender.openContainer;
         Networker.INSTANCE.openSelectScreen(sender, (type) -> Networker.INSTANCE.openContainer(sender, new IDataNamedContainerProvider()

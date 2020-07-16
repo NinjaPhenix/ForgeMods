@@ -211,8 +211,10 @@ public class ChestMutatorItem extends ChestModifierItem
                 BlockPos otherPos;
                 switch (state.get(ChestBlock.TYPE))
                 {
-                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY()); break;
-                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW()); break;
+                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY());
+                        break;
+                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW());
+                        break;
                     default: return ActionResultType.FAIL;
                 }
                 if (!world.isRemote)
@@ -228,8 +230,10 @@ public class ChestMutatorItem extends ChestModifierItem
                 BlockPos otherPos;
                 switch (state.get(ChestBlock.TYPE))
                 {
-                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY()); break;
-                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW()); break;
+                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY());
+                        break;
+                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW());
+                        break;
                     case SINGLE:
                         if (!world.isRemote) { world.setBlockState(mainPos, state.rotate(world, mainPos, CLOCKWISE_90)); }
                         player.getCooldownTracker().setCooldown(this, 5);
@@ -277,10 +281,18 @@ public class ChestMutatorItem extends ChestModifierItem
 
     @Override
     public void onCreated(@NotNull final ItemStack stack, @NotNull final World world, @NotNull final PlayerEntity player)
-    { super.onCreated(stack, world, player); getMode(stack); }
+    {
+        super.onCreated(stack, world, player);
+        getMode(stack);
+    }
 
     @NotNull @Override
-    public ItemStack getDefaultInstance() { final ItemStack stack = super.getDefaultInstance(); getMode(stack); return stack; }
+    public ItemStack getDefaultInstance()
+    {
+        final ItemStack stack = super.getDefaultInstance();
+        getMode(stack);
+        return stack;
+    }
 
     @Override
     public void fillItemGroup(@NotNull final ItemGroup itemGroup, @NotNull final NonNullList<ItemStack> stackList)

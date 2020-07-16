@@ -21,7 +21,8 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
             @NotNull final Function<R, Integer> inventoryLabelLeftFunction)
     {
         super(container, playerInventory, title);
-        SCREEN_META = container.SCREEN_META; INVENTORY_LABEL_LEFT = inventoryLabelLeftFunction.apply(SCREEN_META);
+        SCREEN_META = container.SCREEN_META;
+        INVENTORY_LABEL_LEFT = inventoryLabelLeftFunction.apply(SCREEN_META);
     }
 
     @Override @SuppressWarnings({ "ConstantConditions", "deprecation" })
@@ -53,7 +54,11 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     @Override @SuppressWarnings("ConstantConditions")
     public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
     {
-        if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.matchesKey(keyCode, scanCode)) { onClose(); return true; }
+        if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.matchesKey(keyCode, scanCode))
+        {
+            onClose();
+            return true;
+        }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
@@ -66,8 +71,14 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
         public Rectangle(final int x, final int y, final int width, final int height, final int textureX, final int textureY, final int textureWidth,
                 final int textureHeight)
         {
-            X = x; Y = y; WIDTH = width; HEIGHT = height;
-            TEXTURE_X = textureX; TEXTURE_Y = textureY; TEXTURE_WIDTH = textureWidth; TEXTURE_HEIGHT = textureHeight;
+            X = x;
+            Y = y;
+            WIDTH = width;
+            HEIGHT = height;
+            TEXTURE_X = textureX;
+            TEXTURE_Y = textureY;
+            TEXTURE_WIDTH = textureWidth;
+            TEXTURE_HEIGHT = textureHeight;
         }
 
         public void render(@NotNull final MatrixStack stack)

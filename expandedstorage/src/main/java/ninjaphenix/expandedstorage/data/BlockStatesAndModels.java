@@ -15,9 +15,9 @@ import java.util.HashMap;
 
 public class BlockStatesAndModels extends BlockStateProvider
 {
+    public final static HashMap<Item, ModelFile> SINGLE_OLD_MODELS = new HashMap<>();
     private ModelFile OLD_CHEST_HORIZONTAL;
     private ModelFile OLD_CHEST_VERTICAL;
-    public final static HashMap<Item, ModelFile> SINGLE_OLD_MODELS = new HashMap<>();
 
     public BlockStatesAndModels(@NotNull final DataGenerator generator, @NotNull final String modId, @NotNull final ExistingFileHelper fileHelper)
     { super(generator, modId, fileHelper); }

@@ -49,9 +49,9 @@ import java.util.function.Supplier;
 
 public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends ContainerBlock
 {
-    private final Supplier<TileEntityType<? extends T>> tileEntityType;
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<CursedChestType> TYPE = EnumProperty.create("type", CursedChestType.class);
+    private final Supplier<TileEntityType<? extends T>> tileEntityType;
     private final TileEntityMerger.ICallback<T, Optional<ISidedInventory>> INVENTORY_GETTER = new TileEntityMerger.ICallback<T, Optional<ISidedInventory>>()
     {
         @NotNull @Override
@@ -137,24 +137,6 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH).with(TYPE, CursedChestType.SINGLE));
     }
 
-    @Override
-    protected void fillStateContainer(@NotNull final StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.fillStateContainer(builder);
-        builder.add(FACING, TYPE);
-    }
-
-    @NotNull
-    public final TileEntityMerger.ICallbackWrapper<? extends T> combine(@NotNull final BlockState state, @NotNull final World world,
-            @NotNull final BlockPos pos, final boolean alwaysOpen)
-    {
-        final BiPredicate<IWorld, BlockPos> isChestBlocked = alwaysOpen ? (_world, _pos) -> false : this::isBlocked;
-        return TileEntityMerger.func_226924_a_(tileEntityType.get(), BaseChestBlock::getMergeType,
-                BaseChestBlock::getDirectionToAttached, FACING, state, world, pos, isChestBlocked);
-    }
-
-    protected boolean isBlocked(@NotNull final IWorld world, @NotNull final BlockPos pos) { return ChestBlock.isBlocked(world, pos); }
-
     @NotNull
     public static Direction getDirectionToAttached(@NotNull final BlockState state)
     {
@@ -181,6 +163,35 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
             default: return TileEntityMerger.Type.SINGLE;
         }
     }
+
+    public static CursedChestType getChestType(final Direction facing, final Direction offset)
+    {
+        if (facing.rotateY() == offset) { return CursedChestType.RIGHT; }
+        else if (facing.rotateYCCW() == offset) { return CursedChestType.LEFT; }
+        else if (facing == offset) { return CursedChestType.BACK; }
+        else if (facing == offset.getOpposite()) { return CursedChestType.FRONT; }
+        else if (offset == Direction.DOWN) { return CursedChestType.TOP; }
+        else if (offset == Direction.UP) { return CursedChestType.BOTTOM; }
+        return CursedChestType.SINGLE;
+    }
+
+    @Override
+    protected void fillStateContainer(@NotNull final StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.fillStateContainer(builder);
+        builder.add(FACING, TYPE);
+    }
+
+    @NotNull
+    public final TileEntityMerger.ICallbackWrapper<? extends T> combine(@NotNull final BlockState state, @NotNull final World world,
+            @NotNull final BlockPos pos, final boolean alwaysOpen)
+    {
+        final BiPredicate<IWorld, BlockPos> isChestBlocked = alwaysOpen ? (_world, _pos) -> false : this::isBlocked;
+        return TileEntityMerger.func_226924_a_(tileEntityType.get(), BaseChestBlock::getMergeType,
+                BaseChestBlock::getDirectionToAttached, FACING, state, world, pos, isChestBlocked);
+    }
+
+    protected boolean isBlocked(@NotNull final IWorld world, @NotNull final BlockPos pos) { return ChestBlock.isBlocked(world, pos); }
 
     @Nullable @Override
     public final INamedContainerProvider getContainer(@NotNull final BlockState state, @NotNull final World world, @NotNull final BlockPos pos) { return null; }
@@ -220,20 +231,12 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         {
             final TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof IInventory)
-            { InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity); world.notifyNeighborsOfStateChange(pos, this); }
+            {
+                InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity);
+                world.notifyNeighborsOfStateChange(pos, this);
+            }
             super.onReplaced(state, world, pos, newState, isMoving);
         }
-    }
-
-    public static CursedChestType getChestType(final Direction facing, final Direction offset)
-    {
-        if (facing.rotateY() == offset) { return CursedChestType.RIGHT; }
-        else if (facing.rotateYCCW() == offset) { return CursedChestType.LEFT; }
-        else if (facing == offset) { return CursedChestType.BACK; }
-        else if (facing == offset.getOpposite()) { return CursedChestType.FRONT; }
-        else if (offset == Direction.DOWN) { return CursedChestType.TOP; }
-        else if (offset == Direction.UP) { return CursedChestType.BOTTOM; }
-        return CursedChestType.SINGLE;
     }
 
     // todo: look at and see if it can be updated, specifically want to remove "BlockState state;", "Direction direction_3;" if possible

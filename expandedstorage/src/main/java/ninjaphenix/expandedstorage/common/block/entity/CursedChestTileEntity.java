@@ -64,7 +64,11 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     @Override
     public boolean receiveClientEvent(final int actionId, final int value)
     {
-        if (actionId == 1) { viewerCount = value; return true; }
+        if (actionId == 1)
+        {
+            viewerCount = value;
+            return true;
+        }
         else { return super.receiveClientEvent(actionId, value); }
     }
 
@@ -98,7 +102,8 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     public void openInventory(@NotNull final PlayerEntity player)
     {
         if (player.isSpectator()) { return; }
-        if (viewerCount < 0) { viewerCount = 0; } viewerCount++;
+        if (viewerCount < 0) { viewerCount = 0; }
+        viewerCount++;
         onInvOpenOrClose();
     }
 
@@ -114,6 +119,10 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     private void onInvOpenOrClose()
     {
         final Block block = getBlockState().getBlock();
-        if (block instanceof CursedChestBlock) { world.addBlockEvent(pos, block, 1, viewerCount); world.notifyNeighborsOfStateChange(pos, block); }
+        if (block instanceof CursedChestBlock)
+        {
+            world.addBlockEvent(pos, block, 1, viewerCount);
+            world.notifyNeighborsOfStateChange(pos, block);
+        }
     }
 }

@@ -44,7 +44,8 @@ public class ChestConversionItem extends ChestModifierItem
     {
         super(new Item.Properties().group(ExpandedStorage.group).maxStackSize(16));
         setRegistryName(ExpandedStorage.getRl(from.getSecond() + "_to_" + to.getSecond() + "_conversion_kit"));
-        FROM = from.getFirst(); TO = to.getFirst();
+        FROM = from.getFirst();
+        TO = to.getFirst();
         TOOLTIP = new TranslationTextComponent(String.format("tooltip.expandedstorage.conversion_kit_%s_%s", from.getSecond(), to.getSecond()),
                 ExpandedStorage.leftShiftRightClick,
                 new TranslationTextComponent("tooltip.expandedstorage.conversion_kit_double_requires_2")).mergeStyle(TextFormatting.GRAY);
@@ -94,13 +95,21 @@ public class ChestConversionItem extends ChestModifierItem
         final ItemStack handStack = player.getHeldItem(context.getHand());
         if (otherPos == null)
         {
-            if (!world.isRemote) { upgradeCursedChest(world, mainPos, mainState); handStack.shrink(1); }
+            if (!world.isRemote)
+            {
+                upgradeCursedChest(world, mainPos, mainState);
+                handStack.shrink(1);
+            }
             return ActionResultType.SUCCESS;
         }
         else if (handStack.getCount() > 1 || player.isCreative())
         {
             if (!world.isRemote)
-            { upgradeCursedChest(world, otherPos, world.getBlockState(otherPos)); upgradeCursedChest(world, mainPos, mainState); handStack.shrink(2); }
+            {
+                upgradeCursedChest(world, otherPos, world.getBlockState(otherPos));
+                upgradeCursedChest(world, mainPos, mainState);
+                handStack.shrink(2);
+            }
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.FAIL;
@@ -117,7 +126,11 @@ public class ChestConversionItem extends ChestModifierItem
             final ItemStack handStack = player.getHeldItem(context.getHand());
             if (state.get(BlockStateProperties.CHEST_TYPE) == ChestType.SINGLE)
             {
-                if (!world.isRemote) { upgradeChest(world, mainPos, state); handStack.shrink(1); }
+                if (!world.isRemote)
+                {
+                    upgradeChest(world, mainPos, state);
+                    handStack.shrink(1);
+                }
                 return ActionResultType.SUCCESS;
             }
             else if (handStack.getCount() > 1 || player.isCreative())
@@ -129,7 +142,11 @@ public class ChestConversionItem extends ChestModifierItem
                 { otherPos = mainPos.offset(state.get(BlockStateProperties.HORIZONTAL_FACING).rotateY()); }
                 else { return ActionResultType.FAIL; }
                 if (!world.isRemote)
-                { upgradeChest(world, otherPos, world.getBlockState(otherPos)); upgradeChest(world, mainPos, state); handStack.shrink(2); }
+                {
+                    upgradeChest(world, otherPos, world.getBlockState(otherPos));
+                    upgradeChest(world, mainPos, state);
+                    handStack.shrink(2);
+                }
                 return ActionResultType.SUCCESS;
             }
         }

@@ -40,7 +40,11 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
     };
 
     public CursedChestBlock(@NotNull final Properties properties, @NotNull final ResourceLocation registryName)
-    { super(properties, () -> ModContent.CURSED_CHEST_TE); setDefaultState(getDefaultState().with(WATERLOGGED, false)); setRegistryName(registryName); }
+    {
+        super(properties, () -> ModContent.CURSED_CHEST_TE);
+        setDefaultState(getDefaultState().with(WATERLOGGED, false));
+        setRegistryName(registryName);
+    }
 
     @NotNull @Override
     public TileEntity createTileEntity(@Nullable final BlockState state, @Nullable final IBlockReader world)
@@ -52,7 +56,10 @@ public class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> impl
 
     @Override
     protected void fillStateContainer(@NotNull final StateContainer.Builder<Block, BlockState> builder)
-    { super.fillStateContainer(builder); builder.add(WATERLOGGED); }
+    {
+        super.fillStateContainer(builder);
+        builder.add(WATERLOGGED);
+    }
 
     @NotNull @Override @SuppressWarnings("deprecation")
     public VoxelShape getShape(@NotNull final BlockState state,

@@ -53,16 +53,32 @@ public class DoubleSidedInventory implements ISidedInventory
     public boolean isUsableByPlayer(@NotNull final PlayerEntity player) { return first.isUsableByPlayer(player) && second.isUsableByPlayer(player); }
 
     @Override
-    public void clear() { first.clear(); second.clear(); }
+    public void clear()
+    {
+        first.clear();
+        second.clear();
+    }
 
     @Override
-    public void markDirty() { first.markDirty(); second.markDirty(); }
+    public void markDirty()
+    {
+        first.markDirty();
+        second.markDirty();
+    }
 
     @Override
-    public void openInventory(@NotNull final PlayerEntity player) { first.openInventory(player); second.openInventory(player); }
+    public void openInventory(@NotNull final PlayerEntity player)
+    {
+        first.openInventory(player);
+        second.openInventory(player);
+    }
 
     @Override
-    public void closeInventory(@NotNull final PlayerEntity player) { first.closeInventory(player); second.closeInventory(player); }
+    public void closeInventory(@NotNull final PlayerEntity player)
+    {
+        first.closeInventory(player);
+        second.closeInventory(player);
+    }
 
     public boolean isPart(@NotNull final ISidedInventory inventory) { return first == inventory || second == inventory; }
 

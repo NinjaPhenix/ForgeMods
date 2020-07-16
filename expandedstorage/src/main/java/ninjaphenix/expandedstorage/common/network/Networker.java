@@ -74,9 +74,17 @@ public class Networker
         if (containerFactories.containsKey(containerType))
         {
             playerPreferences.put(uuid, containerType);
-            if (preferenceCallbacks.containsKey(uuid)) { preferenceCallbacks.get(uuid).accept(containerType); preferenceCallbacks.remove(uuid); }
+            if (preferenceCallbacks.containsKey(uuid))
+            {
+                preferenceCallbacks.get(uuid).accept(containerType);
+                preferenceCallbacks.remove(uuid);
+            }
         }
-        else { playerPreferences.remove(uuid); preferenceCallbacks.remove(uuid); }
+        else
+        {
+            playerPreferences.remove(uuid);
+            preferenceCallbacks.remove(uuid);
+        }
     }
 
     void removePlayerPreferenceCallback(@NotNull final PlayerEntity player) { preferenceCallbacks.remove(player.getUniqueID()); }

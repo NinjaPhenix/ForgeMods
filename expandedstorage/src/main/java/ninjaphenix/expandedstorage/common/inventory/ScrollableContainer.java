@@ -35,18 +35,6 @@ public final class ScrollableContainer extends AbstractContainer<ScrollableScree
             .build();
     // @formatter:on
 
-    private static ScrollableScreenMeta getNearestSize(final int invSize)
-    {
-        ScrollableScreenMeta val = SIZES.get(invSize);
-        if (val != null) { return val; }
-        final List<Integer> keys = SIZES.keySet().asList();
-        final int index = Collections.binarySearch(keys, invSize);
-        final int largestKey = keys.get(Math.abs(index) - 1);
-        val = SIZES.get(largestKey);
-        if (val != null && largestKey > invSize && largestKey - invSize <= val.WIDTH) { return val; }
-        throw new RuntimeException("No screen can show an inventory of size " + invSize + ".");
-    }
-
     public ScrollableContainer(final int windowId, @NotNull final BlockPos pos, @NotNull final IInventory inventory, @NotNull final PlayerEntity player,
             @Nullable final ITextComponent displayName)
     {
@@ -62,6 +50,18 @@ public final class ScrollableContainer extends AbstractContainer<ScrollableScree
         final int left = (SCREEN_META.WIDTH * 18 + 14) / 2 - 80, top = 18 + 14 + (SCREEN_META.HEIGHT * 18);
         for (int x = 0; x < 9; x++) { for (int y = 0; y < 3; y++) { addSlot(new Slot(player.inventory, y * 9 + x + 9, left + 18 * x, top + y * 18)); } }
         for (int i = 0; i < 9; i++) { addSlot(new Slot(player.inventory, i, left + 18 * i, top + 58)); }
+    }
+
+    private static ScrollableScreenMeta getNearestSize(final int invSize)
+    {
+        ScrollableScreenMeta val = SIZES.get(invSize);
+        if (val != null) { return val; }
+        final List<Integer> keys = SIZES.keySet().asList();
+        final int index = Collections.binarySearch(keys, invSize);
+        final int largestKey = keys.get(Math.abs(index) - 1);
+        val = SIZES.get(largestKey);
+        if (val != null && largestKey > invSize && largestKey - invSize <= val.WIDTH) { return val; }
+        throw new RuntimeException("No screen can show an inventory of size " + invSize + ".");
     }
 
     public void moveSlotRange(final int min, final int max, final int yChange) { for (int i = min; i < max; i++) { inventorySlots.get(i).yPos += yChange; } }

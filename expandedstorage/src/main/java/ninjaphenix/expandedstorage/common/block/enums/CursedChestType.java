@@ -11,7 +11,11 @@ public enum CursedChestType implements IStringSerializable
     private final String name;
     private final int offset;
 
-    CursedChestType(@NotNull final String string, final int outlineOffset) { name = string; offset = outlineOffset; }
+    CursedChestType(@NotNull final String string, final int outlineOffset)
+    {
+        name = string;
+        offset = outlineOffset;
+    }
 
     public static CursedChestType valueOf(@NotNull final ChestType type)
     {

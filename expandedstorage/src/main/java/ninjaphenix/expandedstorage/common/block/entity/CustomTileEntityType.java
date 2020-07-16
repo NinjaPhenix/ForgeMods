@@ -17,7 +17,11 @@ public final class CustomTileEntityType<T extends TileEntity> extends TileEntity
     @SuppressWarnings("ConstantConditions")
     public CustomTileEntityType(@NotNull final Supplier<? extends T> tileEntityFactory, @NotNull final Predicate<Block> supportedBlocks,
             @NotNull final ResourceLocation registryName)
-    { super(tileEntityFactory, null, null); predicate = supportedBlocks; setRegistryName(registryName); }
+    {
+        super(tileEntityFactory, null, null);
+        predicate = supportedBlocks;
+        setRegistryName(registryName);
+    }
 
     @Override
     public final boolean isValidBlock(@NotNull final Block block) { return predicate.test(block); }

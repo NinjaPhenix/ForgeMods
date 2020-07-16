@@ -11,6 +11,9 @@ import org.apache.commons.lang3.tuple.Pair;
 @Mod.EventBusSubscriber(modid = ExpandedStorage.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ExpandedStorageConfig
 {
+    public static final ExpandedStorageConfig.Client CLIENT;
+    private static final ForgeConfigSpec clientSpec;
+
     static
     {
         final Pair<ExpandedStorageConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ExpandedStorageConfig.Client::new);
@@ -18,8 +21,7 @@ public class ExpandedStorageConfig
         CLIENT = specPair.getLeft();
     }
 
-    private static final ForgeConfigSpec clientSpec;
-    public static final ExpandedStorageConfig.Client CLIENT;
+    public static void register() { ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, clientSpec); }
 
     public static class Client
     {
@@ -41,6 +43,4 @@ public class ExpandedStorageConfig
                                                      .define("settings_button_center_on_scrollbar", true);
         }
     }
-
-    public static void register() { ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, clientSpec); }
 }

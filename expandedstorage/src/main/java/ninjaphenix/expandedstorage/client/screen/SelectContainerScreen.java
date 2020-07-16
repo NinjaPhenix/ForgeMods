@@ -40,7 +40,8 @@ public class SelectContainerScreen extends Screen
         final int choices = OPTIONS.size();
         final int maxColumns = Math.min(MathHelper.intFloorDiv(width - PADDING, 96 + PADDING), choices);
         final int totalRows = MathHelper.ceil((double) choices / maxColumns);
-        int x = 0; int y = 0;
+        int x = 0;
+        int y = 0;
         int leftPadding = MathHelper.ceil((width - 96 * maxColumns - PADDING * (maxColumns - 1)) / 2D);
         TOP = MathHelper.ceil((height - 96 * totalRows - PADDING * (totalRows - 1)) / 2D);
         for (@NotNull final HashMap.Entry<ResourceLocation, Pair<ResourceLocation, ITextComponent>> entry : OPTIONS.entrySet())
@@ -98,7 +99,10 @@ public class SelectContainerScreen extends Screen
 
         public ScreenTypeButton(final int x, final int y, final int width, final int height, @NotNull final ResourceLocation texture,
                 final ITextComponent message, @NotNull final Button.IPressable onPress, @NotNull final ITooltip onTooltip)
-        { super(x, y, width, height, message, onPress, onTooltip); TEXTURE = texture; }
+        {
+            super(x, y, width, height, message, onPress, onTooltip);
+            TEXTURE = texture;
+        }
 
         @Override
         public void renderButton(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)

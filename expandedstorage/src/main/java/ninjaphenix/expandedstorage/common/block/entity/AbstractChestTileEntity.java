@@ -25,11 +25,14 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     protected int[] SLOTS;
     protected ResourceLocation block;
 
+    public AbstractChestTileEntity(@NotNull final TileEntityType type, @Nullable final ResourceLocation block)
+    {
+        super(type);
+        if (block != null) { initialize(block); }
+    }
+
     @Nullable @Override
     protected Container createMenu(final int windowId, @NotNull final PlayerInventory playerInventory) { return null; }
-
-    public AbstractChestTileEntity(@NotNull final TileEntityType type, @Nullable final ResourceLocation block)
-    { super(type); if (block != null) { initialize(block); } }
 
     @NotNull @Override
     protected ITextComponent getDefaultName() { return defaultContainerName; }
@@ -81,5 +84,10 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     }
 
     @NotNull @Override
-    public CompoundNBT getUpdateTag() { CompoundNBT tag = this.write(new CompoundNBT()); tag.putString("type", block.toString()); return tag; }
+    public CompoundNBT getUpdateTag()
+    {
+        CompoundNBT tag = this.write(new CompoundNBT());
+        tag.putString("type", block.toString());
+        return tag;
+    }
 }

@@ -17,8 +17,8 @@ import java.util.List;
 
 public class ScrollableScreen extends AbstractScreen<ScrollableContainer, ScrollableScreenMeta>
 {
-    private Rectangle blankArea = null;
     protected final boolean hasScrollbar;
+    private Rectangle blankArea = null;
     private boolean isDragging;
     private int topRow;
     private ScreenTypeSelectionScreenButton screenSelectButton;
@@ -26,7 +26,9 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     public ScrollableScreen(@NotNull final ScrollableContainer container, @NotNull final PlayerInventory playerInventory, @NotNull final ITextComponent title)
     {
         super(container, playerInventory, title, (screenMeta) -> (screenMeta.WIDTH * 18 + 14) / 2 - 80);
-        xSize = 14 + 18 * SCREEN_META.WIDTH; ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT; hasScrollbar = SCREEN_META.TOTAL_ROWS != SCREEN_META.HEIGHT;
+        xSize = 14 + 18 * SCREEN_META.WIDTH;
+        ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
+        hasScrollbar = SCREEN_META.TOTAL_ROWS != SCREEN_META.HEIGHT;
     }
 
     public List<Rectangle2d> getJeiRectangle()
@@ -43,7 +45,11 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
         int settingsXOffset = -(hasScrollbar ? (ExpandedStorageConfig.CLIENT.centerSettingsButtonOnScrollbar.get() ? 2 : 1) : ModList.get().isLoaded("quark") ?
                 43 : 19);
         screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4, this::renderButtonTooltip));
-        if (hasScrollbar) { isDragging = false; topRow = 0; }
+        if (hasScrollbar)
+        {
+            isDragging = false;
+            topRow = 0;
+        }
         else
         {
             final int blanked = SCREEN_META.BLANK_SLOTS;
@@ -119,7 +125,11 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     @Override
     public boolean mouseClicked(final double mouseX, final double mouseY, final int button)
     {
-        if (hasScrollbar && isMouseOverScrollbar(mouseX, mouseY) && button == 0) { isDragging = true; updateTopRow(mouseY); }
+        if (hasScrollbar && isMouseOverScrollbar(mouseX, mouseY) && button == 0)
+        {
+            isDragging = true;
+            updateTopRow(mouseY);
+        }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
@@ -221,7 +231,11 @@ public class ScrollableScreen extends AbstractScreen<ScrollableContainer, Scroll
     @Override
     public boolean mouseReleased(final double mouseX, final double mouseY, final int button)
     {
-        if (hasScrollbar && isDragging) { isDragging = false; return true; }
+        if (hasScrollbar && isDragging)
+        {
+            isDragging = false;
+            return true;
+        }
         return super.mouseReleased(mouseX, mouseY, button);
     }
 }

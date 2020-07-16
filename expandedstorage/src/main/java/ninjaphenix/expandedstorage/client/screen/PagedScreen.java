@@ -27,7 +27,8 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
     public PagedScreen(@NotNull final PagedContainer container, @NotNull final PlayerInventory playerInventory, @NotNull final ITextComponent title)
     {
         super(container, playerInventory, title, (screenMeta) -> (screenMeta.WIDTH * 18 + 14) / 2 - 80);
-        xSize = 14 + 18 * SCREEN_META.WIDTH; ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
+        xSize = 14 + 18 * SCREEN_META.WIDTH;
+        ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
     }
 
     private void setPage(final int oldPage, final int newPage)
@@ -70,7 +71,11 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
     public void render(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
         super.render(stack, mouseX, mouseY, partialTicks);
-        if (SCREEN_META.PAGES != 1) { leftPageButton.renderTooltip(stack, mouseX, mouseY); rightPageButton.renderTooltip(stack, mouseX, mouseY); }
+        if (SCREEN_META.PAGES != 1)
+        {
+            leftPageButton.renderTooltip(stack, mouseX, mouseY);
+            rightPageButton.renderTooltip(stack, mouseX, mouseY);
+        }
         screenSelectButton.renderTooltip(stack, mouseX, mouseY);
     }
 

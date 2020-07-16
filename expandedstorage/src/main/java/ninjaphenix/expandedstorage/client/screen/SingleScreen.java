@@ -16,7 +16,8 @@ public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMe
     public SingleScreen(@NotNull final SingleContainer container, @NotNull final PlayerInventory playerInventory, @NotNull final ITextComponent title)
     {
         super(container, playerInventory, title, (screenMeta) -> (screenMeta.WIDTH * 18 + 14) / 2 - 80);
-        xSize = 14 + 18 * SCREEN_META.WIDTH; ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
+        xSize = 14 + 18 * SCREEN_META.WIDTH;
+        ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
     }
 
     @Override
@@ -37,9 +38,15 @@ public class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMe
 
     @Override
     public void render(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
-    { super.render(stack, mouseX, mouseY, partialTicks); screenSelectButton.renderTooltip(stack, mouseX, mouseY); }
+    {
+        super.render(stack, mouseX, mouseY, partialTicks);
+        screenSelectButton.renderTooltip(stack, mouseX, mouseY);
+    }
 
     @Override
     protected void func_230450_a_(@NotNull final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
-    { super.func_230450_a_(stack, partialTicks, mouseX, mouseY); if (blankArea != null) { blankArea.render(stack); } }
+    {
+        super.func_230450_a_(stack, partialTicks, mouseX, mouseY);
+        if (blankArea != null) { blankArea.render(stack); }
+    }
 }

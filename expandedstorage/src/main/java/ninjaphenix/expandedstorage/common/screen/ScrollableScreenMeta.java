@@ -12,6 +12,7 @@ public class ScrollableScreenMeta extends ScreenMeta
             final int textureHeight)
     {
         super(width, height, totalSlots, texture, textureWidth, textureHeight);
-        TOTAL_ROWS = MathHelper.ceil((double) totalSlots / width); BLANK_SLOTS = TOTAL_ROWS * width - totalSlots;
+        TOTAL_ROWS = MathHelper.ceil((double) totalSlots / width);
+        BLANK_SLOTS = TOTAL_ROWS * width - totalSlots;
     }
 }

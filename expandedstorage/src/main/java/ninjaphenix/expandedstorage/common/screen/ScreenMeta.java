@@ -10,5 +10,12 @@ public abstract class ScreenMeta
 
     protected ScreenMeta(final int width, final int height, final int totalSlots, @NotNull final ResourceLocation texture, final int textureWidth,
             final int textureHeight)
-    { WIDTH = width; HEIGHT = height; TOTAL_SLOTS = totalSlots; TEXTURE = texture; TEXTURE_WIDTH = textureWidth; TEXTURE_HEIGHT = textureHeight; }
+    {
+        WIDTH = width;
+        HEIGHT = height;
+        TOTAL_SLOTS = totalSlots;
+        TEXTURE = texture;
+        TEXTURE_WIDTH = textureWidth;
+        TEXTURE_HEIGHT = textureHeight;
+    }
 }
