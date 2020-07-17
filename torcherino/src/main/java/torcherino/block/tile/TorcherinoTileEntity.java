@@ -43,7 +43,7 @@ public final class TorcherinoTileEntity extends TileEntity implements INameable,
     @Nullable @Override
     public ITextComponent getCustomName() { return customName; }
 
-    public void setCustomName(@Nullable ITextComponent name) { customName = name; }
+    public void setCustomName(@Nullable final ITextComponent name) { customName = name; }
 
     @SuppressWarnings("ConstantConditions")
     public ResourceLocation getTierName()
@@ -127,11 +127,11 @@ public final class TorcherinoTileEntity extends TileEntity implements INameable,
         }
     }
 
-    public void setPoweredByRedstone(final boolean powered)
+    public void setPoweredByRedstone(final Boolean powered)
     {
         if (redstoneMode == 0) { active = !powered; }
-        else if (redstoneMode == 1) {active = powered; }
-        else if (redstoneMode == 2) {active = true;}
+        else if (redstoneMode == 1) { active = powered; }
+        else if (redstoneMode == 2) { active = true; }
         else if (redstoneMode == 3) { active = false; }
     }
 

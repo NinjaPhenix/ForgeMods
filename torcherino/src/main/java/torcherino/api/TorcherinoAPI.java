@@ -25,7 +25,7 @@ public interface TorcherinoAPI
      * @return The tier or null if it does not exist.
      * @since 8.1.2
      */
-    Tier getTier(ResourceLocation name);
+    Tier getTier(final ResourceLocation name);
 
     /**
      * @param name Resource Location for the new tier.
@@ -35,47 +35,47 @@ public interface TorcherinoAPI
      * @return TRUE if the tier was registered, FALSE if tier with same name exists.
      * @since 8.1.2
      */
-    boolean registerTier(ResourceLocation name, int maxSpeed, int xzRange, int yRange);
+    boolean registerTier(final ResourceLocation name, final int maxSpeed, final int xzRange, final int yRange);
 
     /**
      * @param block The Resource Location of the block to be blacklisted.
      * @return TRUE if added to blacklist, FALSE if no block exists or already on blacklist.
      * @since 8.1.2
      */
-    boolean blacklistBlock(ResourceLocation block);
+    boolean blacklistBlock(final ResourceLocation block);
 
     /**
      * @param block The block to be blacklisted.
      * @return TRUE if added to blacklist, FALSE if already on blacklist.
      * @since 8.1.2
      */
-    boolean blacklistBlock(Block block);
+    boolean blacklistBlock(final Block block);
 
     /**
      * @param tileEntity The Resource Location of the tile entity to be blacklisted.
      * @return TRUE if added to blacklist, FALSE if no tile entity exists or already on blacklist.
      * @since 8.1.2
      */
-    boolean blacklistTileEntity(ResourceLocation tileEntity);
+    boolean blacklistTileEntity(final ResourceLocation tileEntity);
 
     /**
      * @param tileEntity The tile entity type to be blacklisted.
      * @return TRUE if added to blacklist, FALSE if already on blacklist.
      * @since 8.1.2
      */
-    boolean blacklistTileEntity(TileEntityType<? extends TileEntity> tileEntity);
+    boolean blacklistTileEntity(final TileEntityType<? extends TileEntity> tileEntity);
 
     /**
      * @param block The block to check is blacklisted.
      * @return TRUE if blacklisted, FALSE otherwise.
      * @since 8.1.2
      */
-    boolean isBlockBlacklisted(Block block);
+    boolean isBlockBlacklisted(final Block block);
 
     /**
      * @param tileEntityType The tile entity type to check is blacklisted.
      * @return TRUE if blacklisted, FALSE otherwise.
      * @since 8.1.2
      */
-    boolean isTileEntityBlacklisted(TileEntityType<? extends TileEntity> tileEntityType);
+    boolean isTileEntityBlacklisted(final TileEntityType<? extends TileEntity> tileEntityType);
 }
