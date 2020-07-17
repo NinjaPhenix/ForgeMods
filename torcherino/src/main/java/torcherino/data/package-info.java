@@ -1,5 +1,5 @@
 @ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
-package ninjaphenix.expandedstorage.data;
+package torcherino.data;
 
 import mcp.MethodsReturnNonnullByDefault;
 

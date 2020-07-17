@@ -1,5 +1,4 @@
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
 package ninjaphenix.expandedstorage.common.network;
 
 import mcp.MethodsReturnNonnullByDefault;
