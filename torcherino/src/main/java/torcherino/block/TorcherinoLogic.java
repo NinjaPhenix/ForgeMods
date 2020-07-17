@@ -38,7 +38,7 @@ public final class TorcherinoLogic
             final TileEntity tile = world.getTileEntity(pos);
             if (tile instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tile).setCustomName(stack.getDisplayName()); }
         }
-        if (Config.INSTANCE.log_placement)
+        if (Config.INSTANCE.logPlacement())
         {
             final String prefix = placer == null ? "Something" : placer.getDisplayName().getString() + "(" + placer.getCachedUniqueIdString() + ")";
             final String blockName = StringUtils.capitalize(state.getBlock().getTranslationKey().replace("block.torcherino.", "").replace("_", " "));
