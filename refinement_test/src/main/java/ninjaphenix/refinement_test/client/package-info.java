@@ -1,5 +1,5 @@
 @ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
-package ninjaphenix.refinement.data;
+package ninjaphenix.refinement_test.client;
 
 import mcp.MethodsReturnNonnullByDefault;
 

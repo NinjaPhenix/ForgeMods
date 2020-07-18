@@ -1,9 +1,9 @@
-package ninjaphenix.refinement;
+package ninjaphenix.refinement.common;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod("refinement")
+@Mod(Refinement.MOD_ID)
 public final class Refinement
 {
     public static final String MOD_ID = "refinement";

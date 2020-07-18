@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.data;
+package ninjaphenix.refinement_test.data;
 
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
@@ -14,5 +14,5 @@ public final class BlockTags extends BlockTagsProvider
     }
 
     @Override
-    public String getName() { return "Refinement - Block Tags"; }
+    public String getName() { return "Refinement Test - Block Tags"; }
 }

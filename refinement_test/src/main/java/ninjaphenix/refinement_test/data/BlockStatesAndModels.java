@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.data;
+package ninjaphenix.refinement_test.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -15,5 +15,5 @@ public final class BlockStatesAndModels extends BlockStateProvider
     }
 
     @Override
-    public String getName() { return "Refinement - BlockStates / Models"; }
+    public String getName() { return "Refinement Test - BlockStates / Models"; }
 }

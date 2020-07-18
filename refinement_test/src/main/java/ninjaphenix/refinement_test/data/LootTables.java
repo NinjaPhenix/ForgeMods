@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.data;
+package ninjaphenix.refinement_test.data;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.DataGenerator;
@@ -28,5 +28,5 @@ public final class LootTables extends LootTableProvider
     protected void validate(final Map<ResourceLocation, LootTable> map, final ValidationTracker validationtracker) {}
 
     @Override
-    public String getName() { return "Refinement - Loot Tables"; }
+    public String getName() { return "Refinement Test - Loot Tables"; }
 }

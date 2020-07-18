@@ -1,3 +1,4 @@
 include "torcherino"
 include "expandedstorage"
 include "refinement"
+include "refinement_test"

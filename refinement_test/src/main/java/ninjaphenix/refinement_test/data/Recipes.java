@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.data;
+package ninjaphenix.refinement_test.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
@@ -17,5 +17,5 @@ public final class Recipes extends RecipeProvider
     }
 
     @Override
-    public String getName() { return "Refinement - Recipes"; }
+    public String getName() { return "Refinement Test - Recipes"; }
 }

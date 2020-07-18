@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.data;
+package ninjaphenix.refinement_test.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
@@ -23,5 +23,5 @@ public final class ItemModels extends ItemModelProvider
     }
 
     @Override
-    public String getName() { return "Refinement - Item Models"; }
+    public String getName() { return "Refinement Test - Item Models"; }
 }
