@@ -5,5 +5,8 @@ import net.minecraft.tileentity.TileEntityType;
 
 public abstract class UpgradableTileEntity extends TileEntity
 {
-    protected UpgradableTileEntity(final TileEntityType<?> type) { super(type); }
+    protected UpgradableTileEntity(final TileEntityType<?> type)
+    {
+        super(type);
+    }
 }

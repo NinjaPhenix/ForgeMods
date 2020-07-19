@@ -1,19 +1,37 @@
 package ninjaphenix.refinement.common;
 
-import net.minecraft.block.Block;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import ninjaphenix.refinement.client.gui.UpgradeContainerScreen;
+import ninjaphenix.refinement.common.container.UpgradeContainer;
 
-@Mod.EventBusSubscriber(modid = Refinement.MOD_ID)
+@Mod.EventBusSubscriber(modid = Refinement.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class RefinementContent
 {
-    public static final ContainerType<?> UPGRADE_CONTAINER_TYPE = null;
-    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Refinement.MOD_ID);
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Refinement.MOD_ID);
-    private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Refinement.MOD_ID);
     private static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Refinement.MOD_ID);
+
+    public static final RegistryObject<ContainerType<UpgradeContainer>> UPGRADE_CONTAINER_TYPE;
+
+    static
+    {
+        UPGRADE_CONTAINER_TYPE = CONTAINERS.register("upgrade", () -> new ContainerType<>(UpgradeContainer::new));
+    }
+
+    @SubscribeEvent @SuppressWarnings("unused")
+    public static void onClientSetup(final FMLClientSetupEvent event)
+    {
+        ScreenManager.registerFactory(UPGRADE_CONTAINER_TYPE.get(), UpgradeContainerScreen::new);
+    }
+
+    public static void registerRegisters(final IEventBus modEventBus)
+    {
+        CONTAINERS.register(modEventBus);
+    }
 }

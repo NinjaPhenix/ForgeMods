@@ -10,9 +10,12 @@ public final class Language extends LanguageProvider
     @Override
     protected void addTranslations()
     {
-
+        add("container.refinement.upgrade", "Upgrade");
     }
 
     @Override
-    public String getName() { return "Refinement - Language"; }
+    public String getName()
+    {
+        return "Refinement - Language";
+    }
 }

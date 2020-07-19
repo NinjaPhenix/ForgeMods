@@ -1,7 +1,7 @@
 package ninjaphenix.refinement_test.common;
 
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(RefinementTestMod.MOD_ID)
 public final class RefinementTestMod
@@ -10,8 +10,6 @@ public final class RefinementTestMod
 
     public RefinementTestMod()
     {
-
+        TestContent.registerRegisters(FMLJavaModLoadingContext.get().getModEventBus());
     }
-
-    public static ResourceLocation getRl(final String path) { return new ResourceLocation(MOD_ID, path); }
 }
