@@ -1,5 +1,5 @@
 @ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
-package ninjaphenix.refinement.common.block;
+package ninjaphenix.refinement.impl.common.container;
 
 import mcp.MethodsReturnNonnullByDefault;
 

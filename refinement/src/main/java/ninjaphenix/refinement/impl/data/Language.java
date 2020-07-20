@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.data;
+package ninjaphenix.refinement.impl.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -10,7 +10,9 @@ public final class Language extends LanguageProvider
     @Override
     protected void addTranslations()
     {
-        add("container.refinement.upgrade", "Upgrade");
+        add("container.refinement.upgrade.upgrade", "Upgrade");
+        add("container.refinement.upgrade.downgrade", "Downgrade");
+        add("container.refinement.upgrade.information", "Information");
     }
 
     @Override

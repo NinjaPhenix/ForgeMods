@@ -1,3 +1,5 @@
 {
-  "container.refinement.upgrade": "Upgrade"
+  "container.refinement.upgrade.downgrade": "Downgrade",
+  "container.refinement.upgrade.information": "Information",
+  "container.refinement.upgrade.upgrade": "Upgrade"
 }

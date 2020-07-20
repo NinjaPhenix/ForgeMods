@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.common.block;
+package ninjaphenix.refinement.api.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -17,7 +17,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
-import ninjaphenix.refinement.common.container.UpgradeContainer;
+import ninjaphenix.refinement.impl.common.container.UpgradeContainer;
 
 public abstract class UpgradableBlock extends Block implements INamedContainerProvider
 {
@@ -32,7 +32,7 @@ public abstract class UpgradableBlock extends Block implements INamedContainerPr
     @Override
     public final ITextComponent getDisplayName()
     {
-        return new TranslationTextComponent("container.refinement.upgrade");
+        return new TranslationTextComponent("container.refinement.upgrade.upgrade");
     }
 
     @Override

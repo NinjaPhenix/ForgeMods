@@ -1,13 +1,13 @@
-package ninjaphenix.refinement.client.gui;
+package ninjaphenix.refinement.impl.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
-import ninjaphenix.refinement.common.container.UpgradeContainer;
+import ninjaphenix.refinement.impl.common.container.UpgradeContainer;
 
-public class UpgradeContainerScreen extends ContainerScreen<UpgradeContainer>
+public final class UpgradeContainerScreen extends ContainerScreen<UpgradeContainer>
 {
     public UpgradeContainerScreen(final UpgradeContainer container, final PlayerInventory playerInventory, final ITextComponent title)
     {

@@ -1,6 +1,6 @@
 package ninjaphenix.refinement_test.common.block.entity;
 
-import ninjaphenix.refinement.common.block.entity.UpgradableTileEntity;
+import ninjaphenix.refinement.api.common.block.entity.UpgradableTileEntity;
 import ninjaphenix.refinement_test.common.TestContent;
 
 public final class TestUpgradableTileEntity extends UpgradableTileEntity

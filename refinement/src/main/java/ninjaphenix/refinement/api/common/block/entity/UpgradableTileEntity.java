@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.common.block.entity;
+package ninjaphenix.refinement.api.common.block.entity;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;

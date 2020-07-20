@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.common;
+package ninjaphenix.refinement.impl;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;

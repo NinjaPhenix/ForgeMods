@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.common;
+package ninjaphenix.refinement.impl;
 
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.inventory.container.ContainerType;
@@ -9,8 +9,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import ninjaphenix.refinement.client.gui.UpgradeContainerScreen;
-import ninjaphenix.refinement.common.container.UpgradeContainer;
+import ninjaphenix.refinement.impl.client.gui.UpgradeContainerScreen;
+import ninjaphenix.refinement.impl.common.container.UpgradeContainer;
 
 @Mod.EventBusSubscriber(modid = Refinement.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class RefinementContent

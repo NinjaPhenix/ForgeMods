@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import ninjaphenix.refinement.common.block.UpgradableBlock;
+import ninjaphenix.refinement.api.common.block.UpgradableBlock;
 import ninjaphenix.refinement_test.common.block.entity.TestUpgradableTileEntity;
 
 public final class TestUpgradableBlock extends UpgradableBlock

@@ -103,11 +103,7 @@ public abstract class BaseChestBlock<T extends BaseChestTileEntity> extends Cont
             return Optional.of(new IDataNamedContainerProvider()
             {
                 @Override
-                public void writeExtraData(final PacketBuffer buffer)
-                {
-                    buffer.writeInt(single.getSizeInventory());
-                    buffer.writeBlockPos(single.getPos());
-                }
+                public void writeExtraData(final PacketBuffer buffer) { buffer.writeBlockPos(single.getPos()).writeInt(single.getSizeInventory()); }
 
                 @Override
                 public ITextComponent getDisplayName() { return single.getDisplayName(); }
