@@ -1,5 +1,6 @@
 package ninjaphenix.refinement.api.data;
 
-public class ShapelessUpgradeRecipe
+public class ShapedDowngradeRecipeBuilder
 {
+
 }
