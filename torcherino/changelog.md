@@ -1,2 +1,1 @@
-- Update to 1.16.1
-- Minor resource pack changes regarding lanterns.
+- Fixed bug where some config options would not work.
