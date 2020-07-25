@@ -14,9 +14,9 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import torcherino.Torcherino;
 import torcherino.block.tile.TorcherinoTileEntity;
@@ -45,8 +45,7 @@ public final class TorcherinoLogic
         if (Config.INSTANCE.logPlacement())
         {
             final String prefix = placer == null ? "Something" : placer.getDisplayName().getString() + "(" + placer.getCachedUniqueIdString() + ")";
-            final String blockName = StringUtils.capitalize(state.getBlock().getTranslationKey().replace("block.torcherino.", "").replace("_", " "));
-            Torcherino.LOGGER.info("[Torcherino] {} placed a {} at {} {} {}.", prefix, blockName, pos.getX(), pos.getY(), pos.getZ());
+            Torcherino.LOGGER.info("[Torcherino] {} placed a {} at {} {} {}.", prefix, new TranslationTextComponent(state.getBlock().getTranslationKey()).getString(), pos.getX(), pos.getY(), pos.getZ());
         }
     }
 

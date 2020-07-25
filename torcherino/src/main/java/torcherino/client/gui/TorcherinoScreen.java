@@ -196,10 +196,10 @@ public final class TorcherinoScreen extends Screen
     }
 
     @Override
-    public void onClose()
+    public void closeScreen()
     {
         Networker.INSTANCE.torcherinoChannel.sendToServer(new ValueUpdateMessage(tileEntity.getPos(), xRange, zRange, yRange, speed, redstoneMode));
-        super.onClose();
+        super.closeScreen();
     }
 
     @Override
@@ -213,7 +213,7 @@ public final class TorcherinoScreen extends Screen
     {
         if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode)))
         {
-            onClose();
+            closeScreen();
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);

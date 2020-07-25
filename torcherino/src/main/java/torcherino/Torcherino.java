@@ -1,6 +1,5 @@
 package torcherino;
 
-import java.util.stream.Stream;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntityType;
@@ -8,7 +7,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -49,12 +47,12 @@ public final class Torcherino
     @SuppressWarnings("deprecation")
     public void processIMC(final InterModProcessEvent event)
     {
-        final Stream<InterModComms.IMCMessage> messages = event.getIMCStream();
-        if (messages.anyMatch(msg -> true))
+        // cannot use local for event.getIMCStream() as reusing stream will cause crash.
+        if (event.getIMCStream().anyMatch(msg -> true))
         {
             LOGGER.warn("Torcherino IMC support is being removed in a future version in favour of data pack tags.");
         }
-        messages.forEach((message) ->
+        event.getIMCStream().forEach((message) ->
         {
             final String method = message.getMethod();
             final Object value = message.getMessageSupplier().get();
