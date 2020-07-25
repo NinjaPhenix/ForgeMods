@@ -1,5 +1,6 @@
 package torcherino.block;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 import net.minecraft.block.Block;
@@ -8,8 +9,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -30,32 +29,23 @@ public final class TorcherinoLogic
 {
     public static void onBlockPlacedBy(final World world, final BlockPos pos, final BlockState state, final @Nullable LivingEntity placer, final ItemStack stack)
     {
-        if (world.isRemote)
+        if (!world.isRemote)
         {
-            return;
-        }
-        if (stack.hasDisplayName())
-        {
-            final TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof TorcherinoTileEntity)
+            if (stack.hasDisplayName())
             {
-                ((TorcherinoTileEntity) tile).setCustomName(stack.getDisplayName());
+                cast(world.getTileEntity(pos), TorcherinoTileEntity.class).ifPresent(tileEntity -> tileEntity.setCustomName(stack.getDisplayName()));
             }
-        }
-        if (Config.INSTANCE.logPlacement())
-        {
-            final String prefix = placer == null ? "Something" : placer.getDisplayName().getString() + "(" + placer.getCachedUniqueIdString() + ")";
-            Torcherino.LOGGER.info("[Torcherino] {} placed a {} at {} {} {}.", prefix, new TranslationTextComponent(state.getBlock().getTranslationKey()).getString(), pos.getX(), pos.getY(), pos.getZ());
+            if (Config.INSTANCE.logPlacement())
+            {
+                final String prefix = placer == null ? "Something" : placer.getDisplayName().getString() + "(" + placer.getCachedUniqueIdString() + ")";
+                Torcherino.LOGGER.info("[Torcherino] {} placed a {} at {} {} {}.", prefix, new TranslationTextComponent(state.getBlock().getTranslationKey()).getString(), pos.getX(), pos.getY(), pos.getZ());
+            }
         }
     }
 
     public static void tick(final BlockState state, final ServerWorld world, final BlockPos pos, final Random random)
     {
-        final TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TorcherinoTileEntity)
-        {
-            ((TorcherinoTileEntity) tileEntity).tick();
-        }
+        cast(world.getTileEntity(pos), TorcherinoTileEntity.class).ifPresent(TorcherinoTileEntity::tick);
     }
 
     @SuppressWarnings("SameReturnValue")
@@ -70,28 +60,32 @@ public final class TorcherinoLogic
 
     public static void onBlockAdded(final BlockState state, final World world, final BlockPos pos, final BlockState oldState, final boolean isMoving)
     {
-        final TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TorcherinoTileEntity)
-        {
-            ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(state.get(BlockStateProperties.POWERED));
-        }
+        cast(world.getTileEntity(pos), TorcherinoTileEntity.class).ifPresent(tileEntity -> tileEntity.setPoweredByRedstone(state.get(POWERED)));
     }
 
     public static void neighborChanged(final BlockState state, final World world, final BlockPos pos, final Block block, final BlockPos fromPos, final boolean isMoving, final Supplier<Boolean> isPoweredSupplier)
     {
-        if (world.isRemote)
+        if (!world.isRemote)
         {
-            return;
-        }
-        final TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TorcherinoTileEntity)
-        {
-            final Boolean powered = isPoweredSupplier.get();
-            if (state.get(POWERED) != powered)
+            cast(world.getTileEntity(pos), TorcherinoTileEntity.class).ifPresent(tileEntity ->
             {
-                world.setBlockState(pos, state.with(POWERED, powered));
-                ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(powered);
-            }
+                final Boolean powered = isPoweredSupplier.get();
+                if (state.get(POWERED) != powered)
+                {
+                    world.setBlockState(pos, state.with(POWERED, powered));
+                    tileEntity.setPoweredByRedstone(powered);
+                }
+            });
         }
+    }
+
+    //todo: move to refinement?
+    private static <T> Optional<T> cast(final @Nullable Object object, final Class<T> clazz)
+    {
+        if (clazz.isInstance(object))
+        {
+            return Optional.of(clazz.cast(object));
+        }
+        return Optional.empty();
     }
 }
