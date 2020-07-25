@@ -23,7 +23,10 @@ public abstract class ChestModifierItem extends Item
     private static final DirectionProperty FACING = BaseChestBlock.FACING;
     private static final EnumProperty<CursedChestType> TYPE = BaseChestBlock.TYPE;
 
-    public ChestModifierItem(final Item.Properties properties) { super(properties); }
+    public ChestModifierItem(final Item.Properties properties)
+    {
+        super(properties);
+    }
 
     @Override
     public ActionResultType onItemUse(final ItemUseContext context)
@@ -36,7 +39,10 @@ public abstract class ChestModifierItem extends Item
             ActionResultType result = ActionResultType.FAIL;
             final CursedChestType type = state.get(TYPE);
             final Direction facing = state.get(FACING);
-            if (type == CursedChestType.SINGLE) { result = useModifierOnChestBlock(context, state, pos, null, null); }
+            if (type == CursedChestType.SINGLE)
+            {
+                result = useModifierOnChestBlock(context, state, pos, null, null);
+            }
             else if (type == CursedChestType.BOTTOM)
             {
                 final BlockPos otherPos = pos.offset(Direction.UP);
@@ -69,31 +75,47 @@ public abstract class ChestModifierItem extends Item
             }
             return result;
         }
-        else { return useModifierOnBlock(context, state); }
+        else
+        {
+            return useModifierOnBlock(context, state);
+        }
     }
 
     @Override
     public ActionResultType itemInteractionForEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
-    { return useModifierOnEntity(stack, player, entity, hand); }
+    {
+        return useModifierOnEntity(stack, player, entity, hand);
+    }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(final World world, final PlayerEntity player, final Hand hand)
     {
         final ActionResult<ItemStack> result = useModifierInAir(world, player, hand);
-        if (result.getType() == ActionResultType.SUCCESS) { player.getCooldownTracker().setCooldown(this, 5); }
+        if (result.getType() == ActionResultType.SUCCESS)
+        {
+            player.getCooldownTracker().setCooldown(this, 5);
+        }
         return result;
     }
 
-    protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainBlockPos,
-            @Nullable final BlockState otherState, @Nullable final BlockPos otherBlockPos)
-    { return ActionResultType.PASS; }
+    protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainBlockPos, final @Nullable BlockState otherState, final @Nullable BlockPos otherBlockPos)
+    {
+        return ActionResultType.PASS;
+    }
 
-    protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state) { return ActionResultType.PASS; }
+    protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state)
+    {
+        return ActionResultType.PASS;
+    }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "SameReturnValue"})
     protected ActionResultType useModifierOnEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
-    { return ActionResultType.PASS; }
+    {
+        return ActionResultType.PASS;
+    }
 
     protected ActionResult<ItemStack> useModifierInAir(final World world, final PlayerEntity player, final Hand hand)
-    { return ActionResult.resultPass(player.getHeldItem(hand)); }
+    {
+        return ActionResult.resultPass(player.getHeldItem(hand));
+    }
 }

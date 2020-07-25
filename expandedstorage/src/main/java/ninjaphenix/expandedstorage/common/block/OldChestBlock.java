@@ -23,25 +23,33 @@ public final class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
         setRegistryName(registryName);
     }
 
-    @Override @SuppressWarnings("ConstantConditions")
-    public TileEntity createTileEntity(@Nullable final BlockState state, @Nullable final IBlockReader world)
+    @Override
+    @SuppressWarnings("ConstantConditions")
+    public TileEntity createTileEntity(final @Nullable BlockState state, final @Nullable IBlockReader world)
     {
         final ResourceLocation registryName = getRegistryName();
         return new OldChestTileEntity(new ResourceLocation(registryName.getNamespace(), registryName.getPath().substring(4)));
     }
 
     @Override
-    protected boolean isBlocked(IWorld world, BlockPos pos)
+    protected boolean isBlocked(final IWorld world, final BlockPos pos)
     {
         final BlockPos upPos = pos.up();
         final BlockState upState = world.getBlockState(upPos);
-        return (upState.isNormalCube(world, upPos) && upState.getBlock() != this) || world.getEntitiesWithinAABB(CatEntity.class, new AxisAlignedBB(pos.getX(),
-                pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)).stream().anyMatch(CatEntity::func_233684_eK_);
+        return (upState.isNormalCube(world, upPos) && upState.getBlock() != this) || world.getEntitiesWithinAABB(CatEntity.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)).stream().anyMatch(CatEntity::func_233684_eK_);
     }
 
-    @Override @SuppressWarnings("deprecation")
-    public BlockRenderType getRenderType(@Nullable final BlockState state) { return BlockRenderType.MODEL; }
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockRenderType getRenderType(final @Nullable BlockState state)
+    {
+        return BlockRenderType.MODEL;
+    }
 
-    @Override @SuppressWarnings("unchecked")
-    public SimpleRegistry<Registries.TierData> getDataRegistry() { return Registries.OLD; }
+    @Override
+    @SuppressWarnings("unchecked")
+    public SimpleRegistry<Registries.TierData> getDataRegistry()
+    {
+        return Registries.OLD;
+    }
 }

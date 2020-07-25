@@ -21,7 +21,10 @@ public final class ExpandedStorageConfig
         CLIENT = specPair.getLeft();
     }
 
-    public static void register() { ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, clientSpec); }
+    public static void register()
+    {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, clientSpec);
+    }
 
     public static class Client
     {
@@ -29,18 +32,12 @@ public final class ExpandedStorageConfig
         public final ForgeConfigSpec.BooleanValue restrictiveScrolling;
         public final ForgeConfigSpec.BooleanValue centerSettingsButtonOnScrollbar;
 
-        Client(ForgeConfigSpec.Builder builder)
+        Client(final ForgeConfigSpec.Builder builder)
         {
             builder.push("client");
-            preferredContainerType = builder.comment("Preferred Container Type, set to expandedstorage:auto to display selection screen.")
-                                            .translation("expandedstorage.config_gui.preferred_container_type")
-                                            .define("preferred_container_type", new ResourceLocation("expandedstorage", "auto").toString());
-            restrictiveScrolling = builder.comment("Only allows scrolling with mouse-wheel whilst hovering over the scroll bar.")
-                                          .translation("expandedstorage.config_gui.restrictive_scrolling")
-                                          .define("restrictive_scrolling", false);
-            centerSettingsButtonOnScrollbar = builder.comment("Centers the settings button on the scrollbar of the scrollable screen.")
-                                                     .translation("expandedstorage.config_gui.settings_button_center_on_scrollbar")
-                                                     .define("settings_button_center_on_scrollbar", true);
+            preferredContainerType = builder.comment("Preferred Container Type, set to expandedstorage:auto to display selection screen.").translation("expandedstorage.config_gui.preferred_container_type").define("preferred_container_type", new ResourceLocation("expandedstorage", "auto").toString());
+            restrictiveScrolling = builder.comment("Only allows scrolling with mouse-wheel whilst hovering over the scroll bar.").translation("expandedstorage.config_gui.restrictive_scrolling").define("restrictive_scrolling", false);
+            centerSettingsButtonOnScrollbar = builder.comment("Centers the settings button on the scrollbar of the scrollable screen.").translation("expandedstorage.config_gui.settings_button_center_on_scrollbar").define("settings_button_center_on_scrollbar", true);
         }
     }
 }

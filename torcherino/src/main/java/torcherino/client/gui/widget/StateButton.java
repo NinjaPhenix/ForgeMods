@@ -29,6 +29,7 @@ public abstract class StateButton extends AbstractButton
 
     protected abstract void setState(final int state);
 
+    @SuppressWarnings("SameReturnValue")
     protected abstract int getMaxStates();
 
     private void setInternalState(final int stateIn)

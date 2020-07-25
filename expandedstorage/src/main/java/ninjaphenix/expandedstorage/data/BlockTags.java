@@ -7,11 +7,20 @@ import ninjaphenix.expandedstorage.ModContent;
 
 public final class BlockTags extends BlockTagsProvider
 {
-    public BlockTags(final DataGenerator generator) { super(generator); }
+    public BlockTags(final DataGenerator generator)
+    {
+        super(generator);
+    }
 
     @Override
-    protected void registerTags() { getOrCreateBuilder(Tags.Blocks.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getFirst()); }
+    protected void registerTags()
+    {
+        getOrCreateBuilder(Tags.Blocks.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getFirst());
+    }
 
     @Override
-    public String getName() { return "Expanded Storage - Block Tags"; }
+    public String getName()
+    {
+        return "Expanded Storage - Block Tags";
+    }
 }

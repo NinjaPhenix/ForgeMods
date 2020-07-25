@@ -1,6 +1,5 @@
 @ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
 package ninjaphenix.expandedstorage.common.block.entity;
 
-import mcp.MethodsReturnNonnullByDefault;
-
 import javax.annotation.ParametersAreNonnullByDefault;
+import mcp.MethodsReturnNonnullByDefault;

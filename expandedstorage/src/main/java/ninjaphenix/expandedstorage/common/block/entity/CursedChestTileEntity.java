@@ -29,26 +29,27 @@ public final class CursedChestTileEntity extends BaseChestTileEntity implements 
     private float animationAngle, lastAnimationAngle;
     private int viewerCount, ticksOpen;
 
-    public CursedChestTileEntity() { this(null); }
+    public CursedChestTileEntity()
+    {
+        this(null);
+    }
 
-    public CursedChestTileEntity(@Nullable final ResourceLocation block) { super(ModContent.CURSED_CHEST_TE, block); }
+    public CursedChestTileEntity(final @Nullable ResourceLocation block)
+    {
+        super(ModContent.CURSED_CHEST_TE, block);
+    }
 
-    private static int tickViewerCount(final World world, final CursedChestTileEntity instance, final int ticksOpen, final int x, final int y, final int z,
-            final int viewCount)
+    private static int tickViewerCount(final World world, final CursedChestTileEntity instance, final int ticksOpen, final int x, final int y, final int z, final int viewCount)
     {
         if (!world.isRemote && viewCount != 0 && (ticksOpen + x + y + z) % 200 == 0)
         {
-            return world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(x - 5, y - 5, z - 5, x + 6, y + 6, z + 6)).stream()
-                        .filter(player -> player.openContainer instanceof AbstractContainer)
-                        .map(player -> ((AbstractContainer<?>) player.openContainer).getInv())
-                        .filter(inventory -> inventory == instance ||
-                                inventory instanceof DoubleSidedInventory && ((DoubleSidedInventory) inventory).isPart(instance))
-                        .mapToInt(inv -> 1).sum();
+            return world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(x - 5, y - 5, z - 5, x + 6, y + 6, z + 6)).stream().filter(player -> player.openContainer instanceof AbstractContainer).map(player -> ((AbstractContainer<?>) player.openContainer).getInv()).filter(inventory -> inventory == instance || inventory instanceof DoubleSidedInventory && ((DoubleSidedInventory) inventory).isPart(instance)).mapToInt(inv -> 1).sum();
         }
         return viewCount;
     }
 
-    @Override @SuppressWarnings("OptionalGetWithoutIsPresent")
+    @Override
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     protected void initialize(final ResourceLocation block)
     {
         this.block = block;
@@ -57,7 +58,10 @@ public final class CursedChestTileEntity extends BaseChestTileEntity implements 
         inventorySize = data.getSlotCount();
         inventory = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
         SLOTS = new int[inventorySize];
-        for (int i = 0; i < inventorySize; i++) { SLOTS[i] = i; }
+        for (int i = 0; i < inventorySize; i++)
+        {
+            SLOTS[i] = i;
+        }
     }
 
     @Override
@@ -68,22 +72,35 @@ public final class CursedChestTileEntity extends BaseChestTileEntity implements 
             viewerCount = value;
             return true;
         }
-        else { return super.receiveClientEvent(actionId, value); }
+        else
+        {
+            return super.receiveClientEvent(actionId, value);
+        }
     }
 
     @Override
-    public float getLidAngle(final float partialTicks) { return MathHelper.lerp(partialTicks, lastAnimationAngle, animationAngle); }
+    public float getLidAngle(final float partialTicks)
+    {
+        return MathHelper.lerp(partialTicks, lastAnimationAngle, animationAngle);
+    }
 
-    @Override @SuppressWarnings("ConstantConditions")
+    @Override
+    @SuppressWarnings("ConstantConditions")
     public void tick()
     {
         viewerCount = tickViewerCount(world, this, ++ticksOpen, pos.getX(), pos.getY(), pos.getZ(), viewerCount);
         lastAnimationAngle = animationAngle;
-        if (viewerCount > 0 && animationAngle == 0.0F) { playSound(SoundEvents.BLOCK_CHEST_OPEN); }
+        if (viewerCount > 0 && animationAngle == 0.0F)
+        {
+            playSound(SoundEvents.BLOCK_CHEST_OPEN);
+        }
         if (viewerCount == 0 && animationAngle > 0.0F || viewerCount > 0 && animationAngle < 1.0F)
         {
             animationAngle = MathHelper.clamp(animationAngle + (viewerCount > 0 ? 0.1F : -0.1F), 0, 1);
-            if (animationAngle < 0.5F && lastAnimationAngle >= 0.5F) { playSound(SoundEvents.BLOCK_CHEST_CLOSE); }
+            if (animationAngle < 0.5F && lastAnimationAngle >= 0.5F)
+            {
+                playSound(SoundEvents.BLOCK_CHEST_CLOSE);
+            }
         }
     }
 
@@ -91,7 +108,10 @@ public final class CursedChestTileEntity extends BaseChestTileEntity implements 
     private void playSound(final SoundEvent soundEvent)
     {
         final BlockState state = getBlockState();
-        if (BaseChestBlock.getMergeType(state) == TileEntityMerger.Type.SECOND) { return; }
+        if (BaseChestBlock.getMergeType(state) == TileEntityMerger.Type.SECOND)
+        {
+            return;
+        }
         final Vector3i offset = BaseChestBlock.getDirectionToAttached(getBlockState()).getDirectionVec();
         final Vector3d soundPos = Vector3d.copyCentered(pos).add(offset.getX() * 0.5D, offset.getY() * 0.5D, offset.getZ() * 0.5D);
         world.playSound(null, soundPos.getX(), soundPos.getY(), soundPos.getZ(), soundEvent, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
@@ -100,8 +120,14 @@ public final class CursedChestTileEntity extends BaseChestTileEntity implements 
     @Override
     public void openInventory(final PlayerEntity player)
     {
-        if (player.isSpectator()) { return; }
-        if (viewerCount < 0) { viewerCount = 0; }
+        if (player.isSpectator())
+        {
+            return;
+        }
+        if (viewerCount < 0)
+        {
+            viewerCount = 0;
+        }
         viewerCount++;
         onInvOpenOrClose();
     }
@@ -109,7 +135,10 @@ public final class CursedChestTileEntity extends BaseChestTileEntity implements 
     @Override
     public void closeInventory(final PlayerEntity player)
     {
-        if (player.isSpectator()) { return; }
+        if (player.isSpectator())
+        {
+            return;
+        }
         viewerCount--;
         onInvOpenOrClose();
     }

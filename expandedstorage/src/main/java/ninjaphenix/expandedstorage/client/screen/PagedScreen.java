@@ -42,17 +42,28 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
                 if (blanked > 0)
                 {
                     final int xOffset = 7 + (SCREEN_META.WIDTH - blanked) * 18;
-                    blankArea = new Rectangle(guiLeft + xOffset, guiTop + ySize - 115, blanked * 18, 18, xOffset, ySize, SCREEN_META.TEXTURE_WIDTH,
-                            SCREEN_META.TEXTURE_HEIGHT);
+                    blankArea = new Rectangle(guiLeft + xOffset, guiTop + ySize - 115, blanked * 18, 18, xOffset, ySize, SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
                 }
             }
-            if (!leftPageButton.active) { leftPageButton.setActive(true); }
+            if (!leftPageButton.active)
+            {
+                leftPageButton.setActive(true);
+            }
         }
         else if (newPage < oldPage)
         {
-            if (page == 1) { leftPageButton.setActive(false); }
-            if (blankArea != null) {blankArea = null; }
-            if (!rightPageButton.active) { rightPageButton.setActive(true); }
+            if (page == 1)
+            {
+                leftPageButton.setActive(false);
+            }
+            if (blankArea != null)
+            {
+                blankArea = null;
+            }
+            if (!rightPageButton.active)
+            {
+                rightPageButton.setActive(true);
+            }
         }
         final int slotsPerPage = SCREEN_META.WIDTH * SCREEN_META.HEIGHT;
         final int oldMin = slotsPerPage * (oldPage - 1);
@@ -64,7 +75,10 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         setPageText();
     }
 
-    private void setPageText() { currentPageText = new TranslationTextComponent("screen.expandedstorage.page_x_y", page, SCREEN_META.PAGES); }
+    private void setPageText()
+    {
+        currentPageText = new TranslationTextComponent("screen.expandedstorage.page_x_y", page, SCREEN_META.PAGES);
+    }
 
     @Override
     public void render(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
@@ -84,19 +98,20 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         super.init();
         int settingsXOffset = -19;
         final boolean isQuarkLoaded = ModList.get().isLoaded("quark");
-        if (isQuarkLoaded && SCREEN_META.WIDTH <= 9) { settingsXOffset -= 24; }
+        if (isQuarkLoaded && SCREEN_META.WIDTH <= 9)
+        {
+            settingsXOffset -= 24;
+        }
         screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4, this::renderButtonTooltip));
         if (SCREEN_META.PAGES != 1)
         {
             final int pageButtonsXOffset = isQuarkLoaded ? 36 : 0;
             page = 1;
             setPageText();
-            leftPageButton = new PageButtonWidget(guiLeft + xSize - 61 - pageButtonsXOffset, guiTop + ySize - 96, 0,
-                    new TranslationTextComponent("screen.expandedstorage.prev_page"), button -> setPage(page, page - 1), this::renderButtonTooltip);
+            leftPageButton = new PageButtonWidget(guiLeft + xSize - 61 - pageButtonsXOffset, guiTop + ySize - 96, 0, new TranslationTextComponent("screen.expandedstorage.prev_page"), button -> setPage(page, page - 1), this::renderButtonTooltip);
             leftPageButton.setActive(false);
             addButton(leftPageButton);
-            rightPageButton = new PageButtonWidget(guiLeft + xSize - 19 - pageButtonsXOffset, guiTop + ySize - 96, 1,
-                    new TranslationTextComponent("screen.expandedstorage.next_page"), button -> setPage(page, page + 1), this::renderButtonTooltip);
+            rightPageButton = new PageButtonWidget(guiLeft + xSize - 19 - pageButtonsXOffset, guiTop + ySize - 96, 1, new TranslationTextComponent("screen.expandedstorage.next_page"), button -> setPage(page, page + 1), this::renderButtonTooltip);
             addButton(rightPageButton);
             pageTextX = (1 + leftPageButton.x + rightPageButton.x - rightPageButton.getWidth() / 2F) / 2F;
         }
@@ -106,7 +121,10 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
     protected void drawGuiContainerBackgroundLayer(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
         super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
-        if (blankArea != null) { blankArea.render(stack); }
+        if (blankArea != null)
+        {
+            blankArea.render(stack);
+        }
     }
 
     @Override
@@ -130,7 +148,10 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
     protected void drawGuiContainerForegroundLayer(final MatrixStack stack, final int mouseX, final int mouseY)
     {
         super.drawGuiContainerForegroundLayer(stack, mouseX, mouseY);
-        if (currentPageText != null) { font.func_238422_b_(stack, currentPageText, pageTextX - guiLeft, ySize - 94, 0x404040); }
+        if (currentPageText != null)
+        {
+            font.func_238422_b_(stack, currentPageText, pageTextX - guiLeft, ySize - 94, 0x404040);
+        }
     }
 
     @Override
@@ -140,8 +161,17 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         {
             if (SCREEN_META.PAGES != 1)
             {
-                if (hasShiftDown()) { setPage(page, SCREEN_META.PAGES); }
-                else { if (page != SCREEN_META.PAGES) { setPage(page, page + 1); } }
+                if (hasShiftDown())
+                {
+                    setPage(page, SCREEN_META.PAGES);
+                }
+                else
+                {
+                    if (page != SCREEN_META.PAGES)
+                    {
+                        setPage(page, page + 1);
+                    }
+                }
                 return true;
             }
         }
@@ -149,8 +179,17 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         {
             if (SCREEN_META.PAGES != 1)
             {
-                if (hasShiftDown()) { setPage(page, 1); }
-                else { if (page != 1) { setPage(page, page - 1); } }
+                if (hasShiftDown())
+                {
+                    setPage(page, 1);
+                }
+                else
+                {
+                    if (page != 1)
+                    {
+                        setPage(page, page - 1);
+                    }
+                }
                 return true;
             }
         }
@@ -162,8 +201,7 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         private final int TEXTURE_OFFSET;
         private final ResourceLocation TEXTURE = ExpandedStorage.getRl("textures/gui/page_buttons.png");
 
-        public PageButtonWidget(final int x, final int y, final int textureOffset, final ITextComponent message, final IPressable onPress,
-                final ITooltip onTooltip)
+        public PageButtonWidget(final int x, final int y, final int textureOffset, final ITextComponent message, final IPressable onPress, final ITooltip onTooltip)
         {
             super(x, y, 12, 12, message, onPress, onTooltip);
             TEXTURE_OFFSET = textureOffset;
@@ -172,14 +210,18 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         public void setActive(final boolean active)
         {
             this.active = active;
-            if (!active) { this.setFocused(false); }
+            if (!active)
+            {
+                setFocused(false);
+            }
         }
 
-        @Override @SuppressWarnings("deprecation")
+        @Override
+        @SuppressWarnings("deprecation")
         public void renderButton(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
         {
             Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -190,8 +232,14 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         {
             if (active)
             {
-                if (isHovered) { onTooltip.onTooltip(this, stack, mouseX, mouseY); }
-                else if (isHovered()) { onTooltip.onTooltip(this, stack, x, y); }
+                if (isHovered)
+                {
+                    onTooltip.onTooltip(this, stack, mouseX, mouseY);
+                }
+                else if (isHovered())
+                {
+                    onTooltip.onTooltip(this, stack, x, y);
+                }
             }
         }
     }

@@ -15,12 +15,19 @@ import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 public final class ExpandedStorageClient
 {
     @SubscribeEvent
-    public static void setup(final FMLClientSetupEvent event) { ClientRegistry.bindTileEntityRenderer(ModContent.CURSED_CHEST_TE, CursedChestRenderer::new); }
+    public static void setup(final FMLClientSetupEvent event)
+    {
+        ClientRegistry.bindTileEntityRenderer(ModContent.CURSED_CHEST_TE, CursedChestRenderer::new);
+    }
 
-    @SubscribeEvent @SuppressWarnings("OptionalGetWithoutIsPresent")
+    @SubscribeEvent
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public static void preStitchTextures(final TextureStitchEvent.Pre event)
     {
-        if (!event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS)) { return; }
+        if (!event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS))
+        {
+            return;
+        }
         for (final ResourceLocation entry : Registries.MODELED.keySet())
         {
             final Registries.ModeledTierData data = Registries.MODELED.getValue(entry).get();

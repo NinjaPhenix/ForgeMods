@@ -23,10 +23,12 @@ public final class ExpandedStorage
     public static final ItemGroup group = new ItemGroup(MOD_ID)
     {
         @Override
-        public ItemStack createIcon() { return new ItemStack(ModContent.DIAMOND_CHEST.getSecond()); }
+        public ItemStack createIcon()
+        {
+            return new ItemStack(ModContent.DIAMOND_CHEST.getSecond());
+        }
     };
-    public static ITextComponent leftShiftRightClick = new TranslationTextComponent("tooltip.expandedstorage.left_shift_right_click",
-            new KeybindTextComponent("key.sneak"), new KeybindTextComponent("key.use")).mergeStyle(TextFormatting.GOLD);
+    public static final ITextComponent leftShiftRightClick = new TranslationTextComponent("tooltip.expandedstorage.left_shift_right_click", new KeybindTextComponent("key.sneak"), new KeybindTextComponent("key.use")).mergeStyle(TextFormatting.GOLD);
 
     // todo: sided proxies
     public ExpandedStorage()
@@ -41,5 +43,8 @@ public final class ExpandedStorage
         }
     }
 
-    public static ResourceLocation getRl(final String path) { return new ResourceLocation(MOD_ID, path); }
+    public static ResourceLocation getRl(final String path)
+    {
+        return new ResourceLocation(MOD_ID, path);
+    }
 }

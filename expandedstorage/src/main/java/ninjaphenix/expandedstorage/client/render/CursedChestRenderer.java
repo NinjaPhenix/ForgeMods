@@ -23,44 +23,40 @@ import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntity>
 {
-    private static final BlockState defaultState = ModContent.WOOD_CHEST.getFirst().getDefaultState().with(CursedChestBlock.FACING, Direction.SOUTH)
-                                                                        .with(CursedChestBlock.TYPE, CursedChestType.SINGLE);
+    private static final BlockState defaultState = ModContent.WOOD_CHEST.getFirst().getDefaultState().with(CursedChestBlock.FACING, Direction.SOUTH).with(CursedChestBlock.TYPE, CursedChestType.SINGLE);
 
-    private static final ImmutableMap<CursedChestType, SingleChestModel> MODELS = new ImmutableMap.Builder<CursedChestType, SingleChestModel>()
-            .put(CursedChestType.SINGLE, new SingleChestModel())
-            .put(CursedChestType.FRONT, new FrontChestModel())
-            .put(CursedChestType.BACK, new BackChestModel())
-            .put(CursedChestType.TOP, new TopChestModel())
-            .put(CursedChestType.BOTTOM, new BottomChestModel())
-            .put(CursedChestType.LEFT, new LeftChestModel())
-            .put(CursedChestType.RIGHT, new RightChestModel())
-            .build();
+    private static final ImmutableMap<CursedChestType, SingleChestModel> MODELS = new ImmutableMap.Builder<CursedChestType, SingleChestModel>().put(CursedChestType.SINGLE, new SingleChestModel()).put(CursedChestType.FRONT, new FrontChestModel()).put(CursedChestType.BACK, new BackChestModel()).put(CursedChestType.TOP, new TopChestModel()).put(CursedChestType.BOTTOM, new BottomChestModel()).put(CursedChestType.LEFT, new LeftChestModel()).put(CursedChestType.RIGHT, new RightChestModel()).build();
 
-    public CursedChestRenderer(final TileEntityRendererDispatcher dispatcher) { super(dispatcher); }
+    public CursedChestRenderer(final TileEntityRendererDispatcher dispatcher)
+    {
+        super(dispatcher);
+    }
 
-    @Override @SuppressWarnings({ "ConstantConditions", "OptionalGetWithoutIsPresent" })
-    public void render(final CursedChestTileEntity te, final float v, final MatrixStack stack, final IRenderTypeBuffer buffer,
-            final int light, final int overlay)
+    @Override
+    @SuppressWarnings({"ConstantConditions", "OptionalGetWithoutIsPresent"})
+    public void render(final CursedChestTileEntity te, final float v, final MatrixStack stack, final IRenderTypeBuffer buffer, final int light, final int overlay)
     {
         final BlockState state = te.hasWorld() ? te.getBlockState() : defaultState;
         if (state.getBlock() instanceof CursedChestBlock)
         {
             final CursedChestBlock block = (CursedChestBlock) state.getBlock();
             final CursedChestType chestType = state.get(CursedChestBlock.TYPE);
-            SingleChestModel model = getModel(chestType);
+            final SingleChestModel model = getModel(chestType);
             stack.push();
             stack.translate(0.5D, 0.5D, 0.5D);
             stack.rotate(Vector3f.YP.rotationDegrees(-state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle()));
             stack.translate(-0.5D, -0.5D, -0.5D);
             model.setLidPitch(te.getLidAngle(v));
-            TileEntityMerger.ICallbackWrapper<? extends CursedChestTileEntity> wrapper = te.hasWorld() ?
-                    block.combine(state, te.getWorld(), te.getPos(), true) : TileEntityMerger.ICallback::func_225537_b_;
-            int combinedLight = wrapper.apply(new DualBrightnessCallback<>()).applyAsInt(light);
-            RenderMaterial material = new RenderMaterial(Atlases.CHEST_ATLAS, Registries.MODELED.getValue(te.getBlock()).get().getChestTexture(chestType));
+            final TileEntityMerger.ICallbackWrapper<? extends CursedChestTileEntity> wrapper = te.hasWorld() ? block.combine(state, te.getWorld(), te.getPos(), true) : TileEntityMerger.ICallback::func_225537_b_;
+            final int combinedLight = wrapper.apply(new DualBrightnessCallback<>()).applyAsInt(light);
+            final RenderMaterial material = new RenderMaterial(Atlases.CHEST_ATLAS, Registries.MODELED.getValue(te.getBlock()).get().getChestTexture(chestType));
             model.render(stack, material.getBuffer(buffer, RenderType::getEntityCutout), combinedLight, overlay);
             stack.pop();
         }
     }
 
-    public SingleChestModel getModel(final CursedChestType type) { return MODELS.get(type); }
+    public SingleChestModel getModel(final CursedChestType type)
+    {
+        return MODELS.get(type);
+    }
 }

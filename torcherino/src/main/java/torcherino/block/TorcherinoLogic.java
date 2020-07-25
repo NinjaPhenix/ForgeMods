@@ -59,6 +59,7 @@ public final class TorcherinoLogic
         }
     }
 
+    @SuppressWarnings("SameReturnValue")
     public static ActionResultType onBlockActivated(final BlockState state, final World world, final BlockPos pos, final PlayerEntity player, final Hand hand, final BlockRayTraceResult hit)
     {
         if (!world.isRemote)

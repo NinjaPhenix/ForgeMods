@@ -1,12 +1,11 @@
 package ninjaphenix.expandedstorage.common.block.entity;
 
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 // todo: Remove, requires ModContent to be rewritten.
 public final class CustomTileEntityType<T extends TileEntity> extends TileEntityType<T>
@@ -22,5 +21,8 @@ public final class CustomTileEntityType<T extends TileEntity> extends TileEntity
     }
 
     @Override
-    public final boolean isValidBlock(final Block block) { return predicate.test(block); }
+    public final boolean isValidBlock(final Block block)
+    {
+        return predicate.test(block);
+    }
 }

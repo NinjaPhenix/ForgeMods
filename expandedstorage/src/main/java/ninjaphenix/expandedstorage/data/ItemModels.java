@@ -8,7 +8,10 @@ import ninjaphenix.expandedstorage.ModContent;
 
 public final class ItemModels extends ItemModelProvider
 {
-    public ItemModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper) { super(generator, modId, fileHelper); }
+    public ItemModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper)
+    {
+        super(generator, modId, fileHelper);
+    }
 
     @Override
     protected void registerModels()
@@ -46,7 +49,10 @@ public final class ItemModels extends ItemModelProvider
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void oldChest(final Item item) { getBuilder(item.getRegistryName().getPath()).parent(BlockStatesAndModels.SINGLE_OLD_MODELS.get(item)); }
+    private void oldChest(final Item item)
+    {
+        getBuilder(item.getRegistryName().getPath()).parent(BlockStatesAndModels.SINGLE_OLD_MODELS.get(item));
+    }
 
     @SuppressWarnings("ConstantConditions")
     private void simple(final Item item)
@@ -56,8 +62,14 @@ public final class ItemModels extends ItemModelProvider
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void chest(final Item item) { withExistingParent(item.getRegistryName().getPath(), mcLoc("item/chest")); }
+    private void chest(final Item item)
+    {
+        withExistingParent(item.getRegistryName().getPath(), mcLoc("item/chest"));
+    }
 
     @Override
-    public String getName() { return "Expanded Storage - Item Models"; }
+    public String getName()
+    {
+        return "Expanded Storage - Item Models";
+    }
 }

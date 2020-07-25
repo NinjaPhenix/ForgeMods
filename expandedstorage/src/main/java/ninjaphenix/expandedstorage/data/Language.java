@@ -7,7 +7,10 @@ import ninjaphenix.expandedstorage.ModContent;
 
 public final class Language extends LanguageProvider
 {
-    public Language(final DataGenerator generator, final String modId, final String locale) { super(generator, modId, locale); }
+    public Language(final DataGenerator generator, final String modId, final String locale)
+    {
+        super(generator, modId, locale);
+    }
 
     @Override
     protected void addTranslations()
@@ -103,5 +106,8 @@ public final class Language extends LanguageProvider
     }
 
     @Override
-    public String getName() { return "Expanded Storage - Language"; }
+    public String getName()
+    {
+        return "Expanded Storage - Language";
+    }
 }

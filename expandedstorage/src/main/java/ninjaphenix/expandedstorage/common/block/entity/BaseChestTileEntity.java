@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings({ "WeakerAccess", "NullableProblems" })
+@SuppressWarnings({"WeakerAccess", "NullableProblems"})
 public abstract class BaseChestTileEntity extends LockableLootTileEntity implements ISidedInventory
 {
     protected ITextComponent defaultContainerName;
@@ -24,52 +24,90 @@ public abstract class BaseChestTileEntity extends LockableLootTileEntity impleme
     protected int[] SLOTS;
     protected ResourceLocation block;
 
-    public BaseChestTileEntity(final TileEntityType type, @Nullable final ResourceLocation block)
+    public BaseChestTileEntity(final TileEntityType type, final @Nullable ResourceLocation block)
     {
         super(type);
-        if (block != null) { initialize(block); }
+        if (block != null)
+        {
+            initialize(block);
+        }
     }
 
-    @Nullable @Override
-    protected Container createMenu(final int windowId, final PlayerInventory playerInventory) { return null; }
+    @Override
+    protected @Nullable Container createMenu(final int windowId, final PlayerInventory playerInventory)
+    {
+        return null;
+    }
 
     @Override
-    protected ITextComponent getDefaultName() { return defaultContainerName; }
+    protected ITextComponent getDefaultName()
+    {
+        return defaultContainerName;
+    }
 
     protected abstract void initialize(final ResourceLocation block);
 
-    public ResourceLocation getBlock() { return block; }
+    public ResourceLocation getBlock()
+    {
+        return block;
+    }
 
-    public void setBlock(final ResourceLocation block) { this.block = block; }
+    public void setBlock(final ResourceLocation block)
+    {
+        this.block = block;
+    }
 
     @Override
-    protected NonNullList<ItemStack> getItems() { return inventory; }
+    protected NonNullList<ItemStack> getItems()
+    {
+        return inventory;
+    }
 
     @Override
-    public void setItems(final NonNullList<ItemStack> inventory) { this.inventory = inventory; }
+    public void setItems(final NonNullList<ItemStack> inventory)
+    {
+        this.inventory = inventory;
+    }
 
     @Override
-    public int[] getSlotsForFace(final Direction direction) { return SLOTS; }
+    public int[] getSlotsForFace(final Direction direction)
+    {
+        return SLOTS;
+    }
 
     @Override
     public boolean canInsertItem(final int slot, final ItemStack stack, final Direction direction)
-    { return this.isItemValidForSlot(slot, stack); }
+    {
+        return isItemValidForSlot(slot, stack);
+    }
 
     @Override
-    public boolean canExtractItem(final int slot, final ItemStack stack, final Direction direction) { return true; }
+    public boolean canExtractItem(final int slot, final ItemStack stack, final Direction direction)
+    {
+        return true;
+    }
 
     @Override
-    public int getSizeInventory() { return inventorySize; }
+    public int getSizeInventory()
+    {
+        return inventorySize;
+    }
 
     @Override
-    public boolean isEmpty() { return inventory.stream().allMatch(ItemStack::isEmpty); }
+    public boolean isEmpty()
+    {
+        return inventory.stream().allMatch(ItemStack::isEmpty);
+    }
 
     @Override
     public void read(final BlockState state, final CompoundNBT tag)
     {
         super.read(state, tag);
-        this.initialize(new ResourceLocation(tag.getString("type")));
-        if (!checkLootAndRead(tag)) { ItemStackHelper.loadAllItems(tag, inventory); }
+        initialize(new ResourceLocation(tag.getString("type")));
+        if (!checkLootAndRead(tag))
+        {
+            ItemStackHelper.loadAllItems(tag, inventory);
+        }
     }
 
     @Override
@@ -77,14 +115,17 @@ public abstract class BaseChestTileEntity extends LockableLootTileEntity impleme
     {
         super.write(tag);
         tag.putString("type", block.toString());
-        if (!checkLootAndWrite(tag)) { ItemStackHelper.saveAllItems(tag, inventory); }
+        if (!checkLootAndWrite(tag))
+        {
+            ItemStackHelper.saveAllItems(tag, inventory);
+        }
         return tag;
     }
 
     @Override
     public CompoundNBT getUpdateTag()
     {
-        CompoundNBT tag = this.write(new CompoundNBT());
+        final CompoundNBT tag = write(new CompoundNBT());
         tag.putString("type", block.toString());
         return tag;
     }

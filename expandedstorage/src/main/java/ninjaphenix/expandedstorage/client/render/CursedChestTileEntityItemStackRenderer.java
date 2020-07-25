@@ -13,9 +13,9 @@ public final class CursedChestTileEntityItemStackRenderer extends ItemStackTileE
 {
     private static final CursedChestTileEntity cursedChestRenderEntity = new CursedChestTileEntity();
 
-    @Override @SuppressWarnings("ConstantConditions")
-    public void func_239207_a_(final ItemStack stack, final ItemCameraTransforms.TransformType transformType, final MatrixStack matrix,
-            final IRenderTypeBuffer buffer, final int light, final int overlay)
+    @Override
+    @SuppressWarnings("ConstantConditions")
+    public void func_239207_a_(final ItemStack stack, final ItemCameraTransforms.TransformType transformType, final MatrixStack matrix, final IRenderTypeBuffer buffer, final int light, final int overlay)
     {
         cursedChestRenderEntity.setBlock(Block.getBlockFromItem(stack.getItem()).getRegistryName());
         TileEntityRendererDispatcher.instance.renderItem(cursedChestRenderEntity, matrix, buffer, light, overlay);

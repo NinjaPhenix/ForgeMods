@@ -20,8 +20,7 @@ public abstract class AbstractContainer<T extends ScreenMeta> extends Container
     public final T SCREEN_META;
     protected final IInventory INVENTORY;
 
-    public AbstractContainer(final ContainerType<?> type, final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player,
-            final T screenMeta, @Nullable final ITextComponent displayName)
+    public AbstractContainer(final ContainerType<?> type, final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player, final T screenMeta, final @Nullable ITextComponent displayName)
     {
         super(type, windowId);
         ORIGIN = pos;
@@ -32,10 +31,15 @@ public abstract class AbstractContainer<T extends ScreenMeta> extends Container
     }
 
     public static ResourceLocation getTexture(final String prefix, final int width, final int height)
-    { return ExpandedStorage.getRl(String.format("textures/gui/container/%s_%d_%d.png", prefix, width, height)); }
+    {
+        return ExpandedStorage.getRl(String.format("textures/gui/container/%s_%d_%d.png", prefix, width, height));
+    }
 
     @Override
-    public boolean canInteractWith(final PlayerEntity player) { return INVENTORY.isUsableByPlayer(player); }
+    public boolean canInteractWith(final PlayerEntity player)
+    {
+        return INVENTORY.isUsableByPlayer(player);
+    }
 
     @Override
     public ItemStack transferStackInSlot(final PlayerEntity player, final int index)
@@ -47,10 +51,25 @@ public abstract class AbstractContainer<T extends ScreenMeta> extends Container
             final ItemStack slotStack = slot.getStack();
             final int inventorySize = INVENTORY.getSizeInventory();
             stack = slotStack.copy();
-            if (index < inventorySize) { if (!mergeItemStack(slotStack, inventorySize, inventorySlots.size(), true)) { return ItemStack.EMPTY; }}
-            else if (!mergeItemStack(slotStack, 0, inventorySize, false)) { return ItemStack.EMPTY; }
-            if (slotStack.isEmpty()) { slot.putStack(ItemStack.EMPTY); }
-            else {slot.onSlotChanged(); }
+            if (index < inventorySize)
+            {
+                if (!mergeItemStack(slotStack, inventorySize, inventorySlots.size(), true))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            else if (!mergeItemStack(slotStack, 0, inventorySize, false))
+            {
+                return ItemStack.EMPTY;
+            }
+            if (slotStack.isEmpty())
+            {
+                slot.putStack(ItemStack.EMPTY);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
         }
         return stack;
     }
@@ -62,5 +81,8 @@ public abstract class AbstractContainer<T extends ScreenMeta> extends Container
         INVENTORY.closeInventory(player);
     }
 
-    public IInventory getInv() { return INVENTORY; }
+    public IInventory getInv()
+    {
+        return INVENTORY;
+    }
 }
