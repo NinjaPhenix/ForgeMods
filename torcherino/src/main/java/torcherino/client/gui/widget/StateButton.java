@@ -1,6 +1,7 @@
 package torcherino.client.gui.widget;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import java.util.Collections;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.AbstractButton;
 import net.minecraft.item.ItemStack;
@@ -9,8 +10,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
-
-import java.util.Collections;
 
 public abstract class StateButton extends AbstractButton
 {
@@ -47,17 +46,25 @@ public abstract class StateButton extends AbstractButton
             Minecraft.getInstance().getItemRenderer().renderItemIntoGUI(getButtonIcon(), x + 2, y + 2);
             if (isHovered())
             {
-                GuiUtils.drawHoveringText(getButtonIcon(), stack, Collections.singletonList(narrationMessage), x + width / 2,
-                        y + height / 2, screenWidth, screenHeight, -1, Minecraft.getInstance().fontRenderer);
+                GuiUtils.drawHoveringText(getButtonIcon(), stack, Collections.singletonList(narrationMessage), x + width / 2, y + height / 2, screenWidth, screenHeight, -1, Minecraft.getInstance().fontRenderer);
             }
         }
     }
 
     @Override
-    public void onPress() { setInternalState(++state); }
+    public void onPress()
+    {
+        setInternalState(++state);
+    }
 
     @Override
-    protected IFormattableTextComponent getNarrationMessage() { return new TranslationTextComponent("gui.narrate.button", narrationMessage); }
+    protected IFormattableTextComponent getNarrationMessage()
+    {
+        return new TranslationTextComponent("gui.narrate.button", narrationMessage);
+    }
 
-    public void setNarrationMessage(final ITextComponent narrationMessage) { this.narrationMessage = narrationMessage; }
+    public void setNarrationMessage(final ITextComponent narrationMessage)
+    {
+        this.narrationMessage = narrationMessage;
+    }
 }

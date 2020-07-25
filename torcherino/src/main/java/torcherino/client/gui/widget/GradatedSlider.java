@@ -22,17 +22,15 @@ public abstract class GradatedSlider extends AbstractSlider
         final boolean leftArrowKeyDown = keyCode == 263;
         if (leftArrowKeyDown || keyCode == 262)
         {
-            setValue(field_230683_b_ + (leftArrowKeyDown ? -nudgeAmount : nudgeAmount));
+            final double oldValue = field_230683_b_;
+            field_230683_b_ = MathHelper.clamp(field_230683_b_ + (leftArrowKeyDown ? -nudgeAmount : nudgeAmount), 0, 1);
+            if (oldValue != field_230683_b_)
+            {
+                func_230972_a_();
+            }
+            func_230979_b_();
             return true;
         }
         return false;
-    }
-
-    private void setValue(final double value)
-    {
-        final double oldValue = field_230683_b_;
-        field_230683_b_ = MathHelper.clamp(value, 0, 1);
-        if (oldValue != field_230683_b_) { func_230972_a_(); }
-        func_230979_b_();
     }
 }

@@ -1,5 +1,6 @@
 package torcherino;
 
+import java.util.stream.Stream;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntityType;
@@ -7,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -22,6 +24,7 @@ public final class Torcherino
     public static final Logger LOGGER = LogManager.getLogger(Torcherino.class);
     public static final String MOD_ID = "torcherino";
 
+    @SuppressWarnings("deprecation")
     public Torcherino()
     {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -37,28 +40,58 @@ public final class Torcherino
         TorcherinoAPI.INSTANCE.blacklistBlock(Blocks.VOID_AIR);
     }
 
-    public static ResourceLocation getRl(final String path) { return new ResourceLocation(MOD_ID, path); }
+    public static ResourceLocation getRl(final String path)
+    {
+        return new ResourceLocation(MOD_ID, path);
+    }
 
     @SubscribeEvent
+    @SuppressWarnings("deprecation")
     public void processIMC(final InterModProcessEvent event)
     {
-        event.getIMCStream().forEach((message) ->
+        final Stream<InterModComms.IMCMessage> messages = event.getIMCStream();
+        if (messages.anyMatch(msg -> true))
+        {
+            LOGGER.warn("Torcherino IMC support is being removed in a future version in favour of data pack tags.");
+        }
+        messages.forEach((message) ->
         {
             final String method = message.getMethod();
             final Object value = message.getMessageSupplier().get();
             if (method.equals("blacklist_block"))
             {
-                if (value instanceof ResourceLocation) { TorcherinoAPI.INSTANCE.blacklistBlock((ResourceLocation) value); }
-                else if (value instanceof Block) { TorcherinoAPI.INSTANCE.blacklistBlock((Block) value); }
-                else { LOGGER.error("Received blacklist_block message with invalid value, must be either a Block or ResourceLocation."); }
+                if (value instanceof ResourceLocation)
+                {
+                    TorcherinoAPI.INSTANCE.blacklistBlock((ResourceLocation) value);
+                }
+                else if (value instanceof Block)
+                {
+                    TorcherinoAPI.INSTANCE.blacklistBlock((Block) value);
+                }
+                else
+                {
+                    LOGGER.error("Received blacklist_block message with invalid value, must be either a Block or ResourceLocation.");
+                }
             }
             else if (method.equals("blacklist_tile"))
             {
-                if (value instanceof ResourceLocation) { TorcherinoAPI.INSTANCE.blacklistTileEntity((ResourceLocation) value); }
-                else if (value instanceof TileEntityType) { TorcherinoAPI.INSTANCE.blacklistTileEntity((TileEntityType<?>) value); }
-                else { LOGGER.error("Received blacklist_tile message with invalid value, must be either a TileEntityType or ResourceLocation."); }
+                if (value instanceof ResourceLocation)
+                {
+                    TorcherinoAPI.INSTANCE.blacklistTileEntity((ResourceLocation) value);
+                }
+                else if (value instanceof TileEntityType)
+                {
+                    TorcherinoAPI.INSTANCE.blacklistTileEntity((TileEntityType<?>) value);
+                }
+                else
+                {
+                    LOGGER.error("Received blacklist_tile message with invalid value, must be either a TileEntityType or ResourceLocation.");
+                }
             }
-            else { LOGGER.error("Received IMC message with invalid method, must be either: \"blacklist_block\" or \"blacklist_tile\"."); }
+            else
+            {
+                LOGGER.error("Received IMC message with invalid method, must be either: \"blacklist_block\" or \"blacklist_tile\".");
+            }
         });
     }
 }

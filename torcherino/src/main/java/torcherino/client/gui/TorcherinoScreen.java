@@ -35,8 +35,8 @@ public final class TorcherinoScreen extends Screen
     private final ITextComponent title;
     private int guiLeft, guiTop, xRange, zRange, yRange, speed, redstoneMode;
 
-    public TorcherinoScreen(final TorcherinoTileEntity tileEntity, final ITextComponent title, final int xRange, final int zRange, final int yRange,
-            final int speed, final int redstoneMode)
+    @SuppressWarnings("deprecation")
+    public TorcherinoScreen(final TorcherinoTileEntity tileEntity, final ITextComponent title, final int xRange, final int zRange, final int yRange, final int speed, final int redstoneMode)
     {
         super(tileEntity.getName());
         this.tileEntity = tileEntity;
@@ -58,8 +58,7 @@ public final class TorcherinoScreen extends Screen
             final TileEntity tileEntity = minecraft.player.world.getTileEntity(message.pos);
             if (tileEntity instanceof TorcherinoTileEntity)
             {
-                final TorcherinoScreen screen = new TorcherinoScreen((TorcherinoTileEntity) tileEntity, message.title, message.xRange, message.zRange,
-                        message.yRange, message.speed, message.redstoneMode);
+                final TorcherinoScreen screen = new TorcherinoScreen((TorcherinoTileEntity) tileEntity, message.title, message.xRange, message.zRange, message.yRange, message.speed, message.redstoneMode);
                 minecraft.displayGuiScreen(screen);
             }
         });
@@ -71,52 +70,67 @@ public final class TorcherinoScreen extends Screen
         super.init();
         guiLeft = (width - xSize) / 2;
         guiTop = (height - ySize) / 2;
-        if (speed == 0) { speed = 1; }
+        if (speed == 0)
+        {
+            speed = 1;
+        }
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 20, 205, (double) (speed - 1) / (tier.MAX_SPEED - 1), tier.MAX_SPEED - 1)
         {
             @Override
-            protected final void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.speed", 100 * TorcherinoScreen.this.speed)); }
+            protected final void func_230979_b_()
+            {
+                setMessage(new TranslationTextComponent("gui.torcherino.speed", 100 * speed));
+            }
 
             @Override
             protected final void func_230972_a_()
             {
-                TorcherinoScreen.this.speed = 1 + (int) Math.round(field_230683_b_ * (TorcherinoScreen.this.tier.MAX_SPEED - 1));
+                speed = 1 + (int) Math.round(field_230683_b_ * (tier.MAX_SPEED - 1));
                 field_230683_b_ = (double) (speed - 1) / (tier.MAX_SPEED - 1);
             }
         });
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 45, 205, (double) xRange / tier.XZ_RANGE, tier.XZ_RANGE)
         {
             @Override
-            protected final void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.x_range", TorcherinoScreen.this.xRange * 2 + 1)); }
+            protected final void func_230979_b_()
+            {
+                setMessage(new TranslationTextComponent("gui.torcherino.x_range", xRange * 2 + 1));
+            }
 
             @Override
             protected final void func_230972_a_()
             {
-                TorcherinoScreen.this.xRange = (int) Math.round(field_230683_b_ * TorcherinoScreen.this.tier.XZ_RANGE);
+                xRange = (int) Math.round(field_230683_b_ * tier.XZ_RANGE);
                 field_230683_b_ = (double) xRange / tier.XZ_RANGE;
             }
         });
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 70, 205, (double) zRange / tier.XZ_RANGE, tier.XZ_RANGE)
         {
             @Override
-            protected final void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.z_range", TorcherinoScreen.this.zRange * 2 + 1)); }
+            protected final void func_230979_b_()
+            {
+                setMessage(new TranslationTextComponent("gui.torcherino.z_range", zRange * 2 + 1));
+            }
 
             @Override
             protected final void func_230972_a_()
             {
-                TorcherinoScreen.this.zRange = (int) Math.round(field_230683_b_ * TorcherinoScreen.this.tier.XZ_RANGE);
+                zRange = (int) Math.round(field_230683_b_ * tier.XZ_RANGE);
                 field_230683_b_ = (double) zRange / tier.XZ_RANGE;
             }
         });
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 95, 205, (double) yRange / tier.Y_RANGE, tier.Y_RANGE)
         {
             @Override
-            protected final void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.y_range", TorcherinoScreen.this.yRange * 2 + 1)); }
+            protected final void func_230979_b_()
+            {
+                setMessage(new TranslationTextComponent("gui.torcherino.y_range", yRange * 2 + 1));
+            }
 
             @Override
             protected final void func_230972_a_()
             {
-                TorcherinoScreen.this.yRange = (int) Math.round(field_230683_b_ * TorcherinoScreen.this.tier.Y_RANGE);
+                yRange = (int) Math.round(field_230683_b_ * tier.Y_RANGE);
                 field_230683_b_ = (double) yRange / tier.Y_RANGE;
             }
         });
@@ -153,18 +167,24 @@ public final class TorcherinoScreen extends Screen
                 }
                 setNarrationMessage(new TranslationTextComponent("gui.torcherino.mode", modeText));
                 nextNarration = Util.milliTime() + 250L;
-                TorcherinoScreen.this.redstoneMode = state;
+                redstoneMode = state;
             }
 
             @Override
-            protected final int getMaxStates() { return 4; }
+            protected final int getMaxStates()
+            {
+                return 4;
+            }
 
             @Override
-            protected final ItemStack getButtonIcon() { return renderStack; }
+            protected final ItemStack getButtonIcon()
+            {
+                return renderStack;
+            }
         });
     }
 
-    @SuppressWarnings({ "ConstantConditions", "deprecation" })
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
     public void render(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
         renderBackground(stack);
@@ -183,7 +203,10 @@ public final class TorcherinoScreen extends Screen
     }
 
     @Override
-    public boolean isPauseScreen() { return false; }
+    public boolean isPauseScreen()
+    {
+        return false;
+    }
 
     @SuppressWarnings("ConstantConditions")
     public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)

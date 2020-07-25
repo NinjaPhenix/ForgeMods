@@ -1,12 +1,11 @@
 package torcherino.block.tile;
 
 import com.mojang.datafixers.types.Type;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public final class CustomTileEntityType<T extends TileEntity> extends TileEntityType<T>
 {
@@ -20,5 +19,8 @@ public final class CustomTileEntityType<T extends TileEntity> extends TileEntity
     }
 
     @Override
-    public boolean isValidBlock(final Block block) { return PREDICATE.test(block); }
+    public boolean isValidBlock(final Block block)
+    {
+        return PREDICATE.test(block);
+    }
 }

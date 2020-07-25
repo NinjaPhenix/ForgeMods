@@ -7,6 +7,12 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import torcherino.api.impl.TorcherinoImpl;
 
+/**
+ * Planned to be removed in next major update (12)
+ * Blacklist is being replaced with tags.
+ * Tiers are being replaced with Refinement datapacks.
+ */
+@Deprecated
 @SuppressWarnings("UnusedReturnValue")
 public interface TorcherinoAPI
 {

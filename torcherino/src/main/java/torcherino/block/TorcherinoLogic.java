@@ -1,5 +1,7 @@
 package torcherino.block;
 
+import java.util.Random;
+import java.util.function.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -21,22 +23,24 @@ import torcherino.block.tile.TorcherinoTileEntity;
 import torcherino.config.Config;
 import torcherino.network.Networker;
 
-import java.util.Random;
-import java.util.function.Supplier;
-
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 @SuppressWarnings("unused")
 public final class TorcherinoLogic
 {
-    public static void onBlockPlacedBy(final World world, final BlockPos pos, final BlockState state, @Nullable final LivingEntity placer,
-            final ItemStack stack)
+    public static void onBlockPlacedBy(final World world, final BlockPos pos, final BlockState state, final @Nullable LivingEntity placer, final ItemStack stack)
     {
-        if (world.isRemote) { return; }
+        if (world.isRemote)
+        {
+            return;
+        }
         if (stack.hasDisplayName())
         {
             final TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tile).setCustomName(stack.getDisplayName()); }
+            if (tile instanceof TorcherinoTileEntity)
+            {
+                ((TorcherinoTileEntity) tile).setCustomName(stack.getDisplayName());
+            }
         }
         if (Config.INSTANCE.logPlacement())
         {
@@ -49,26 +53,36 @@ public final class TorcherinoLogic
     public static void tick(final BlockState state, final ServerWorld world, final BlockPos pos, final Random random)
     {
         final TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tileEntity).tick(); }
+        if (tileEntity instanceof TorcherinoTileEntity)
+        {
+            ((TorcherinoTileEntity) tileEntity).tick();
+        }
     }
 
-    public static ActionResultType onBlockActivated(final BlockState state, final World world, final BlockPos pos, final PlayerEntity player, final Hand hand,
-            final BlockRayTraceResult hit)
+    public static ActionResultType onBlockActivated(final BlockState state, final World world, final BlockPos pos, final PlayerEntity player, final Hand hand, final BlockRayTraceResult hit)
     {
-        if (!world.isRemote) { Networker.INSTANCE.openScreenServer(world, (ServerPlayerEntity) player, pos); }
+        if (!world.isRemote)
+        {
+            Networker.INSTANCE.openScreenServer(world, (ServerPlayerEntity) player, pos);
+        }
         return ActionResultType.SUCCESS;
     }
 
     public static void onBlockAdded(final BlockState state, final World world, final BlockPos pos, final BlockState oldState, final boolean isMoving)
     {
         final TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(state.get(BlockStateProperties.POWERED)); }
+        if (tileEntity instanceof TorcherinoTileEntity)
+        {
+            ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(state.get(BlockStateProperties.POWERED));
+        }
     }
 
-    public static void neighborChanged(final BlockState state, final World world, final BlockPos pos, final Block block, final BlockPos fromPos,
-            final boolean isMoving, final Supplier<Boolean> isPoweredSupplier)
+    public static void neighborChanged(final BlockState state, final World world, final BlockPos pos, final Block block, final BlockPos fromPos, final boolean isMoving, final Supplier<Boolean> isPoweredSupplier)
     {
-        if (world.isRemote) { return; }
+        if (world.isRemote)
+        {
+            return;
+        }
         final TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TorcherinoTileEntity)
         {
@@ -79,6 +93,5 @@ public final class TorcherinoLogic
                 ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(powered);
             }
         }
-
     }
 }
