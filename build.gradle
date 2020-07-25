@@ -34,9 +34,9 @@ subprojects {
     }
 
     repositories {
-        maven {
-            url 'https://dogforce-games.com/maven'
-        }
+        //maven {
+        //    url 'https://dogforce-games.com/maven'
+        //}
     }
 
     minecraft {

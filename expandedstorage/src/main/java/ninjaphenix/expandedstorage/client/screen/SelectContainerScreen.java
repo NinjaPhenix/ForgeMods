@@ -114,8 +114,8 @@ public final class SelectContainerScreen extends Screen
         {
             if (active)
             {
-                if (isHovered) { field_238487_u_.onTooltip(this, stack, mouseX, mouseY); }
-                else if (isHovered()) { field_238487_u_.onTooltip(this, stack, x, y); }
+                if (isHovered) { onTooltip.onTooltip(this, stack, mouseX, mouseY); }
+                else if (isHovered()) { onTooltip.onTooltip(this, stack, x, y); }
             }
         }
     }

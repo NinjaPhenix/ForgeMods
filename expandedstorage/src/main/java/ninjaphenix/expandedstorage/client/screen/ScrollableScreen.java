@@ -62,9 +62,9 @@ public final class ScrollableScreen extends AbstractScreen<ScrollableContainer, 
     }
 
     @Override
-    protected void func_230450_a_(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    protected void drawGuiContainerBackgroundLayer(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
-        super.func_230450_a_(stack, partialTicks, mouseX, mouseY);
+        super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
         if (hasScrollbar)
         {
             final int slotsHeight = SCREEN_META.HEIGHT * 18;
