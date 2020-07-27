@@ -1,1 +1,1 @@
-- Fixed bug where some config options would not work.
+- Fix a NPE in particle registration, will likely cause a different issue to pop up if you ran into this one.
