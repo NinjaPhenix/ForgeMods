@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import ninjaphenix.refinement.api.ITierRecipe;
-import ninjaphenix.refinement.api.ITierRecipeSerializer;
+import ninjaphenix.refinement.api.common.ITierRecipe;
+import ninjaphenix.refinement.api.common.ITierRecipeSerializer;
 import ninjaphenix.refinement.impl.RefinementContent;
 import ninjaphenix.refinement.impl.common.container.UpgradeContainer;
 import org.jetbrains.annotations.Nullable;
@@ -13,19 +13,19 @@ import org.jetbrains.annotations.Nullable;
 public class ShapelessDowngradeRecipe implements ITierRecipe
 {
     @Override
-    public boolean matches(UpgradeContainer container)
+    public boolean matches(final UpgradeContainer container)
     {
         return false;
     }
 
     @Override
-    public boolean canFit(int width, int height)
+    public boolean canFit(final int width, final int height)
     {
         return false;
     }
 
     @Override
-    public ResourceLocation getResult(UpgradeContainer container)
+    public ResourceLocation getResult(final UpgradeContainer container)
     {
         return null;
     }
@@ -45,20 +45,20 @@ public class ShapelessDowngradeRecipe implements ITierRecipe
     public static class Serializer extends ForgeRegistryEntry<ITierRecipeSerializer<?>> implements ITierRecipeSerializer<ShapelessDowngradeRecipe>
     {
         @Override
-        public ShapelessDowngradeRecipe read(ResourceLocation recipeId, JsonObject json)
+        public ShapelessDowngradeRecipe read(final ResourceLocation recipeId, final JsonObject json)
         {
             return null;
         }
 
         @Nullable
         @Override
-        public ShapelessDowngradeRecipe read(ResourceLocation recipeId, PacketBuffer buffer)
+        public ShapelessDowngradeRecipe read(final ResourceLocation recipeId, final PacketBuffer buffer)
         {
             return null;
         }
 
         @Override
-        public void write(PacketBuffer buffer, ShapelessDowngradeRecipe recipe)
+        public void write(final PacketBuffer buffer, final ShapelessDowngradeRecipe recipe)
         {
 
         }

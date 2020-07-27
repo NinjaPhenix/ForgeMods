@@ -9,9 +9,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
-import ninjaphenix.refinement.api.ITierRecipeSerializer;
+import ninjaphenix.refinement.api.common.ITierRecipeSerializer;
 import ninjaphenix.refinement.api.common.recipe.ShapedDowngradeRecipe;
 import ninjaphenix.refinement.api.common.recipe.ShapedUpgradeRecipe;
 import ninjaphenix.refinement.api.common.recipe.ShapelessDowngradeRecipe;
@@ -22,11 +21,10 @@ import ninjaphenix.refinement.impl.common.container.UpgradeContainer;
 @Mod.EventBusSubscriber(modid = Refinement.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class RefinementContent
 {
-    public static final IForgeRegistry<ITierRecipeSerializer<?>> TIER_RECIPE_SERIALIZERS_REGISTRY = new RegistryBuilder<ITierRecipeSerializer<?>>().create();
+    public static final Class<ITierRecipeSerializer<?>> x = (Class<ITierRecipeSerializer<?>>) ShapedUpgradeRecipe.Serializer.class.getInterfaces()[0];
 
     private static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Refinement.MOD_ID);
-    private static final DeferredRegister<ITierRecipeSerializer<?>> TIER_RECIPE_SERIALIZER = DeferredRegister
-            .create(TIER_RECIPE_SERIALIZERS_REGISTRY, "tier_recipe_serializer");
+    private static final DeferredRegister<ITierRecipeSerializer<?>> TIER_RECIPE_SERIALIZER = DeferredRegister.create(x, "refinement");
 
     public static final RegistryObject<ContainerType<UpgradeContainer>> UPGRADE_CONTAINER_TYPE;
 

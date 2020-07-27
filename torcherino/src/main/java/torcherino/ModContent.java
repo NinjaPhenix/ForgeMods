@@ -99,6 +99,6 @@ public final class ModContent
     @SubscribeEvent
     public static void registerParticleFactories(final ParticleFactoryRegisterEvent event)
     {
-        PARTICLE_TYPES.getEntries().forEach(registryObject -> Minecraft.getInstance().particles.registerFactory((BasicParticleType) registryObject.get(), FlameParticle.Factory::new));
+        PARTICLE_TYPES.getEntries().forEach(registryObject -> registryObject.ifPresent(particleType -> Minecraft.getInstance().particles.registerFactory((BasicParticleType) particleType, FlameParticle.Factory::new)));
     }
 }

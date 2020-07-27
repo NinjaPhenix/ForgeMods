@@ -1,0 +1,5 @@
+@ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
+package ninjaphenix.refinement.api.common;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+import mcp.MethodsReturnNonnullByDefault;

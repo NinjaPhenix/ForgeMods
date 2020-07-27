@@ -1,4 +1,4 @@
-package ninjaphenix.refinement.api;
+package ninjaphenix.refinement.api.common;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.PacketBuffer;
@@ -8,10 +8,9 @@ import org.jetbrains.annotations.Nullable;
 
 public interface ITierRecipeSerializer<T extends ITierRecipe> extends IForgeRegistryEntry<ITierRecipeSerializer<?>>
 {
-    T read(ResourceLocation recipeId, JsonObject json);
+    T read(final ResourceLocation recipeId, final JsonObject json);
 
-    @Nullable
-    T read(ResourceLocation recipeId, PacketBuffer buffer);
+    @Nullable T read(final ResourceLocation recipeId, final PacketBuffer buffer);
 
-    void write(PacketBuffer buffer, T recipe);
+    void write(final PacketBuffer buffer, final T recipe);
 }

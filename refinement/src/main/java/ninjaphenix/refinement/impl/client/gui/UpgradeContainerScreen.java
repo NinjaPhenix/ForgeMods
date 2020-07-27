@@ -15,9 +15,9 @@ public final class UpgradeContainerScreen extends ContainerScreen<UpgradeContain
     }
 
     @Override
-    protected void func_230450_a_(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    protected void drawGuiContainerBackgroundLayer(final MatrixStack stack, final float partialTicks, final int x, final int y)
     {
-        // drawGuiBackground
+
     }
 
     public static class SpriteButton extends Button
