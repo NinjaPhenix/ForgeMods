@@ -30,9 +30,14 @@ public final class ExpandedStorage
     };
     public static final ITextComponent leftShiftRightClick = new TranslationTextComponent("tooltip.expandedstorage.left_shift_right_click", new KeybindTextComponent("key.sneak"), new KeybindTextComponent("key.use")).mergeStyle(TextFormatting.GOLD);
 
-    // todo: sided proxies
     public ExpandedStorage()
     {
+        if (getClass().getClassLoader().getClass().getCanonicalName().startsWith("net.fabricmc"))
+        {
+            System.out.println("Running " + MOD_ID + " for forge under fabric is not supported, please download the fabric version of the mod.");
+            System.exit(0);
+            return;
+        }
         Networker.INSTANCE.registerMessages();
         ExpandedStorageConfig.register();
         MinecraftForge.EVENT_BUS.register(Networker.INSTANCE);

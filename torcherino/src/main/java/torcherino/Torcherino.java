@@ -25,6 +25,12 @@ public final class Torcherino
     @SuppressWarnings("deprecation")
     public Torcherino()
     {
+        if (getClass().getClassLoader().getClass().getCanonicalName().startsWith("net.fabricmc"))
+        {
+            System.out.println("Running " + MOD_ID + " for forge under fabric is not supported, please download the fabric version of the mod.");
+            System.exit(0);
+            return;
+        }
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Config.initialise();
         ModContent.initialise(eventBus);
