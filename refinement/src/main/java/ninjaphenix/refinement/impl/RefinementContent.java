@@ -24,7 +24,7 @@ public final class RefinementContent
     public static final Class<ITierRecipeSerializer<?>> x = (Class<ITierRecipeSerializer<?>>) ShapedUpgradeRecipe.Serializer.class.getInterfaces()[0];
 
     private static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Refinement.MOD_ID);
-    private static final DeferredRegister<ITierRecipeSerializer<?>> TIER_RECIPE_SERIALIZER = DeferredRegister.create(x, "refinement");
+    private static final DeferredRegister<ITierRecipeSerializer<?>> TIER_RECIPE_SERIALIZER = DeferredRegister.create(x, Refinement.MOD_ID);
 
     public static final RegistryObject<ContainerType<UpgradeContainer>> UPGRADE_CONTAINER_TYPE;
 

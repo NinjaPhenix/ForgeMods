@@ -13,10 +13,7 @@ Below is an example of the json entries required by all tiers.
 {
   "type": "torcherino:torcherino", // Unique identifier for the type of block being targeted. This is set by the mod.
   "values": {
-    // Each mod will have their own custom values here, these are samples that torcherino would use.
-    "xzRange": 9,
-    "yRange": 3,
-    "maxSpeed": 400
+    // Each mod will have their own custom values here.
   },
   "friendlyName": "Normal",
   "default": true // Declares this tier as the default for any block using the same type,
