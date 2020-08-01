@@ -15,7 +15,7 @@ Below is an example of the json entries required by all tiers.
   "values": {
     // Each mod will have their own custom values here.
   },
-  "friendlyName": "Normal",
+  "translationKey": "tier.torcherino.normal",
   "default": true // Declares this tier as the default for any block using the same type,
                   // only one tier can be default for a type and there must be one,
                   // if this entry is missing it will default to false.
