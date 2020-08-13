@@ -47,7 +47,7 @@ public final class ChestConversionItem extends ChestModifierItem
         TO = to.getFirst();
         TOOLTIP = new TranslationTextComponent(String.format("tooltip.expandedstorage.conversion_kit_%s_%s", from.getSecond(), to.getSecond()),
                 ExpandedStorage.leftShiftRightClick,
-                new TranslationTextComponent("tooltip.expandedstorage.conversion_kit_double_requires_2")).func_240699_a_(TextFormatting.GRAY);
+                new TranslationTextComponent("tooltip.expandedstorage.conversion_kit_double_requires_2")).mergeStyle(TextFormatting.GRAY);
     }
 
     @SuppressWarnings("unchecked")

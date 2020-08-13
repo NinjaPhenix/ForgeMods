@@ -80,8 +80,8 @@ public class TorcherinoScreen extends Screen
             @Override
             protected void func_230972_a_()
             {
-                TorcherinoScreen.this.speed = 1 + (int) Math.round(field_230683_b_ * (TorcherinoScreen.this.tier.MAX_SPEED - 1));
-                field_230683_b_ = (double) (speed - 1) / (tier.MAX_SPEED - 1);
+                TorcherinoScreen.this.speed = 1 + (int) Math.round(sliderValue * (TorcherinoScreen.this.tier.MAX_SPEED - 1));
+                sliderValue = (double) (speed - 1) / (tier.MAX_SPEED - 1);
             }
         });
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 45, 205, (double) xRange / tier.XZ_RANGE, tier.XZ_RANGE)
@@ -92,8 +92,8 @@ public class TorcherinoScreen extends Screen
             @Override
             protected void func_230972_a_()
             {
-                TorcherinoScreen.this.xRange = (int) Math.round(field_230683_b_ * TorcherinoScreen.this.tier.XZ_RANGE);
-                field_230683_b_ = (double) xRange / tier.XZ_RANGE;
+                TorcherinoScreen.this.xRange = (int) Math.round(sliderValue * TorcherinoScreen.this.tier.XZ_RANGE);
+                sliderValue = (double) xRange / tier.XZ_RANGE;
             }
         });
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 70, 205, (double) zRange / tier.XZ_RANGE, tier.XZ_RANGE)
@@ -104,8 +104,8 @@ public class TorcherinoScreen extends Screen
             @Override
             protected void func_230972_a_()
             {
-                TorcherinoScreen.this.zRange = (int) Math.round(field_230683_b_ * TorcherinoScreen.this.tier.XZ_RANGE);
-                field_230683_b_ = (double) zRange / tier.XZ_RANGE;
+                TorcherinoScreen.this.zRange = (int) Math.round(sliderValue * TorcherinoScreen.this.tier.XZ_RANGE);
+                sliderValue = (double) zRange / tier.XZ_RANGE;
             }
         });
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 95, 205, (double) yRange / tier.Y_RANGE, tier.Y_RANGE)
@@ -116,11 +116,11 @@ public class TorcherinoScreen extends Screen
             @Override
             protected void func_230972_a_()
             {
-                TorcherinoScreen.this.yRange = (int) Math.round(field_230683_b_ * TorcherinoScreen.this.tier.Y_RANGE);
-                field_230683_b_ = (double) yRange / tier.Y_RANGE;
+                TorcherinoScreen.this.yRange = (int) Math.round(sliderValue * TorcherinoScreen.this.tier.Y_RANGE);
+                sliderValue = (double) yRange / tier.Y_RANGE;
             }
         });
-        addButton(new StateButton(guiLeft + 217, guiTop + 20, width, height, redstoneMode)
+        addButton(new StateButton(guiLeft + 217, guiTop + 20, redstoneMode)
         {
             private ItemStack renderStack;
 

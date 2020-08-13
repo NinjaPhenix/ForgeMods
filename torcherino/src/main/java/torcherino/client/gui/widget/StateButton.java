@@ -11,15 +11,12 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class StateButton extends AbstractButton
 {
-    private final int screenWidth, screenHeight;
     private int state;
     private ITextComponent narrationMessage;
 
-    public StateButton(final int x, final int y, final int screenWidth, final int screenHeight, final int state)
+    public StateButton(final int x, final int y, final int state)
     {
         super(x, y, 20, 20, StringTextComponent.EMPTY);
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
         setInternalState(state);
     }
 

@@ -40,7 +40,7 @@ public final class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
                 pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)).stream().anyMatch(CatEntity::func_233684_eK_);
     }
 
-    @Override
+    @Override @SuppressWarnings("deprecation")
     public BlockRenderType getRenderType(@Nullable final BlockState state) { return BlockRenderType.MODEL; }
 
     @Override @SuppressWarnings("unchecked")

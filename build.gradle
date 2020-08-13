@@ -33,6 +33,13 @@ subprojects {
         main.resources.srcDirs += file('src/generated/resources')
     }
 
+    repositories {
+        /* For Unofficial MCP Mappings */ maven {
+            url "https://www.dogforce-games.com/maven"
+            name "GigaHerz Maven"
+        }
+    }
+
     minecraft {
         mappings channel: "${mappings_channel}", version: "${mappings_version}"
         // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')

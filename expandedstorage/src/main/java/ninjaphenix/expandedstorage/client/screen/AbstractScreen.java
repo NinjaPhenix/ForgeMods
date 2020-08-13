@@ -25,7 +25,7 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     }
 
     @Override @SuppressWarnings({ "ConstantConditions", "deprecation" })
-    protected void func_230450_a_(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    protected void drawGuiContainerBackgroundLayer(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.getTextureManager().bindTexture(SCREEN_META.TEXTURE);
@@ -37,11 +37,11 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     {
         renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        this.func_230459_a_(stack, mouseX, mouseY);
+        this.renderHoveredTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void func_230451_b_(final MatrixStack stack, final int mouseX, final int mouseY)
+    protected void drawGuiContainerForegroundLayer(final MatrixStack stack, final int mouseX, final int mouseY)
     {
         font.func_243248_b(stack, title, 8, 6, 0x404040);
         font.func_243248_b(stack, playerInventory.getDisplayName(), INVENTORY_LABEL_LEFT, this.ySize - 96 + 2, 0x404040);

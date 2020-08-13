@@ -38,7 +38,7 @@ public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
 
     public JackoLanterinoBlock(final ResourceLocation tierName)
     {
-        super(Block.Properties.from(Blocks.JACK_O_LANTERN).setPropagatesDownwards((state, world, pos, entity) -> true));
+        super(Block.Properties.from(Blocks.JACK_O_LANTERN).setAllowsSpawn((state, world, pos, entity) -> true));
         this.tierName = tierName;
     }
 

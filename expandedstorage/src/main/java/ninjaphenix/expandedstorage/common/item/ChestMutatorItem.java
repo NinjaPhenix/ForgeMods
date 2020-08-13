@@ -309,7 +309,7 @@ public final class ChestMutatorItem extends ChestModifierItem
             final ITooltipFlag flag)
     {
         final MutatorMode mode = getMode(stack);
-        tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", mode.title).func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", mode.title).mergeStyle(TextFormatting.GRAY));
         tooltip.add(mode.description);
         super.addInformation(stack, world, tooltip, flag);
     }

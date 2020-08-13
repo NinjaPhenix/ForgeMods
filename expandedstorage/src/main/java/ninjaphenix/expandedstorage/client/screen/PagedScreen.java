@@ -103,9 +103,9 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
     }
 
     @Override
-    protected void func_230450_a_(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    protected void drawGuiContainerBackgroundLayer(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
-        super.func_230450_a_(stack, partialTicks, mouseX, mouseY);
+        super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
         if (blankArea != null) { blankArea.render(stack); }
     }
 
@@ -127,9 +127,9 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
     }
 
     @Override
-    protected void func_230451_b_(final MatrixStack stack, final int mouseX, final int mouseY)
+    protected void drawGuiContainerForegroundLayer(final MatrixStack stack, final int mouseX, final int mouseY)
     {
-        super.func_230451_b_(stack, mouseX, mouseY);
+        super.drawGuiContainerForegroundLayer(stack, mouseX, mouseY);
         if (currentPageText != null) { font.func_243248_b(stack, currentPageText, pageTextX - guiLeft, ySize - 94, 0x404040); }
     }
 

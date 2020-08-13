@@ -306,7 +306,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         if (mergeType == TileEntityMerger.Type.SINGLE)
         {
             final Direction facing = state.get(FACING);
-            if (!offsetState.func_235901_b_(TYPE)) { return state.with(TYPE, CursedChestType.SINGLE); }
+            if (!offsetState.hasProperty(TYPE)) { return state.with(TYPE, CursedChestType.SINGLE); }
             final CursedChestType newType = getChestType(facing, offset);
             if (offsetState.get(TYPE) == newType.getOpposite() && facing == offsetState.get(FACING)) { return state.with(TYPE, newType); }
         }
