@@ -1,2 +1,3 @@
-- Update to 1.16.1
-- Minor resource pack changes regarding lanterns.
+- Updated to 1.16.2
+- Lanterino's can now be waterlogged.
+- Fixed bug with jack-o-lanterino which caused blockstate warnings in log.

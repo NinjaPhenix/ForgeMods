@@ -1,5 +1,6 @@
-The contents of this package has been ported from cottonmc's cotton project which can be found at https://github.com/CottonMC/Cotton
+The ConfigManager class has been ported from cottonmc's cotton project which can be found at https://github.com/CottonMC/Cotton
 The contents has been changed quite significantly and a full history *should* be preserved in the commit history at https://github.com/NinjaPhenix/Torcherino/tree/1.13.2-forge-redesign
+as well as future branches which can be found at the original Torcherino repo and https://github.com/NinjaPhenix/ForgeMods/tree/1.16.2/torcherino
 
 MIT License
 

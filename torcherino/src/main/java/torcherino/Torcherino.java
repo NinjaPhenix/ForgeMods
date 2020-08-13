@@ -17,7 +17,7 @@ import torcherino.config.Config;
 import torcherino.network.Networker;
 
 @Mod(Torcherino.MOD_ID)
-public class Torcherino
+public final class Torcherino
 {
     public static final Logger LOGGER = LogManager.getLogger(Torcherino.class);
     public static final String MOD_ID = "torcherino";

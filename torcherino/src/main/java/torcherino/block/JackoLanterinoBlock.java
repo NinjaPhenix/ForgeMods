@@ -21,16 +21,15 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 import torcherino.Torcherino;
 import torcherino.api.TierSupplier;
 import torcherino.block.tile.TorcherinoTileEntity;
 import torcherino.config.Config;
 import torcherino.network.Networker;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
-import static net.minecraft.state.properties.BlockStateProperties.FACING;
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
@@ -39,7 +38,7 @@ public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
 
     public JackoLanterinoBlock(final ResourceLocation tierName)
     {
-        super(Block.Properties.from(Blocks.JACK_O_LANTERN));
+        super(Block.Properties.from(Blocks.JACK_O_LANTERN).setPropagatesDownwards((state, world, pos, entity) -> true));
         this.tierName = tierName;
     }
 
@@ -56,7 +55,7 @@ public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
     protected void fillStateContainer(final StateContainer.Builder<Block, BlockState> builder)
     {
         super.fillStateContainer(builder);
-        builder.add(FACING, POWERED);
+        builder.add(HORIZONTAL_FACING, POWERED);
     }
 
     @Override @SuppressWarnings("deprecation")
@@ -68,7 +67,7 @@ public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
     }
 
     @Override
-    public void onBlockPlacedBy(final World world, final BlockPos pos, final BlockState state, @Nullable LivingEntity placer, final ItemStack stack)
+    public void onBlockPlacedBy(final World world, final BlockPos pos, final BlockState state, @Nullable final LivingEntity placer, final ItemStack stack)
     {
         if (world.isRemote) { return; }
         if (stack.hasDisplayName())
@@ -103,10 +102,10 @@ public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
     }
 
     @Override @SuppressWarnings("ConstantConditions")
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(final BlockItemUseContext context)
     {
         final boolean powered = context.getWorld().isBlockPowered(context.getPos());
-        return super.getStateForPlacement(context).with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(POWERED, powered);
+        return super.getStateForPlacement(context).with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite()).with(POWERED, powered);
     }
 
     @Override @SuppressWarnings("deprecation")
@@ -117,7 +116,7 @@ public class JackoLanterinoBlock extends HorizontalBlock implements TierSupplier
         if (state.get(POWERED) != powered)
         {
             world.setBlockState(pos, state.with(POWERED, powered));
-            TileEntity tileEntity = world.getTileEntity(pos);
+            final TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(powered); }
         }
     }

@@ -55,7 +55,7 @@ public class TorcherinoScreen extends Screen
         final Minecraft minecraft = Minecraft.getInstance();
         minecraft.deferTask(() ->
         {
-            TileEntity tileEntity = minecraft.player.world.getTileEntity(msg.pos);
+            final TileEntity tileEntity = minecraft.player.world.getTileEntity(msg.pos);
             if (tileEntity instanceof TorcherinoTileEntity)
             {
                 final TorcherinoScreen screen = new TorcherinoScreen((TorcherinoTileEntity) tileEntity, msg.title, msg.xRange, msg.zRange, msg.yRange,
@@ -160,6 +160,12 @@ public class TorcherinoScreen extends Screen
             protected int getMaxStates() { return 4; }
 
             @Override
+            protected void drawHoveringText(final MatrixStack stack, final ITextComponent text, final int width, final int height)
+            {
+                TorcherinoScreen.this.renderTooltip(stack, text, width, height);
+            }
+
+            @Override
             protected ItemStack getButtonIcon() { return renderStack; }
         });
     }
@@ -171,7 +177,7 @@ public class TorcherinoScreen extends Screen
         RenderSystem.color4f(1, 1, 1, 1);
         minecraft.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
         blit(stack, guiLeft, guiTop, 0, 0, xSize, ySize);
-        font.func_238422_b_(stack, title, guiLeft + (xSize - font.func_238414_a_(title)) / 2.0F, guiTop + 6, 4210752);
+        font.func_243248_b(stack, title, guiLeft + (xSize - font.func_238414_a_(title)) / 2.0F, guiTop + 6, 4210752);
         super.render(stack, mouseX, mouseY, partialTicks);
     }
 

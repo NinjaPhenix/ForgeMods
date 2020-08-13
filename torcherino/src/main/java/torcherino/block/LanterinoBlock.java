@@ -23,13 +23,13 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 import torcherino.Torcherino;
 import torcherino.api.TierSupplier;
 import torcherino.block.tile.TorcherinoTileEntity;
 import torcherino.config.Config;
 import torcherino.network.Networker;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
@@ -72,8 +72,7 @@ public class LanterinoBlock extends LanternBlock implements TierSupplier
     }
 
     @Override
-    public void onBlockPlacedBy(final World world, final BlockPos pos, final BlockState state, @Nullable final LivingEntity placer,
-            final ItemStack stack)
+    public void onBlockPlacedBy(final World world, final BlockPos pos, final BlockState state, @Nullable final LivingEntity placer, final ItemStack stack)
     {
         if (world.isRemote) { return; }
         if (stack.hasDisplayName())
@@ -101,8 +100,7 @@ public class LanterinoBlock extends LanternBlock implements TierSupplier
     public PushReaction getPushReaction(final BlockState state) { return PushReaction.IGNORE; }
 
     @Override @SuppressWarnings("deprecation")
-    public void onBlockAdded(final BlockState state, final World world, final BlockPos pos, final BlockState oldState,
-            boolean b)
+    public void onBlockAdded(final BlockState state, final World world, final BlockPos pos, final BlockState oldState, final boolean b)
     {
         final TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(state.get(POWERED)); }

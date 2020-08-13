@@ -15,11 +15,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.server.ServerWorld;
-import org.jetbrains.annotations.Nullable;
 import torcherino.api.TierSupplier;
 import torcherino.api.TorcherinoAPI;
 import torcherino.config.Config;
 import torcherino.network.OpenScreenMessage;
+
+import javax.annotation.Nullable;
 
 import static torcherino.ModContent.TORCHERINO_TILE_ENTITY;
 
@@ -43,7 +44,7 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
     @Nullable @Override
     public ITextComponent getCustomName() { return customName; }
 
-    public void setCustomName(@Nullable ITextComponent name) { customName = name; }
+    public void setCustomName(@Nullable final ITextComponent name) { customName = name; }
 
     @SuppressWarnings("ConstantConditions")
     public ResourceLocation getTierName()
@@ -93,7 +94,7 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
                 pos.getZ() + zRange);
         this.speed = speed;
         this.redstoneMode = redstoneMode;
-        BlockState state = world.getBlockState(pos);
+        final BlockState state = world.getBlockState(pos);
         if (state.func_235901_b_(BlockStateProperties.POWERED)) { setPoweredByRedstone(state.get(BlockStateProperties.POWERED)); }
         this.markDirty();
     }
@@ -110,14 +111,14 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
     @SuppressWarnings({ "ConstantConditions", "deprecation" })
     private void tickBlock(final BlockPos blockPos)
     {
-        BlockState blockState = world.getBlockState(blockPos);
-        Block block = blockState.getBlock();
+        final BlockState blockState = world.getBlockState(blockPos);
+        final Block block = blockState.getBlock();
         if (TorcherinoAPI.INSTANCE.isBlockBlacklisted(block)) { return; }
         if (block.ticksRandomly(blockState) &&
                 world.getRandom().nextInt(MathHelper.clamp(4096 / (speed * Config.INSTANCE.random_tick_rate), 1, 4096)) < randomTicks)
         { block.randomTick(blockState, (ServerWorld) world, blockPos, world.getRandom()); }
         if (!block.hasTileEntity(blockState)) { return; }
-        TileEntity tileEntity = world.getTileEntity(blockPos);
+        final TileEntity tileEntity = world.getTileEntity(blockPos);
         if (tileEntity == null || tileEntity.isRemoved() || TorcherinoAPI.INSTANCE.isTileEntityBlacklisted(tileEntity.getType()) ||
                 !(tileEntity instanceof ITickableTileEntity)) { return; }
         for (int i = 0; i < speed; i++)

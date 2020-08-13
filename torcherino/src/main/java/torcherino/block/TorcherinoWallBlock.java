@@ -116,11 +116,11 @@ public class TorcherinoWallBlock extends WallTorchBlock implements TierSupplier
     public void neighborChanged(final BlockState state, final World world, final BlockPos pos, final Block block, final BlockPos fromPos, final boolean b)
     {
         if (world.isRemote) { return; }
-        boolean powered = world.isSidePowered(pos.offset(state.get(HORIZONTAL_FACING).getOpposite()), state.get(HORIZONTAL_FACING));
+        final boolean powered = world.isSidePowered(pos.offset(state.get(HORIZONTAL_FACING).getOpposite()), state.get(HORIZONTAL_FACING));
         if (state.get(POWERED) != powered)
         {
             world.setBlockState(pos, state.with(POWERED, powered));
-            TileEntity tileEntity = world.getTileEntity(pos);
+            final TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(powered); }
         }
     }

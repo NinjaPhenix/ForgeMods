@@ -1,6 +1,6 @@
 modLoader="javafml"
 loaderVersion="[31,)"
-
+license="gnu lesser general public license v3"
 [[mods]]
   modId="${mod_id}"
   version="${mod_version}"

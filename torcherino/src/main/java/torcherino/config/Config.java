@@ -64,9 +64,9 @@ public class Config
 
     private void onConfigLoaded()
     {
-        for (Tier tier : tiers) { TorcherinoAPI.INSTANCE.registerTier(Torcherino.getRl(tier.name), tier.max_speed, tier.xz_range, tier.y_range); }
-        for (ResourceLocation block : blacklisted_blocks) { TorcherinoAPI.INSTANCE.blacklistBlock(block); }
-        for (ResourceLocation tile : blacklisted_tiles) { TorcherinoAPI.INSTANCE.blacklistTileEntity(tile); }
+        for (final Tier tier : tiers) { TorcherinoAPI.INSTANCE.registerTier(Torcherino.getRl(tier.name), tier.max_speed, tier.xz_range, tier.y_range); }
+        for (final ResourceLocation block : blacklisted_blocks) { TorcherinoAPI.INSTANCE.blacklistBlock(block); }
+        for (final ResourceLocation tile : blacklisted_tiles) { TorcherinoAPI.INSTANCE.blacklistTileEntity(tile); }
     }
 
     private static class Tier

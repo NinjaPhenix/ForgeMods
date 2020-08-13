@@ -12,7 +12,7 @@ import torcherino.block.tile.TorcherinoTileEntity;
 
 import java.util.function.Supplier;
 
-public class ValueUpdateMessage
+public final class ValueUpdateMessage
 {
     private final BlockPos pos;
     private final int xRange, zRange, yRange, speed, redstoneMode;
@@ -42,11 +42,11 @@ public class ValueUpdateMessage
         final NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() ->
         {
-            World world = context.getSender().world;
-            TileEntity tileEntity = world.getTileEntity(message.pos);
+            final World world = context.getSender().world;
+            final TileEntity tileEntity = world.getTileEntity(message.pos);
             if (tileEntity instanceof TorcherinoTileEntity)
             {
-                TorcherinoTileEntity torcherinoTileEntity = (TorcherinoTileEntity) tileEntity;
+                final TorcherinoTileEntity torcherinoTileEntity = (TorcherinoTileEntity) tileEntity;
                 if (message.withinBounds(TorcherinoAPI.INSTANCE.getTiers().get(torcherinoTileEntity.getTierName())))
                 { torcherinoTileEntity.readClientData(message.xRange, message.zRange, message.yRange, message.speed, message.redstoneMode); }
             }

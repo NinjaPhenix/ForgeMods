@@ -8,9 +8,6 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.client.gui.GuiUtils;
-
-import java.util.Collections;
 
 public abstract class StateButton extends AbstractButton
 {
@@ -47,11 +44,12 @@ public abstract class StateButton extends AbstractButton
             Minecraft.getInstance().getItemRenderer().renderItemIntoGUI(getButtonIcon(), x + 2, y + 2);
             if (isHovered())
             {
-                GuiUtils.drawHoveringText(getButtonIcon(), stack, Collections.singletonList(narrationMessage), x + width / 2,
-                        y + height / 2, screenWidth, screenHeight, -1, Minecraft.getInstance().fontRenderer);
+                drawHoveringText(stack, narrationMessage, mouseX, mouseY);
             }
         }
     }
+
+    protected abstract void drawHoveringText(final MatrixStack stack, final ITextComponent text, final int width, final int height);
 
     @Override
     public void onPress() { setInternalState(++state); }

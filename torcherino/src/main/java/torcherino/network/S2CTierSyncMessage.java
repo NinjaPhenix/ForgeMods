@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class S2CTierSyncMessage
+public final class S2CTierSyncMessage
 {
     private final Map<ResourceLocation, Tier> tiers;
 

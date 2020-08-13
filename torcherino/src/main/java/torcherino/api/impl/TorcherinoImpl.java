@@ -26,7 +26,7 @@ public class TorcherinoImpl implements TorcherinoAPI
 
     public boolean registerTier(final ResourceLocation name, final int maxSpeed, final int xzRange, final int yRange)
     {
-        Tier tier = new Tier(maxSpeed, xzRange, yRange);
+        final Tier tier = new Tier(maxSpeed, xzRange, yRange);
         if (localTiers.containsKey(name))
         {
             LOGGER.warn("Tier with id {} has already been registered.", name);
@@ -40,7 +40,7 @@ public class TorcherinoImpl implements TorcherinoAPI
     {
         if (ForgeRegistries.BLOCKS.containsKey(block))
         {
-            Block b = ForgeRegistries.BLOCKS.getValue(block);
+            final Block b = ForgeRegistries.BLOCKS.getValue(block);
             if (blacklistedBlocks.contains(b))
             {
                 LOGGER.warn("Block with id {} is already blacklisted.", block);
@@ -70,7 +70,7 @@ public class TorcherinoImpl implements TorcherinoAPI
     {
         if (ForgeRegistries.TILE_ENTITIES.containsKey(tileEntity))
         {
-            TileEntityType<?> type = ForgeRegistries.TILE_ENTITIES.getValue(tileEntity);
+            final TileEntityType<?> type = ForgeRegistries.TILE_ENTITIES.getValue(tileEntity);
             if (blacklistedTiles.contains(type))
             {
                 LOGGER.warn("TileEntity with id {} is already blacklisted.", tileEntity);
