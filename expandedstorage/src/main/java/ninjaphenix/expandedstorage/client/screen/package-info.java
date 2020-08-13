@@ -1,0 +1,5 @@
+@ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
+package ninjaphenix.expandedstorage.client.screen;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+import mcp.MethodsReturnNonnullByDefault;

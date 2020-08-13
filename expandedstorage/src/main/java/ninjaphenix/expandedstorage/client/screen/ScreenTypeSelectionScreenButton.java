@@ -9,14 +9,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.network.Networker;
-import org.jetbrains.annotations.NotNull;
 
-public class ScreenTypeSelectionScreenButton extends Button
+public final class ScreenTypeSelectionScreenButton extends Button
 {
     private final ResourceLocation TEXTURE;
 
     @SuppressWarnings("ConstantConditions")
-    public ScreenTypeSelectionScreenButton(final int x, final int y, @NotNull final ITooltip onTooltip)
+    public ScreenTypeSelectionScreenButton(final int x, final int y, final ITooltip onTooltip)
     {
         super(x, y, 12, 12, new TranslationTextComponent("screen.expandedstorage.change_screen_button"), button ->
         {
@@ -26,11 +25,12 @@ public class ScreenTypeSelectionScreenButton extends Button
         TEXTURE = ExpandedStorage.getRl("textures/gui/select_screen_button.png");
     }
 
-    @Override @SuppressWarnings("deprecation")
-    public void renderButton(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+    @Override
+    @SuppressWarnings("deprecation")
+    public void renderButton(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
         Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -38,6 +38,11 @@ public class ScreenTypeSelectionScreenButton extends Button
 
     }
 
-    public void renderTooltip(@NotNull final MatrixStack stack, final int x, final int y)
-    { if (isHovered()) { onTooltip.onTooltip(this, stack, x, y); } }
+    public void renderTooltip(final MatrixStack stack, final int x, final int y)
+    {
+        if (isHovered())
+        {
+            onTooltip.onTooltip(this, stack, x, y);
+        }
+    }
 }

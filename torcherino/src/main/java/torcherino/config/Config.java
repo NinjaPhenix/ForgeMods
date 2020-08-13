@@ -1,72 +1,80 @@
 package torcherino.config;
 
 import blue.endless.jankson.Comment;
+import blue.endless.jankson.JsonObject;
 import blue.endless.jankson.JsonPrimitive;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
+import org.apache.logging.log4j.MarkerManager;
 import torcherino.Torcherino;
 import torcherino.api.TorcherinoAPI;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-public class Config
+// todo: replace with refinement, blacklist can be made a tag, only keep random tick rate and log placement in forge toml config.
+public final class Config
 {
+    @SuppressWarnings("StaticNonFinalField")
     public static Config INSTANCE;
-
-    @Comment("\nDefines how much faster randoms ticks are applied compared to what they should be.\nValid Range: 1 to 4096")
-    public final int random_tick_rate = 4;
-
-    @Comment("Log torcherino placement (Intended for server use)") public final boolean log_placement = FMLLoader.getDist().isDedicatedServer();
-
     @Comment("\nAdd a block by resource location to the blacklist.\nExamples: \"minecraft:dirt\", \"minecraft:furnace\"")
     public final ResourceLocation[] blacklisted_blocks = new ResourceLocation[]{};
-
     @Comment("\nAdd a tile entity by resource location to the blacklist.\nExamples: \"minecraft:furnace\", \"minecraft:mob_spawner\"")
     public final ResourceLocation[] blacklisted_tiles = new ResourceLocation[]{};
-
     @Comment("\nAllows new custom torcherino tiers to be added.\nThis also allows for each tier to have their own max max_speed and ranges.")
-    public final Tier[] tiers = new Tier[]{ new Tier("normal", 4, 4, 1), new Tier("compressed", 36, 4, 1), new Tier("double_compressed", 324, 4, 1) };
+    public final Tier[] tiers = new Tier[]{new Tier("normal", 4, 4, 1), new Tier("compressed", 36, 4, 1), new Tier("double_compressed", 324, 4, 1)};
+    @Comment("\nDefines how much faster randoms ticks are applied compared to what they should be.\nValid Range: 1 to 4096")
+    @SuppressWarnings({"FieldMayBeFinal", "CanBeFinal"})
+    private int random_tick_rate = 4;
+    @Comment("Log torcherino placement (Intended for server use)")
+    @SuppressWarnings({"FieldMayBeFinal", "CanBeFinal"})
+    private boolean log_placement = FMLLoader.getDist().isDedicatedServer();
 
     @SuppressWarnings("ConstantConditions")
     public static void initialise()
     {
-        ConfigManager.getMarshaller().registerSerializer(ResourceLocation.class, JsonPrimitive::new);
-        ConfigManager.getMarshaller().register(ResourceLocation.class,
-                (it) -> (it instanceof String) ? new ResourceLocation((String) it) : new ResourceLocation(it.toString()));
-        ConfigManager.getMarshaller().registerTypeAdapter(Tier.class, (it) ->
+        INSTANCE = JanksonConfigParser.Builder.create().deSerializer(JsonPrimitive.class, ResourceLocation.class, (it, marshaller) -> new ResourceLocation(it.asString()), (identifier, marshaller) -> marshaller.serialize(identifier.toString())).deSerializer(JsonObject.class, Tier.class, (it, marshaller) ->
         {
             final String name = it.get(String.class, "name");
-            final Integer max_speed = it.get(Integer.class, "max_speed");
-            final Integer xz_range = it.get(Integer.class, "xz_range");
-            final Integer y_range = it.get(Integer.class, "y_range");
-            return new Tier(name, max_speed < 1 ? 1 : max_speed, xz_range < 0 ? 0 : xz_range, y_range < 0 ? 0 : y_range);
-        });
-        final Path sci4meDirectory = FMLPaths.CONFIGDIR.get().resolve("sci4me");
-        if (!sci4meDirectory.toFile().exists())
+            final int max_speed = it.getInt("max_speed", -1);
+            final int xz_range = it.getInt("xz_range", -1);
+            final int y_range = it.getInt("y_range", -1);
+            return new Tier(name, Math.max(max_speed, 1), Math.max(xz_range, 0), Math.max(y_range, 0));
+        }, (tier, marshaller) ->
         {
-            try
-            {
-                Files.createDirectory(sci4meDirectory);
-                INSTANCE = ConfigManager.loadConfig(Config.class, sci4meDirectory.resolve("Torcherino.cfg").toFile());
-            }
-            catch (final IOException e)
-            {
-                Torcherino.LOGGER.error("Failed to create sci4me folder, config won't be saved.");
-                INSTANCE = new Config();
-            }
-        }
-        else { INSTANCE = ConfigManager.loadConfig(Config.class, sci4meDirectory.resolve("Torcherino.cfg").toFile()); }
+            final JsonObject rv = new JsonObject();
+            rv.put("name", new JsonPrimitive(tier.name));
+            rv.put("max_speed", new JsonPrimitive(tier.max_speed));
+            rv.put("xz_range", new JsonPrimitive(tier.xz_range));
+            rv.put("y_range", new JsonPrimitive(tier.y_range));
+            return rv;
+        }).build().load(Config.class, Config::new, FMLPaths.CONFIGDIR.get().resolve("sci4me/Torcherino.cfg"), new MarkerManager.Log4jMarker(Torcherino.MOD_ID));
         INSTANCE.onConfigLoaded();
     }
 
+    @SuppressWarnings("deprecation")
     private void onConfigLoaded()
     {
-        for (Tier tier : tiers) { TorcherinoAPI.INSTANCE.registerTier(Torcherino.getRl(tier.name), tier.max_speed, tier.xz_range, tier.y_range); }
-        for (ResourceLocation block : blacklisted_blocks) { TorcherinoAPI.INSTANCE.blacklistBlock(block); }
-        for (ResourceLocation tile : blacklisted_tiles) { TorcherinoAPI.INSTANCE.blacklistTileEntity(tile); }
+        for (final Tier tier : tiers)
+        {
+            TorcherinoAPI.INSTANCE.registerTier(Torcherino.getRl(tier.name), tier.max_speed, tier.xz_range, tier.y_range);
+        }
+        for (final ResourceLocation block : blacklisted_blocks)
+        {
+            TorcherinoAPI.INSTANCE.blacklistBlock(block);
+        }
+        for (final ResourceLocation tile : blacklisted_tiles)
+        {
+            TorcherinoAPI.INSTANCE.blacklistTileEntity(tile);
+        }
+    }
+
+    public int getRandomTickRate()
+    {
+        return random_tick_rate;
+    }
+
+    public boolean logPlacement()
+    {
+        return log_placement;
     }
 
     private static class Tier

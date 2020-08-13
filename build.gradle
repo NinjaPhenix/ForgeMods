@@ -33,6 +33,12 @@ subprojects {
         main.resources.srcDirs += file('src/generated/resources')
     }
 
+    repositories {
+        //maven {
+        //    url 'https://dogforce-games.com/maven'
+        //}
+    }
+
     minecraft {
         mappings channel: "${mappings_channel}", version: "${mappings_version}"
         // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')

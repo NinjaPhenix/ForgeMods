@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+issueTrackerURL="https://github.com/NinjaPhenix/ForgeMods"
+[[mods]]
+  modId="${mod_id}"
+  version="${mod_version}"
+  displayName="${mod_name}"
+  #updateJSONURL="http://myurl.me/" #optional
+  #displayURL="https://www.curseforge.com/minecraft/mc-mods/"
+  logoFile="${mod_id}.png"
+  authors="NinjaPhenix"
+  description="A test mod for the refinement library."
+[[dependencies.${mod_id}]]
+  modId="forge"
+  mandatory=true
+  versionRange="[31,)"
+  ordering="NONE"
+  side="BOTH"
+[[dependencies.${mod_id}]]
+  modId="minecraft"
+  mandatory=true
+  versionRange="[${minecraft_version}]"
+  ordering="NONE"
+  side="BOTH"

@@ -1,6 +1,10 @@
 package torcherino.api.impl;
 
 import com.google.common.collect.ImmutableMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -11,12 +15,8 @@ import org.apache.logging.log4j.Logger;
 import torcherino.api.Tier;
 import torcherino.api.TorcherinoAPI;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-public class TorcherinoImpl implements TorcherinoAPI
+@SuppressWarnings("deprecation")
+public final class TorcherinoImpl implements TorcherinoAPI
 {
     private final Logger LOGGER = LogManager.getLogger("torcherino-api");
     private final Map<ResourceLocation, Tier> localTiers = new HashMap<>();
@@ -24,9 +24,10 @@ public class TorcherinoImpl implements TorcherinoAPI
     private final Set<TileEntityType<?>> blacklistedTiles = new HashSet<>();
     private Map<ResourceLocation, Tier> remoteTiers = new HashMap<>();
 
+    @Override
     public boolean registerTier(final ResourceLocation name, final int maxSpeed, final int xzRange, final int yRange)
     {
-        Tier tier = new Tier(maxSpeed, xzRange, yRange);
+        final Tier tier = new Tier(maxSpeed, xzRange, yRange);
         if (localTiers.containsKey(name))
         {
             LOGGER.warn("Tier with id {} has already been registered.", name);
@@ -36,11 +37,12 @@ public class TorcherinoImpl implements TorcherinoAPI
         return true;
     }
 
+    @Override
     public boolean blacklistBlock(final ResourceLocation block)
     {
         if (ForgeRegistries.BLOCKS.containsKey(block))
         {
-            Block b = ForgeRegistries.BLOCKS.getValue(block);
+            final Block b = ForgeRegistries.BLOCKS.getValue(block);
             if (blacklistedBlocks.contains(b))
             {
                 LOGGER.warn("Block with id {} is already blacklisted.", block);
@@ -70,7 +72,7 @@ public class TorcherinoImpl implements TorcherinoAPI
     {
         if (ForgeRegistries.TILE_ENTITIES.containsKey(tileEntity))
         {
-            TileEntityType<?> type = ForgeRegistries.TILE_ENTITIES.getValue(tileEntity);
+            final TileEntityType<?> type = ForgeRegistries.TILE_ENTITIES.getValue(tileEntity);
             if (blacklistedTiles.contains(type))
             {
                 LOGGER.warn("TileEntity with id {} is already blacklisted.", tileEntity);
@@ -96,17 +98,32 @@ public class TorcherinoImpl implements TorcherinoAPI
     }
 
     @Override
-    public boolean isBlockBlacklisted(final Block block) { return blacklistedBlocks.contains(block); }
+    public boolean isBlockBlacklisted(final Block block)
+    {
+        return blacklistedBlocks.contains(block);
+    }
 
     @Override
     public boolean isTileEntityBlacklisted(final TileEntityType<? extends TileEntity> tileEntityType)
-    { return blacklistedTiles.contains(tileEntityType); }
+    {
+        return blacklistedTiles.contains(tileEntityType);
+    }
 
     // Do not use
-    public void setRemoteTiers(final Map<ResourceLocation, Tier> tiers) { remoteTiers = tiers; }
-
-    public ImmutableMap<ResourceLocation, Tier> getTiers() { return ImmutableMap.copyOf(localTiers); }
+    public void setRemoteTiers(final Map<ResourceLocation, Tier> tiers)
+    {
+        remoteTiers = tiers;
+    }
 
     @Override
-    public Tier getTier(final ResourceLocation name) { return remoteTiers.getOrDefault(name, null); }
+    public ImmutableMap<ResourceLocation, Tier> getTiers()
+    {
+        return ImmutableMap.copyOf(localTiers);
+    }
+
+    @Override
+    public Tier getTier(final ResourceLocation name)
+    {
+        return remoteTiers.getOrDefault(name, null);
+    }
 }

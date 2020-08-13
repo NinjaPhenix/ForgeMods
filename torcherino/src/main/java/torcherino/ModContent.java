@@ -30,27 +30,33 @@ import torcherino.block.tile.CustomTileEntityType;
 import torcherino.block.tile.TorcherinoTileEntity;
 
 @Mod.EventBusSubscriber(modid = Torcherino.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModContent
+public final class ModContent
 {
-    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Torcherino.MOD_ID);
+    @SuppressWarnings("ConstantConditions")
+    public static final TileEntityType<TorcherinoTileEntity> TORCHERINO_TILE_ENTITY = new CustomTileEntityType<>(TorcherinoTileEntity::new, block -> block instanceof TierSupplier, null);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Torcherino.MOD_ID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Torcherino.MOD_ID);
     private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Torcherino.MOD_ID);
     private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Torcherino.MOD_ID);
-    @SuppressWarnings("ConstantConditions")
-    public static final TileEntityType<TorcherinoTileEntity> TORCHERINO_TILE_ENTITY = new CustomTileEntityType<>(TorcherinoTileEntity::new,
-            block -> block instanceof TierSupplier, null);
 
+    @SuppressWarnings("deprecation")
     public static void initialise(final IEventBus bus)
     {
-        BLOCKS.register(bus); ITEMS.register(bus); PARTICLE_TYPES.register(bus); TILE_ENTITIES.register(bus);
+        BLOCKS.register(bus);
+        ITEMS.register(bus);
+        PARTICLE_TYPES.register(bus);
+        TILE_ENTITIES.register(bus);
         TILE_ENTITIES.register("torcherino", TORCHERINO_TILE_ENTITY.delegate);
         TorcherinoAPI.INSTANCE.blacklistTileEntity(TORCHERINO_TILE_ENTITY);
         TorcherinoAPI.INSTANCE.getTiers().keySet().forEach(ModContent::register);
     }
 
     private static String getPath(final ResourceLocation tierID, final String type)
-    { return (tierID.getPath().equals("normal") ? "" : tierID.getPath() + "_") + type; }
+    {
+        return (tierID.getPath().equals("normal") ? "" : tierID.getPath() + "_") + type;
+    }
 
+    @SuppressWarnings("deprecation")
     private static void register(final ResourceLocation tierID)
     {
         if (tierID.getNamespace().equals(Torcherino.MOD_ID))
@@ -93,7 +99,6 @@ public class ModContent
     @SubscribeEvent
     public static void registerParticleFactories(final ParticleFactoryRegisterEvent event)
     {
-        PARTICLE_TYPES.getEntries().forEach(registryObject -> Minecraft.getInstance().particles.registerFactory((BasicParticleType) registryObject.get(),
-                FlameParticle.Factory::new));
+        PARTICLE_TYPES.getEntries().forEach(registryObject -> registryObject.ifPresent(particleType -> Minecraft.getInstance().particles.registerFactory((BasicParticleType) particleType, FlameParticle.Factory::new)));
     }
 }

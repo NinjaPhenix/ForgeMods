@@ -1,2 +1,1 @@
-- Update to 1.16.1
-- Minor resource pack changes regarding lanterns.
+- Fix a NPE in particle registration, will likely cause a different issue to pop up if you ran into this one.

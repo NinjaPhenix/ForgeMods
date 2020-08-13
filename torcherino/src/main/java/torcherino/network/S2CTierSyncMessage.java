@@ -1,6 +1,9 @@
 package torcherino.network;
 
 import com.mojang.datafixers.util.Pair;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.LogicalSide;
@@ -9,15 +12,14 @@ import torcherino.api.Tier;
 import torcherino.api.TorcherinoAPI;
 import torcherino.api.impl.TorcherinoImpl;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
-public class S2CTierSyncMessage
+public final class S2CTierSyncMessage
 {
     private final Map<ResourceLocation, Tier> tiers;
 
-    public S2CTierSyncMessage(final Map<ResourceLocation, Tier> tiers) { this.tiers = tiers; }
+    public S2CTierSyncMessage(final Map<ResourceLocation, Tier> tiers)
+    {
+        this.tiers = tiers;
+    }
 
     static void encode(final S2CTierSyncMessage message, final PacketBuffer buffer)
     {
@@ -37,6 +39,7 @@ public class S2CTierSyncMessage
         return new S2CTierSyncMessage(localTiers);
     }
 
+    @SuppressWarnings("deprecation")
     static void handle(final S2CTierSyncMessage message, final Supplier<NetworkEvent.Context> contextSupplier)
     {
         final NetworkEvent.Context context = contextSupplier.get();
@@ -48,8 +51,12 @@ public class S2CTierSyncMessage
     }
 
     private static Pair<ResourceLocation, Tier> readTier(final PacketBuffer buffer)
-    { return new Pair<>(buffer.readResourceLocation(), new Tier(buffer.readInt(), buffer.readInt(), buffer.readInt())); }
+    {
+        return new Pair<>(buffer.readResourceLocation(), new Tier(buffer.readInt(), buffer.readInt(), buffer.readInt()));
+    }
 
     private static void writeTier(final ResourceLocation name, final Tier tier, final PacketBuffer buffer)
-    { buffer.writeResourceLocation(name).writeInt(tier.MAX_SPEED).writeInt(tier.XZ_RANGE).writeInt(tier.Y_RANGE); }
+    {
+        buffer.writeResourceLocation(name).writeInt(tier.MAX_SPEED).writeInt(tier.XZ_RANGE).writeInt(tier.Y_RANGE);
+    }
 }

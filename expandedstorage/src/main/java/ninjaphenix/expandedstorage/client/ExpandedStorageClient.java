@@ -11,21 +11,27 @@ import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.client.render.CursedChestRenderer;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
-import org.jetbrains.annotations.NotNull;
 
-public class ExpandedStorageClient
+public final class ExpandedStorageClient
 {
     @SubscribeEvent
-    public static void setup(final FMLClientSetupEvent event) { ClientRegistry.bindTileEntityRenderer(ModContent.CURSED_CHEST_TE, CursedChestRenderer::new); }
+    public static void setup(final FMLClientSetupEvent event)
+    {
+        ClientRegistry.bindTileEntityRenderer(ModContent.CURSED_CHEST_TE, CursedChestRenderer::new);
+    }
 
-    @SubscribeEvent @SuppressWarnings("OptionalGetWithoutIsPresent")
+    @SubscribeEvent
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public static void preStitchTextures(final TextureStitchEvent.Pre event)
     {
-        if (!event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS)) { return; }
-        for (@NotNull final ResourceLocation entry : Registries.MODELED.keySet())
+        if (!event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS))
+        {
+            return;
+        }
+        for (final ResourceLocation entry : Registries.MODELED.keySet())
         {
             final Registries.ModeledTierData data = Registries.MODELED.getValue(entry).get();
-            for (@NotNull final CursedChestType value : CursedChestType.values())
+            for (final CursedChestType value : CursedChestType.values())
             {
                 event.addSprite(new ResourceLocation(ExpandedStorage.MOD_ID, data.getChestTexture(value).getPath()));
             }
