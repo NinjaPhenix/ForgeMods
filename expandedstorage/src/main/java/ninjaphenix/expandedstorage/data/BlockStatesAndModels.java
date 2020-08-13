@@ -9,17 +9,16 @@ import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.OldChestBlock;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class BlockStatesAndModels extends BlockStateProvider
+public final class BlockStatesAndModels extends BlockStateProvider
 {
+    public final static HashMap<Item, ModelFile> SINGLE_OLD_MODELS = new HashMap<>();
     private ModelFile OLD_CHEST_HORIZONTAL;
     private ModelFile OLD_CHEST_VERTICAL;
-    public final static HashMap<Item, ModelFile> SINGLE_OLD_MODELS = new HashMap<>();
 
-    public BlockStatesAndModels(@NotNull final DataGenerator generator, @NotNull final String modId, @NotNull final ExistingFileHelper fileHelper)
+    public BlockStatesAndModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper)
     { super(generator, modId, fileHelper); }
 
     @Override
@@ -59,11 +58,11 @@ public class BlockStatesAndModels extends BlockStateProvider
         oldChestBlock(ModContent.OLD_NETHERITE_CHEST.getFirst());
     }
 
-    @NotNull @Override
+    @Override
     public String getName() { return "Expanded Storage - BlockStates / Models"; }
 
     @SuppressWarnings("ConstantConditions")
-    private void oldChestBlock(@NotNull final OldChestBlock block)
+    private void oldChestBlock(final OldChestBlock block)
     {
         getVariantBuilder(block).forAllStatesExcept(state -> {
             final String blockPath = block.getRegistryName().getPath();
@@ -73,13 +72,12 @@ public class BlockStatesAndModels extends BlockStateProvider
                     .rotationY(((state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalIndex() + 2) % 4) * 90)
                     .modelFile(oldChestGetModel(blockPath, chestType))
                     .build();
-            if(chestType == CursedChestType.SINGLE) { SINGLE_OLD_MODELS.put(block.asItem(), result[0].model); }
+            if (chestType == CursedChestType.SINGLE) { SINGLE_OLD_MODELS.put(block.asItem(), result[0].model); }
             return result;
         }, BlockStateProperties.WATERLOGGED);
     }
 
-    @NotNull
-    private ModelFile oldChestGetModel(@NotNull final String blockPath, @NotNull final CursedChestType chestType)
+    private ModelFile oldChestGetModel(final String blockPath, final CursedChestType chestType)
     {
         final String chestTypeName = chestType.getString();
         final BlockModelBuilder builder = models().getBuilder(String.format("block/%s/%s", blockPath, chestTypeName));
@@ -136,14 +134,13 @@ public class BlockStatesAndModels extends BlockStateProvider
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void chestBlock(@NotNull final CursedChestBlock block)
+    private void chestBlock(final CursedChestBlock block)
     {
         getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(chestGetParticleTexture(state.get(BaseChestBlock.TYPE),
                 block.getRegistryName().getPath())).build(), BlockStateProperties.WATERLOGGED, BlockStateProperties.HORIZONTAL_FACING);
     }
 
-    @NotNull
-    private ModelFile chestGetParticleTexture(@NotNull final CursedChestType type, @NotNull final String blockPath)
+    private ModelFile chestGetParticleTexture(final CursedChestType type, final String blockPath)
     {
         final String chestName = blockPath.substring(0, blockPath.indexOf('_'));
         if (blockPath.equals("pumpkin_chest"))

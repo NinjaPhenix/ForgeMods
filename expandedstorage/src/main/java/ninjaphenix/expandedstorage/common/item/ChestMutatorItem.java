@@ -29,25 +29,24 @@ import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static net.minecraft.state.properties.BlockStateProperties.WATERLOGGED;
 import static net.minecraft.util.Rotation.CLOCKWISE_180;
 import static net.minecraft.util.Rotation.CLOCKWISE_90;
 
-public class ChestMutatorItem extends ChestModifierItem
+public final class ChestMutatorItem extends ChestModifierItem
 {
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final EnumProperty<CursedChestType> TYPE = BaseChestBlock.TYPE;
 
     public ChestMutatorItem() { super(new Item.Properties().maxStackSize(1).group(ExpandedStorage.group)); }
 
-    @NotNull @Override @SuppressWarnings("ConstantConditions")
-    protected ActionResultType useModifierOnChestBlock(@NotNull final ItemUseContext context, @NotNull final BlockState mainState,
-            @NotNull final BlockPos mainPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
+    @Override @SuppressWarnings("ConstantConditions")
+    protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState,
+            final BlockPos mainPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
     {
         final PlayerEntity player = context.getPlayer();
         final World world = context.getWorld();
@@ -137,8 +136,8 @@ public class ChestMutatorItem extends ChestModifierItem
         return ActionResultType.FAIL;
     }
 
-    @NotNull @Override @SuppressWarnings({ "ConstantConditions", "OptionalGetWithoutIsPresent" })
-    protected ActionResultType useModifierOnBlock(@NotNull final ItemUseContext context, @NotNull final BlockState state)
+    @Override @SuppressWarnings({ "ConstantConditions", "OptionalGetWithoutIsPresent" })
+    protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state)
     {
         final PlayerEntity player = context.getPlayer();
         final ItemStack stack = context.getItem();
@@ -160,12 +159,12 @@ public class ChestMutatorItem extends ChestModifierItem
                                 realOtherState.get(ChestBlock.TYPE) == ChestType.SINGLE)
                         {
                             final BlockPos vec = otherPos.subtract(mainPos);
-                            int sum = vec.getX() + vec.getY() + vec.getZ();
+                            final int sum = vec.getX() + vec.getY() + vec.getZ();
                             if (sum == 1 || sum == -1)
                             {
                                 if (!world.isRemote)
                                 {
-                                    final Registries.TierData entry = Registries.MODELED.getValue(ExpandedStorage.getRl("wood_chest")).get();
+                                    final Registries.TierData entry = Registries.MODELED.getOrDefault(ExpandedStorage.getRl("wood_chest"));
                                     final CursedChestType mainChestType = BaseChestBlock.getChestType(state.get(FACING),
                                             Direction.getFacingFromVector(vec.getX(), vec.getY(), vec.getZ()));
                                     BlockState defState = ForgeRegistries.BLOCKS.getValue(entry.getBlockId()).getDefaultState().with(FACING,
@@ -208,11 +207,13 @@ public class ChestMutatorItem extends ChestModifierItem
             }
             else if (mode == MutatorMode.UNMERGE)
             {
-                BlockPos otherPos;
+                final BlockPos otherPos;
                 switch (state.get(ChestBlock.TYPE))
                 {
-                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY()); break;
-                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW()); break;
+                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY());
+                        break;
+                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW());
+                        break;
                     default: return ActionResultType.FAIL;
                 }
                 if (!world.isRemote)
@@ -225,11 +226,13 @@ public class ChestMutatorItem extends ChestModifierItem
             }
             else if (mode == MutatorMode.ROTATE)
             {
-                BlockPos otherPos;
+                final BlockPos otherPos;
                 switch (state.get(ChestBlock.TYPE))
                 {
-                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY()); break;
-                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW()); break;
+                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY());
+                        break;
+                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW());
+                        break;
                     case SINGLE:
                         if (!world.isRemote) { world.setBlockState(mainPos, state.rotate(world, mainPos, CLOCKWISE_90)); }
                         player.getCooldownTracker().setCooldown(this, 5);
@@ -260,8 +263,8 @@ public class ChestMutatorItem extends ChestModifierItem
         return super.useModifierOnBlock(context, state);
     }
 
-    @NotNull @Override
-    protected ActionResult<ItemStack> useModifierInAir(@NotNull final World world, @NotNull final PlayerEntity player, @NotNull final Hand hand)
+    @Override
+    protected ActionResult<ItemStack> useModifierInAir(final World world, final PlayerEntity player, final Hand hand)
     {
         if (player.isCrouching())
         {
@@ -276,18 +279,25 @@ public class ChestMutatorItem extends ChestModifierItem
     }
 
     @Override
-    public void onCreated(@NotNull final ItemStack stack, @NotNull final World world, @NotNull final PlayerEntity player)
-    { super.onCreated(stack, world, player); getMode(stack); }
-
-    @NotNull @Override
-    public ItemStack getDefaultInstance() { final ItemStack stack = super.getDefaultInstance(); getMode(stack); return stack; }
+    public void onCreated(final ItemStack stack, final World world, final PlayerEntity player)
+    {
+        super.onCreated(stack, world, player);
+        getMode(stack);
+    }
 
     @Override
-    public void fillItemGroup(@NotNull final ItemGroup itemGroup, @NotNull final NonNullList<ItemStack> stackList)
+    public ItemStack getDefaultInstance()
+    {
+        final ItemStack stack = super.getDefaultInstance();
+        getMode(stack);
+        return stack;
+    }
+
+    @Override
+    public void fillItemGroup(final ItemGroup itemGroup, final NonNullList<ItemStack> stackList)
     { if (isInGroup(itemGroup)) { stackList.add(getDefaultInstance()); } }
 
-    @NotNull
-    private MutatorMode getMode(@NotNull final ItemStack stack)
+    private MutatorMode getMode(final ItemStack stack)
     {
         final CompoundNBT tag = stack.getOrCreateTag();
         if (!tag.contains("mode", 1)) { tag.putByte("mode", (byte) 0); }
@@ -295,8 +305,8 @@ public class ChestMutatorItem extends ChestModifierItem
     }
 
     @Override
-    public void addInformation(@NotNull final ItemStack stack, @Nullable final World world, @NotNull final List<ITextComponent> tooltip,
-            @NotNull final ITooltipFlag flag)
+    public void addInformation(final ItemStack stack, @Nullable final World world, final List<ITextComponent> tooltip,
+            final ITooltipFlag flag)
     {
         final MutatorMode mode = getMode(stack);
         tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", mode.title).func_240699_a_(TextFormatting.GRAY));

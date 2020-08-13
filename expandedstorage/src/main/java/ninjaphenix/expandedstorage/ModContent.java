@@ -34,7 +34,7 @@ import ninjaphenix.expandedstorage.common.item.ChestMutatorItem;
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
 @Mod.EventBusSubscriber(modid = ExpandedStorage.MOD_ID, bus = MOD)
-public class ModContent
+public final class ModContent
 {
     public static final ContainerType<PagedContainer> PAGED_CONTAINER_TYPE;
     public static final ContainerType<SingleContainer> SINGLE_CONTAINER_TYPE;
@@ -70,8 +70,10 @@ public class ModContent
     public static final ChestConversionItem CONVERSION_KIT_DIAMOND_NETHERITE;
     public static final ChestConversionItem CONVERSION_KIT_OBSIDIAN_NETHERITE;
     // @formatter:off
-	public static final CustomTileEntityType<CursedChestTileEntity> CURSED_CHEST_TE = new CustomTileEntityType<>(CursedChestTileEntity::new, (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
-	public static final CustomTileEntityType<OldChestTileEntity> OLD_CHEST_TE = new CustomTileEntityType<>(OldChestTileEntity::new, (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
+    public static final CustomTileEntityType<CursedChestTileEntity> CURSED_CHEST_TE = new CustomTileEntityType<>(CursedChestTileEntity::new,
+            (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
+    public static final CustomTileEntityType<OldChestTileEntity> OLD_CHEST_TE = new CustomTileEntityType<>(OldChestTileEntity::new,
+            (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
     // @formatter:on
 
     static

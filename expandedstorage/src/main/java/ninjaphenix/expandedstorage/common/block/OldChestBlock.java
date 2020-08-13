@@ -13,15 +13,18 @@ import net.minecraft.world.IWorld;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.common.block.entity.OldChestTileEntity;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
+import javax.annotation.Nullable;
+
+public final class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
 {
-    public OldChestBlock(@NotNull final Properties properties, @NotNull final ResourceLocation registryName)
-    { super(properties, () -> ModContent.OLD_CHEST_TE); setRegistryName(registryName); }
+    public OldChestBlock(final Properties properties, final ResourceLocation registryName)
+    {
+        super(properties, () -> ModContent.OLD_CHEST_TE);
+        setRegistryName(registryName);
+    }
 
-    @NotNull @Override @SuppressWarnings("ConstantConditions")
+    @Override @SuppressWarnings("ConstantConditions")
     public TileEntity createTileEntity(@Nullable final BlockState state, @Nullable final IBlockReader world)
     {
         final ResourceLocation registryName = getRegistryName();
@@ -29,7 +32,7 @@ public class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
     }
 
     @Override
-    protected boolean isBlocked(@NotNull IWorld world, @NotNull BlockPos pos)
+    protected boolean isBlocked(final IWorld world, final BlockPos pos)
     {
         final BlockPos upPos = pos.up();
         final BlockState upState = world.getBlockState(upPos);
@@ -37,9 +40,9 @@ public class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
                 pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)).stream().anyMatch(CatEntity::func_233684_eK_);
     }
 
-    @NotNull @Override
+    @Override
     public BlockRenderType getRenderType(@Nullable final BlockState state) { return BlockRenderType.MODEL; }
 
-    @NotNull @Override @SuppressWarnings("unchecked")
+    @Override @SuppressWarnings("unchecked")
     public SimpleRegistry<Registries.TierData> getDataRegistry() { return Registries.OLD; }
 }

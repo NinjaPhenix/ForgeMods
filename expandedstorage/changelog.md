@@ -1,1 +1,1 @@
-- Fix bug preventing the game from launching on dedicated servers.
+- Updated to 1.16.2

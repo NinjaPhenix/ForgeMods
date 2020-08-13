@@ -21,11 +21,11 @@ import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.inventory.AbstractContainer;
 import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
-public class CursedChestTileEntity extends AbstractChestTileEntity implements IChestLid, ITickableTileEntity
+public final class CursedChestTileEntity extends AbstractChestTileEntity implements IChestLid, ITickableTileEntity
 {
     private float animationAngle, lastAnimationAngle;
     private int viewerCount, ticksOpen;
@@ -34,7 +34,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
 
     public CursedChestTileEntity(@Nullable final ResourceLocation block) { super(ModContent.CURSED_CHEST_TE, block); }
 
-    private static int tickViewerCount(@NotNull final World world, @NotNull final CursedChestTileEntity instance, final int ticksOpen, final int x,
+    private static int tickViewerCount(final World world, final CursedChestTileEntity instance, final int ticksOpen, final int x,
             final int y, final int z, final int viewCount)
     {
         if (!world.isRemote && viewCount != 0 && (ticksOpen + x + y + z) % 200 == 0)
@@ -49,11 +49,11 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
         return viewCount;
     }
 
-    @Override @SuppressWarnings("OptionalGetWithoutIsPresent")
-    protected void initialize(@NotNull final ResourceLocation block)
+    @Override
+    protected void initialize(final ResourceLocation block)
     {
         this.block = block;
-        final Registries.ModeledTierData data = Registries.MODELED.getValue(block).get();
+        final Registries.ModeledTierData data = Registries.MODELED.getOrDefault(block);
         defaultContainerName = data.getContainerName();
         inventorySize = data.getSlotCount();
         inventory = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
@@ -64,7 +64,11 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     @Override
     public boolean receiveClientEvent(final int actionId, final int value)
     {
-        if (actionId == 1) { viewerCount = value; return true; }
+        if (actionId == 1)
+        {
+            viewerCount = value;
+            return true;
+        }
         else { return super.receiveClientEvent(actionId, value); }
     }
 
@@ -85,7 +89,7 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void playSound(@NotNull final SoundEvent soundEvent)
+    private void playSound(final SoundEvent soundEvent)
     {
         final BlockState state = getBlockState();
         if (BaseChestBlock.getMergeType(state) == TileEntityMerger.Type.SECOND) { return; }
@@ -95,15 +99,16 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     }
 
     @Override
-    public void openInventory(@NotNull final PlayerEntity player)
+    public void openInventory(final PlayerEntity player)
     {
         if (player.isSpectator()) { return; }
-        if (viewerCount < 0) { viewerCount = 0; } viewerCount++;
+        if (viewerCount < 0) { viewerCount = 0; }
+        viewerCount++;
         onInvOpenOrClose();
     }
 
     @Override
-    public void closeInventory(@NotNull final PlayerEntity player)
+    public void closeInventory(final PlayerEntity player)
     {
         if (player.isSpectator()) { return; }
         viewerCount--;
@@ -114,6 +119,10 @@ public class CursedChestTileEntity extends AbstractChestTileEntity implements IC
     private void onInvOpenOrClose()
     {
         final Block block = getBlockState().getBlock();
-        if (block instanceof CursedChestBlock) { world.addBlockEvent(pos, block, 1, viewerCount); world.notifyNeighborsOfStateChange(pos, block); }
+        if (block instanceof CursedChestBlock)
+        {
+            world.addBlockEvent(pos, block, 1, viewerCount);
+            world.notifyNeighborsOfStateChange(pos, block);
+        }
     }
 }

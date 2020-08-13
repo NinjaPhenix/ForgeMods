@@ -14,39 +14,43 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import ninjaphenix.expandedstorage.client.screen.SelectContainerScreen;
 import ninjaphenix.expandedstorage.common.inventory.AbstractContainer;
 import ninjaphenix.expandedstorage.common.inventory.IDataNamedContainerProvider;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-public class OpenSelectScreenMessage
+public final class OpenSelectScreenMessage
 {
-    static void encode(@NotNull final OpenSelectScreenMessage message, @NotNull final PacketBuffer buffer) { }
+    static void encode(final OpenSelectScreenMessage message, final PacketBuffer buffer) { }
 
     @SuppressWarnings("InstantiationOfUtilityClass")
-    static OpenSelectScreenMessage decode(@NotNull final PacketBuffer buffer) { return new OpenSelectScreenMessage(); }
+    static OpenSelectScreenMessage decode(final PacketBuffer buffer) { return new OpenSelectScreenMessage(); }
 
     @SuppressWarnings("ConstantConditions")
-    static void handle(@NotNull final OpenSelectScreenMessage message, @NotNull final Supplier<NetworkEvent.Context> ctx)
+    static void handle(final OpenSelectScreenMessage message, final Supplier<NetworkEvent.Context> ctx)
     {
-        NetworkEvent.Context context = ctx.get();
-        if (context.getDirection().getOriginationSide() == LogicalSide.SERVER) { handleClient(); context.setPacketHandled(true); return; }
+        final NetworkEvent.Context context = ctx.get();
+        if (context.getDirection().getOriginationSide() == LogicalSide.SERVER)
+        {
+            handleClient();
+            context.setPacketHandled(true);
+            return;
+        }
         final ServerPlayerEntity sender = context.getSender();
-        AbstractContainer<?> container = (AbstractContainer<?>) sender.openContainer;
+        final AbstractContainer<?> container = (AbstractContainer<?>) sender.openContainer;
         Networker.INSTANCE.openSelectScreen(sender, (type) -> Networker.INSTANCE.openContainer(sender, new IDataNamedContainerProvider()
         {
             @Override
-            public void writeExtraData(@NotNull final PacketBuffer buffer)
+            public void writeExtraData(final PacketBuffer buffer)
             {
                 buffer.writeInt(container.getInv().getSizeInventory());
                 buffer.writeBlockPos(container.ORIGIN);
             }
 
             @Nullable @Override
-            public Container createMenu(final int windowId, @NotNull final PlayerInventory playerInventory, @NotNull final PlayerEntity player)
+            public Container createMenu(final int windowId, final PlayerInventory playerInventory, final PlayerEntity player)
             { return Networker.INSTANCE.getContainer(windowId, container.ORIGIN, container.getInv(), player, container.DISPLAY_NAME); }
 
-            @NotNull @Override
+            @Override
             public ITextComponent getDisplayName() { return container.DISPLAY_NAME; }
         }));
         context.setPacketHandled(true);

@@ -11,29 +11,35 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.screen.ScreenMeta;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public abstract class AbstractContainer<T extends ScreenMeta> extends Container
 {
     public final ITextComponent DISPLAY_NAME;
     public final BlockPos ORIGIN;
-    protected final IInventory INVENTORY;
     public final T SCREEN_META;
+    protected final IInventory INVENTORY;
 
-    public AbstractContainer(@NotNull final ContainerType<?> type, final int windowId, @NotNull final BlockPos pos, @NotNull final IInventory inventory,
-            @NotNull final PlayerEntity player, @NotNull final T screenMeta, @Nullable final ITextComponent displayName)
+    public AbstractContainer(final ContainerType<?> type, final int windowId, final BlockPos pos, final IInventory inventory,
+            final PlayerEntity player, final T screenMeta, @Nullable final ITextComponent displayName)
     {
         super(type, windowId);
-        ORIGIN = pos; INVENTORY = inventory; SCREEN_META = screenMeta; DISPLAY_NAME = displayName;
+        ORIGIN = pos;
+        INVENTORY = inventory;
+        SCREEN_META = screenMeta;
+        DISPLAY_NAME = displayName;
         inventory.openInventory(player);
     }
 
-    @Override
-    public boolean canInteractWith(@NotNull final PlayerEntity player) { return INVENTORY.isUsableByPlayer(player); }
+    public static ResourceLocation getTexture(final String prefix, final int width, final int height)
+    { return ExpandedStorage.getRl(String.format("textures/gui/container/%s_%d_%d.png", prefix, width, height)); }
 
-    @NotNull @Override
-    public ItemStack transferStackInSlot(@NotNull final PlayerEntity player, final int index)
+    @Override
+    public boolean canInteractWith(final PlayerEntity player) { return INVENTORY.isUsableByPlayer(player); }
+
+    @Override
+    public ItemStack transferStackInSlot(final PlayerEntity player, final int index)
     {
         ItemStack stack = ItemStack.EMPTY;
         final Slot slot = inventorySlots.get(index);
@@ -51,12 +57,11 @@ public abstract class AbstractContainer<T extends ScreenMeta> extends Container
     }
 
     @Override
-    public void onContainerClosed(@NotNull final PlayerEntity player) { super.onContainerClosed(player); INVENTORY.closeInventory(player); }
+    public void onContainerClosed(final PlayerEntity player)
+    {
+        super.onContainerClosed(player);
+        INVENTORY.closeInventory(player);
+    }
 
-    @NotNull
     public IInventory getInv() { return INVENTORY; }
-
-    @NotNull
-    public static ResourceLocation getTexture(@NotNull final String prefix, final int width, final int height)
-    { return ExpandedStorage.getRl(String.format("textures/gui/container/%s_%d_%d.png", prefix, width, height)); }
 }

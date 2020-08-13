@@ -6,23 +6,22 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.util.text.ITextComponent;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
-public class Registries
+public final class Registries
 {
-	public static final SimpleRegistry<ModeledTierData> MODELED = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
+    public static final SimpleRegistry<ModeledTierData> MODELED = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
             ExpandedStorage.getRl("modeled")), Lifecycle.experimental());
-	public static final SimpleRegistry<TierData> OLD = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
+    public static final SimpleRegistry<TierData> OLD = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
             ExpandedStorage.getRl("old")), Lifecycle.experimental());
 
     public static class ModeledTierData extends TierData
     {
         private final ResourceLocation singleTexture, topTexture, backTexture, rightTexture, bottomTexture, frontTexture, leftTexture;
 
-        public ModeledTierData(final int slots, @NotNull final ResourceLocation blockId, @NotNull final ITextComponent containerName,
-                @NotNull final Function<CursedChestType, ResourceLocation> textureFunction)
+        public ModeledTierData(final int slots, final ResourceLocation blockId, final ITextComponent containerName,
+                final Function<CursedChestType, ResourceLocation> textureFunction)
         {
             super(slots, blockId, containerName);
             singleTexture = textureFunction.apply(CursedChestType.SINGLE);
@@ -34,10 +33,11 @@ public class Registries
             leftTexture = textureFunction.apply(CursedChestType.LEFT);
         }
 
-        @NotNull
-        public ResourceLocation getChestTexture(@NotNull final CursedChestType type)
+
+        public ResourceLocation getChestTexture(final CursedChestType type)
         {
-            switch(type) {
+            switch (type)
+            {
                 case TOP: return topTexture;
                 case BACK: return backTexture;
                 case RIGHT: return rightTexture;
@@ -50,25 +50,25 @@ public class Registries
         }
     }
 
-	public static class TierData
-	{
-		private final int slots;
-		private final ITextComponent containerName;
-		private final ResourceLocation blockId;
+    public static class TierData
+    {
+        private final int slots;
+        private final ITextComponent containerName;
+        private final ResourceLocation blockId;
 
-		public TierData(int slots, ResourceLocation blockId, ITextComponent containerName)
-		{
-			this.slots = slots;
-			this.containerName = containerName;
-			this.blockId = blockId;
-		}
+        public TierData(final int slots, final ResourceLocation blockId, final ITextComponent containerName)
+        {
+            this.slots = slots;
+            this.containerName = containerName;
+            this.blockId = blockId;
+        }
 
-		public int getSlotCount() { return slots; }
+        public int getSlotCount() { return slots; }
 
-		@NotNull
-		public ITextComponent getContainerName() { return containerName; }
 
-		@NotNull
-		public ResourceLocation getBlockId() { return blockId; }
-	}
+        public ITextComponent getContainerName() { return containerName; }
+
+
+        public ResourceLocation getBlockId() { return blockId; }
+    }
 }

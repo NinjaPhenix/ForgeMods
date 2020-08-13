@@ -13,9 +13,8 @@ import net.minecraftforge.fml.ModList;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.inventory.PagedContainer;
 import ninjaphenix.expandedstorage.common.screen.PagedScreenMeta;
-import org.jetbrains.annotations.NotNull;
 
-public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
+public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
 {
     private Rectangle blankArea = null;
     private PageButtonWidget leftPageButton, rightPageButton;
@@ -24,10 +23,11 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
     private float pageTextX;
     private ScreenTypeSelectionScreenButton screenSelectButton;
 
-    public PagedScreen(@NotNull final PagedContainer container, @NotNull final PlayerInventory playerInventory, @NotNull final ITextComponent title)
+    public PagedScreen(final PagedContainer container, final PlayerInventory playerInventory, final ITextComponent title)
     {
         super(container, playerInventory, title, (screenMeta) -> (screenMeta.WIDTH * 18 + 14) / 2 - 80);
-        xSize = 14 + 18 * SCREEN_META.WIDTH; ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
+        xSize = 14 + 18 * SCREEN_META.WIDTH;
+        ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
     }
 
     private void setPage(final int oldPage, final int newPage)
@@ -48,18 +48,18 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
             }
             if (!leftPageButton.active) { leftPageButton.setActive(true); }
         }
-        else if(newPage < oldPage)
+        else if (newPage < oldPage)
         {
             if (page == 1) { leftPageButton.setActive(false); }
             if (blankArea != null) {blankArea = null; }
             if (!rightPageButton.active) { rightPageButton.setActive(true); }
         }
         final int slotsPerPage = SCREEN_META.WIDTH * SCREEN_META.HEIGHT;
-        int oldMin = slotsPerPage * (oldPage - 1);
-        int oldMax = Math.min(oldMin + slotsPerPage, SCREEN_META.TOTAL_SLOTS);
+        final int oldMin = slotsPerPage * (oldPage - 1);
+        final int oldMax = Math.min(oldMin + slotsPerPage, SCREEN_META.TOTAL_SLOTS);
         container.moveSlotRange(oldMin, oldMax, -2000);
-        int newMin = slotsPerPage * (newPage - 1);
-        int newMax = Math.min(newMin + slotsPerPage, SCREEN_META.TOTAL_SLOTS);
+        final int newMin = slotsPerPage * (newPage - 1);
+        final int newMax = Math.min(newMin + slotsPerPage, SCREEN_META.TOTAL_SLOTS);
         container.moveSlotRange(newMin, newMax, 2000);
         setPageText();
     }
@@ -67,10 +67,14 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
     private void setPageText() { currentPageText = new TranslationTextComponent("screen.expandedstorage.page_x_y", page, SCREEN_META.PAGES); }
 
     @Override
-    public void render(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+    public void render(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
         super.render(stack, mouseX, mouseY, partialTicks);
-        if (SCREEN_META.PAGES != 1) { leftPageButton.renderTooltip(stack, mouseX, mouseY); rightPageButton.renderTooltip(stack, mouseX, mouseY); }
+        if (SCREEN_META.PAGES != 1)
+        {
+            leftPageButton.renderTooltip(stack, mouseX, mouseY);
+            rightPageButton.renderTooltip(stack, mouseX, mouseY);
+        }
         screenSelectButton.renderTooltip(stack, mouseX, mouseY);
     }
 
@@ -99,18 +103,18 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
     }
 
     @Override
-    protected void func_230450_a_(@NotNull final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    protected void func_230450_a_(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
         super.func_230450_a_(stack, partialTicks, mouseX, mouseY);
         if (blankArea != null) { blankArea.render(stack); }
     }
 
     @Override
-    public void resize(@NotNull final Minecraft minecraft, final int width, final int height)
+    public void resize(final Minecraft minecraft, final int width, final int height)
     {
         if (SCREEN_META.PAGES != 1)
         {
-            int currentPage = page;
+            final int currentPage = page;
             if (currentPage != 1)
             {
                 container.resetSlotPositions(false);
@@ -123,10 +127,10 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
     }
 
     @Override
-    protected void func_230451_b_(@NotNull final MatrixStack stack, final int mouseX, final int mouseY)
+    protected void func_230451_b_(final MatrixStack stack, final int mouseX, final int mouseY)
     {
         super.func_230451_b_(stack, mouseX, mouseY);
-        if (currentPageText != null) { font.func_238422_b_(stack, currentPageText, pageTextX - guiLeft, ySize - 94, 0x404040); }
+        if (currentPageText != null) { font.func_243248_b(stack, currentPageText, pageTextX - guiLeft, ySize - 94, 0x404040); }
     }
 
     @Override
@@ -158,8 +162,8 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
         private final int TEXTURE_OFFSET;
         private final ResourceLocation TEXTURE = ExpandedStorage.getRl("textures/gui/page_buttons.png");
 
-        public PageButtonWidget(final int x, final int y, final int textureOffset, @NotNull final ITextComponent message, @NotNull final IPressable onPress,
-                @NotNull final ITooltip onTooltip)
+        public PageButtonWidget(final int x, final int y, final int textureOffset, final ITextComponent message, final IPressable onPress,
+                final ITooltip onTooltip)
         {
             super(x, y, 12, 12, message, onPress, onTooltip);
             TEXTURE_OFFSET = textureOffset;
@@ -171,8 +175,8 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
             if (!active) { this.setFocused(false); }
         }
 
-        @Override
-        public void renderButton(@NotNull final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
+        @Override @SuppressWarnings("deprecation")
+        public void renderButton(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
         {
             Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
             RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
@@ -182,7 +186,7 @@ public class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
             blit(stack, x, y, TEXTURE_OFFSET * 12, getYImage(isHovered()) * 12, width, height, 32, 48);
         }
 
-        public void renderTooltip(@NotNull final MatrixStack stack, final int mouseX, final int mouseY)
+        public void renderTooltip(final MatrixStack stack, final int mouseX, final int mouseY)
         {
             if (active)
             {

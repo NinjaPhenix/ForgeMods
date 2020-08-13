@@ -2,7 +2,6 @@ package ninjaphenix.expandedstorage.common.block.enums;
 
 import net.minecraft.state.properties.ChestType;
 import net.minecraft.util.IStringSerializable;
-import org.jetbrains.annotations.NotNull;
 
 public enum CursedChestType implements IStringSerializable
 {
@@ -11,9 +10,13 @@ public enum CursedChestType implements IStringSerializable
     private final String name;
     private final int offset;
 
-    CursedChestType(@NotNull final String string, final int outlineOffset) { name = string; offset = outlineOffset; }
+    CursedChestType(final String string, final int outlineOffset)
+    {
+        name = string;
+        offset = outlineOffset;
+    }
 
-    public static CursedChestType valueOf(@NotNull final ChestType type)
+    public static CursedChestType valueOf(final ChestType type)
     {
         if (type == ChestType.SINGLE) { return SINGLE; }
         else if (type == ChestType.RIGHT) { return LEFT; }
@@ -32,7 +35,7 @@ public enum CursedChestType implements IStringSerializable
         throw new IllegalArgumentException("CursedChestType#getOpposite is not supported for type SINGLE");
     }
 
-    @NotNull @Override
+    @Override
     public String getString() { return name; }
 
     public int getOffset() { return offset; }

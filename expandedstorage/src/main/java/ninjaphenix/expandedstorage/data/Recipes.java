@@ -8,16 +8,15 @@ import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.OldChestBlock;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-public class Recipes extends RecipeProvider
+public final class Recipes extends RecipeProvider
 {
-    public Recipes(@NotNull final DataGenerator generator) { super(generator); }
+    public Recipes(final DataGenerator generator) { super(generator); }
 
     @Override
-    protected void registerRecipes(@NotNull final Consumer<IFinishedRecipe> consumer)
+    protected void registerRecipes(final Consumer<IFinishedRecipe> consumer)
     {
         // <editor-fold desc="local copy of blocks cause they're stored as Pair<Block, Item> in my class">
         final CursedChestBlock WOOD_CHEST = ModContent.WOOD_CHEST.getFirst();
@@ -254,6 +253,6 @@ public class Recipes extends RecipeProvider
         // </editor-fold>
     }
 
-    @NotNull @Override
+    @Override
     public String getName() { return "Expanded Storage - Recipes"; }
 }

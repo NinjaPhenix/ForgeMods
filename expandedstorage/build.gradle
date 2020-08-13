@@ -3,19 +3,19 @@ minecraft {
 }
 
 repositories {
-    maven {
+    /* For JEI */ maven {
         name 'DVS1 Maven FS'
         url 'https://dvs1.progwml6.com/files/maven'
     }
-    maven {
+    /* For Quark*/ maven {
         name 'Blame Jared Maven'
         url 'https://maven.blamejared.com'
     }
 }
 
 dependencies {
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:7.0.0.6:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:7.0.0.6")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.1.10:api")
+    //runtimeOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.1.10")
     //runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-40.79')
     //runtimeOnly fg.deobf('vazkii.quark:Quark:r2.1-245.1160')
 }

@@ -16,18 +16,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public abstract class ChestModifierItem extends Item
 {
     private static final DirectionProperty FACING = BaseChestBlock.FACING;
     private static final EnumProperty<CursedChestType> TYPE = BaseChestBlock.TYPE;
 
-    public ChestModifierItem(@NotNull final Item.Properties properties) { super(properties); }
+    public ChestModifierItem(final Item.Properties properties) { super(properties); }
 
-    @NotNull @Override
-    public ActionResultType onItemUse(@NotNull final ItemUseContext context)
+    @Override
+    public ActionResultType onItemUse(final ItemUseContext context)
     {
         final World world = context.getWorld();
         final BlockPos pos = context.getPos();
@@ -39,51 +39,57 @@ public abstract class ChestModifierItem extends Item
             final Direction facing = state.get(FACING);
             if (type == CursedChestType.SINGLE) { result = useModifierOnChestBlock(context, state, pos, null, null); }
             else if (type == CursedChestType.BOTTOM)
-            { BlockPos otherPos = pos.offset(Direction.UP); result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos); }
+            {
+                final BlockPos otherPos = pos.offset(Direction.UP);
+                result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos);
+            }
             else if (type == CursedChestType.TOP)
-            { BlockPos otherPos = pos.offset(Direction.DOWN); result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos); }
+            {
+                final BlockPos otherPos = pos.offset(Direction.DOWN);
+                result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos);
+            }
             else if (type == CursedChestType.LEFT)
             {
-                BlockPos otherPos = pos.offset(facing.rotateYCCW());
+                final BlockPos otherPos = pos.offset(facing.rotateYCCW());
                 result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos);
             }
             else if (type == CursedChestType.RIGHT)
             {
-                BlockPos otherPos = pos.offset(facing.rotateY());
+                final BlockPos otherPos = pos.offset(facing.rotateY());
                 result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos);
             }
             else if (type == CursedChestType.FRONT)
             {
-                BlockPos otherPos = pos.offset(facing.getOpposite());
+                final BlockPos otherPos = pos.offset(facing.getOpposite());
                 result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos);
             }
             else if (type == CursedChestType.BACK)
-            { BlockPos otherPos = pos.offset(facing); result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos); }
+            {
+                final BlockPos otherPos = pos.offset(facing);
+                result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos);
+            }
             return result;
         }
         else { return useModifierOnBlock(context, state); }
     }
 
     @Override
-    public ActionResultType itemInteractionForEntity(@NotNull final ItemStack stack, @NotNull final PlayerEntity player, @NotNull final LivingEntity entity,
-            @NotNull final Hand hand)
+    public ActionResultType itemInteractionForEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
     { return useModifierOnEntity(stack, player, entity, hand); }
 
-    @NotNull @Override
-    public ActionResult<ItemStack> onItemRightClick(@NotNull final World world, @NotNull final PlayerEntity player, @NotNull final Hand hand)
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(final World world, final PlayerEntity player, final Hand hand)
     {
         final ActionResult<ItemStack> result = useModifierInAir(world, player, hand);
         if (result.getType() == ActionResultType.SUCCESS) { player.getCooldownTracker().setCooldown(this, 5); }
         return result;
     }
 
-    @NotNull
-    protected ActionResultType useModifierOnChestBlock(@NotNull final ItemUseContext context, @NotNull final BlockState mainState,
-            @NotNull final BlockPos mainBlockPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherBlockPos)
+    protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainBlockPos,
+            @Nullable final BlockState otherState, @Nullable final BlockPos otherBlockPos)
     { return ActionResultType.PASS; }
 
-    @NotNull
-    protected ActionResultType useModifierOnBlock(@NotNull final ItemUseContext context, @NotNull final BlockState state) { return ActionResultType.PASS; }
+    protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state) { return ActionResultType.PASS; }
 
     protected ActionResultType useModifierOnEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
     { return ActionResultType.PASS; }

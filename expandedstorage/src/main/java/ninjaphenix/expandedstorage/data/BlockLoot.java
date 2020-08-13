@@ -5,11 +5,10 @@ import net.minecraft.data.loot.BlockLootTables;
 import net.minecraftforge.registries.ForgeRegistries;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.ModContent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.Collectors;
 
-public class BlockLoot extends BlockLootTables
+public final class BlockLoot extends BlockLootTables
 {
     @Override
     protected void addTables()
@@ -30,7 +29,7 @@ public class BlockLoot extends BlockLootTables
         registerLootTable(ModContent.OLD_NETHERITE_CHEST.getFirst(), BlockLootTables::droppingWithName);
     }
 
-    @NotNull @Override @SuppressWarnings("ConstantConditions")
+    @Override @SuppressWarnings("ConstantConditions")
     protected Iterable<Block> getKnownBlocks()
     {
         return ForgeRegistries.BLOCKS.getValues().stream().filter(block -> ExpandedStorage.MOD_ID.equals(block.getRegistryName().getNamespace()))
