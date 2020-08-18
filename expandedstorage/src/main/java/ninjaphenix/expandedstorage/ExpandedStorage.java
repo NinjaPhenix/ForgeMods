@@ -1,6 +1,7 @@
 package ninjaphenix.expandedstorage;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentKeybind;
@@ -18,11 +19,11 @@ public final class ExpandedStorage
     private static final String SERVER_PROXY = "ninjaphenix.expandedstorage.common.proxy.ServerProxy";
     private static final String CLIENT_PROXY = "ninjaphenix.expandedstorage.client.proxy.ClientProxy";
     public static final TextComponentTranslation leftShiftRightClick;
-    //public static final CreativeTabs creativeTab = new CreativeTabs(MOD_ID)
-    //{
-    //    @Override
-    //    public ItemStack createIcon() { return new ItemStack(OLD_ModContent.DIAMOND_CHEST.getSecond()); }
-    //};
+    public static final CreativeTabs creativeTab = new CreativeTabs(MOD_ID)
+    {
+        @Override // todo: change to diamond chest.
+        public ItemStack createIcon() { return new ItemStack(Blocks.IRON_BLOCK); }
+    };
 
     @SidedProxy(serverSide = SERVER_PROXY, clientSide = CLIENT_PROXY)
     public static IProxy proxy;

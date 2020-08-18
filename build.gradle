@@ -124,7 +124,7 @@ subprojects {
                 "minecraft_version": minecraft_version
         )
         from(sourceSets.main.resources.srcDirs) {
-            include 'META-INF/mods.toml'
+            include 'mcmod.info'
             expand(
                     "mod_id": mod_id,
                     "mod_name": mod_name,
@@ -133,7 +133,7 @@ subprojects {
             )
         }
         from(sourceSets.main.resources.srcDirs) {
-            exclude 'META-INF/mods.toml'
+            exclude 'mcmod.info'
         }
     }
 

@@ -7,5 +7,5 @@ repositories {
 
 dependencies {
     compileOnly fg.deobf("mezz.jei:jei_1.12.2:4.15.0.297:api")
-    runtimeOnly fg.deobf("mezz.jei:jei_1.12.2:4.15.0.297")
+    //runtimeOnly fg.deobf("mezz.jei:jei_1.12.2:4.15.0.297")
 }
