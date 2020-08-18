@@ -7,7 +7,10 @@ import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
 
 public final class CursedChestTileEntityItemStackRenderer extends TileEntityItemStackRenderer
 {
+    public static final CursedChestTileEntityItemStackRenderer INSTANCE = new CursedChestTileEntityItemStackRenderer();
     private static final CursedChestTileEntity cursedChestRenderEntity = new CursedChestTileEntity();
+
+    private CursedChestTileEntityItemStackRenderer() {}
 
     @Override
     public void renderByItem(final ItemStack stack, final float partialTicks)
