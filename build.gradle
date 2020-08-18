@@ -29,10 +29,6 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    sourceSets {
-        main.resources.srcDirs += file('src/generated/resources')
-    }
-
     repositories {
         /* For Unofficial MCP Mappings */ maven {
             url "https://www.dogforce-games.com/maven"
