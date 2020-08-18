@@ -1,0 +1,16 @@
+[
+{
+  "modid": "${mod_id}",
+  "name": "${mod_name}",
+  "description": "Adds chests with higher capacities which can combine between any face.",
+  "version": "${mod_version}",
+  "mcversion": "${minecraft_version}",
+  "url": "https://www.curseforge.com/minecraft/mc-mods/expanded-storage-forge",
+  "updateUrl": "",
+  "authorList": ["NinjaPhenix"],
+  "credits": "The Forge and FML guys, for making this example",
+  "logoFile": "${mod_id}.png",
+  "screenshots": [],
+  "dependencies": ["mod_MinecraftForge"]
+}
+]

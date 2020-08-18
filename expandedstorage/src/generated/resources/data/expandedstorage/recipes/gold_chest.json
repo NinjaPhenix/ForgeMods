@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "ICI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/gold"
+    },
+    "C": {
+      "item": "expandedstorage:iron_chest"
+    }
+  },
+  "result": {
+    "item": "expandedstorage:gold_chest"
+  }
+}

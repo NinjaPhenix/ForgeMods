@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "type=single": {
+      "model": "expandedstorage:block/gold_chest"
+    },
+    "type=top": {
+      "model": "expandedstorage:block/gold_chest"
+    },
+    "type=back": {
+      "model": "expandedstorage:block/gold_chest"
+    },
+    "type=right": {
+      "model": "expandedstorage:block/gold_chest"
+    },
+    "type=bottom": {
+      "model": "expandedstorage:block/gold_chest"
+    },
+    "type=front": {
+      "model": "expandedstorage:block/gold_chest"
+    },
+    "type=left": {
+      "model": "expandedstorage:block/gold_chest"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+repositories {
+    /* For JEI */ maven {
+        name 'DVS1 Maven FS'
+        url 'https://dvs1.progwml6.com/files/maven'
+    }
+}
+
+dependencies {
+    compileOnly fg.deobf("mezz.jei:jei_1.12.2:4.15.0.297:api")
+    runtimeOnly fg.deobf("mezz.jei:jei_1.12.2:4.15.0.297")
+}

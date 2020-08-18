@@ -1,0 +1,11 @@
+{
+  "parent": "expandedstorage:block/old_chest/horizontal",
+  "textures": {
+    "top": "expandedstorage:block/old_gold_chest/chest_top_left",
+    "bottom": "#top",
+    "front": "expandedstorage:block/old_gold_chest/chest_front_left",
+    "back": "expandedstorage:block/old_gold_chest/chest_back_left",
+    "left": "expandedstorage:block/old_gold_chest/chest_side",
+    "right": "expandedstorage:block/old_gold_chest/chest_side"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "type=single": {
+      "model": "expandedstorage:block/pumpkin_chest"
+    },
+    "type=top": {
+      "model": "expandedstorage:block/pumpkin_chest"
+    },
+    "type=back": {
+      "model": "expandedstorage:block/pumpkin_chest"
+    },
+    "type=right": {
+      "model": "expandedstorage:block/pumpkin_chest"
+    },
+    "type=bottom": {
+      "model": "expandedstorage:block/pumpkin_chest"
+    },
+    "type=front": {
+      "model": "expandedstorage:block/pumpkin_chest"
+    },
+    "type=left": {
+      "model": "expandedstorage:block/pumpkin_chest"
+    }
+  }
+}
