@@ -29,13 +29,6 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    repositories {
-        /* For Unofficial MCP Mappings */ maven {
-            url "https://www.dogforce-games.com/maven"
-            name "GigaHerz Maven"
-        }
-    }
-
     minecraft {
         mappings channel: "${mappings_channel}", version: "${mappings_version}"
         // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
