@@ -1,17 +1,14 @@
 package ninjaphenix.expandedstorage.common.block.entity;
 
+import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 
-import javax.annotation.Nullable;
-
 public final class OldChestTileEntity extends AbstractChestTileEntity
 {
-    public OldChestTileEntity() { this(null); }
-
     public OldChestTileEntity(@Nullable final ResourceLocation block) { super(ModContent.OLD_CHEST_TE, block); }
 
     @Override

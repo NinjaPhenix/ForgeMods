@@ -19,9 +19,11 @@ import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 import javax.annotation.Nullable;
 
+import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+
 public abstract class ChestModifierItem extends Item
 {
-    private static final DirectionProperty FACING = BaseChestBlock.FACING;
+    private static final DirectionProperty FACING = HORIZONTAL_FACING;
     private static final EnumProperty<CursedChestType> TYPE = BaseChestBlock.TYPE;
 
     public ChestModifierItem(final Item.Properties properties) { super(properties); }

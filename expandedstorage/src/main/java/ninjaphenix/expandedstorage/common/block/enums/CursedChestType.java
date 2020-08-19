@@ -21,7 +21,7 @@ public enum CursedChestType implements IStringSerializable
         if (type == ChestType.SINGLE) { return SINGLE; }
         else if (type == ChestType.RIGHT) { return LEFT; }
         else if (type == ChestType.LEFT) { return RIGHT; }
-        throw new IllegalArgumentException("Unexpected chest type passed.");
+        throw new IllegalArgumentException("Unexpected chest type passed to CursedChestType#valueOf.");
     }
 
     public CursedChestType getOpposite()

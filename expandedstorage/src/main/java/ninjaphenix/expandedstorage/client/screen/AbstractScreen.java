@@ -7,6 +7,7 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import ninjaphenix.expandedstorage.common.inventory.AbstractContainer;
+import ninjaphenix.expandedstorage.common.network.Networker;
 import ninjaphenix.expandedstorage.common.screen.ScreenMeta;
 
 import java.util.function.Function;
@@ -48,14 +49,12 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     }
 
     @Override @SuppressWarnings("ConstantConditions")
-    public void onClose() { minecraft.player.closeScreen(); }
-
-    @Override @SuppressWarnings("ConstantConditions")
     public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
     {
         if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.matchesKey(keyCode, scanCode))
         {
-            onClose();
+            Networker.INSTANCE.sendRemovePreferenceCallbackToServer();
+            minecraft.player.closeScreen();
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);

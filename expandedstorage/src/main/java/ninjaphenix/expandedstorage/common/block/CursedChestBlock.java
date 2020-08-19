@@ -26,6 +26,8 @@ import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 import javax.annotation.Nullable;
 
+import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+
 public final class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> implements IWaterLoggable
 {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -69,7 +71,7 @@ public final class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity
         if (type == CursedChestType.TOP) { return TOP_SHAPE; }
         else if (type == CursedChestType.BOTTOM) { return BOTTOM_SHAPE; }
         else if (type == CursedChestType.SINGLE) {return SINGLE_SHAPE; }
-        else { return HORIZONTAL_VALUES[(state.get(FACING).getHorizontalIndex() + type.getOffset()) % 4]; }
+        else { return HORIZONTAL_VALUES[(state.get(HORIZONTAL_FACING).getHorizontalIndex() + type.getOffset()) % 4]; }
     }
 
     @Override

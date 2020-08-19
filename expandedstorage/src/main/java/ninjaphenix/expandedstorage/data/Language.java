@@ -11,7 +11,6 @@ public final class Language extends LanguageProvider
     @Override
     protected void addTranslations()
     {
-        // @formatter:off
         // Container Titles
         add("container.expandedstorage.wood_chest", "Chest");
         add("container.expandedstorage.pumpkin_chest", "Pumpkin Chest");
@@ -72,22 +71,22 @@ public final class Language extends LanguageProvider
         add("tooltip.expandedstorage.chest_mutator.merge_start", "Merging started, now %s the other chest.");
         add("tooltip.expandedstorage.chest_mutator.merge_end", "Merging finished.");
         add("tooltip.expandedstorage.tool_mode", "Tool Mode: %s");
-        add("tooltip.expandedstorage.conversion_kit_wood_iron", "%1$s on a Wooden Chest to convert it to an Iron Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_wood_gold", "%1$s on a Wooden Chest to convert it to a Gold Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_wood_diamond", "%1$s on a Wooden Chest to convert it to a Diamond Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_wood_obsidian", "%1$s on a Wooden Chest to convert it to an Obsidian Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_wood_netherite", "%1$s on a Wooden Chest to convert it to a Netherite Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_iron_gold", "%1$s on an Iron Chest to convert it to a Gold Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_iron_diamond", "%1$s on an Iron Chest to convert it to a Diamond Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_iron_obsidian", "%1$s on an Iron Chest to convert it to an Obsidian Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_iron_netherite", "%1$s on an Iron Chest to convert it to a Netherite Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_gold_diamond", "%1$s on a Gold Chest to convert it to a Diamond Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_gold_obsidian", "%1$s on a Gold Chest to convert it to an Obsidian Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_gold_netherite", "%1$s on a Gold Chest to convert it to a Netherite Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_diamond_obsidian", "%1$s on a Diamond Chest to convert it to an Obsidian Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_diamond_netherite", "%1$s on a Diamond Chest to convert it to a Netherite Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_obsidian_netherite", "%1$s on an Obsidian Chest to convert it to a Netherite Chest%2$s");
-        add("tooltip.expandedstorage.conversion_kit_double_requires_2", ", double chests require 2 upgrades.");
+        add("tooltip.expandedstorage.conversion_kit_wood_iron", "%1$s on a Wooden Chest to convert it to an Iron Chest.");
+        add("tooltip.expandedstorage.conversion_kit_wood_gold", "%1$s on a Wooden Chest to convert it to a Gold Chest.");
+        add("tooltip.expandedstorage.conversion_kit_wood_diamond", "%1$s on a Wooden Chest to convert it to a Diamond Chest.");
+        add("tooltip.expandedstorage.conversion_kit_wood_obsidian", "%1$s on a Wooden Chest to convert it to an Obsidian Chest.");
+        add("tooltip.expandedstorage.conversion_kit_wood_netherite", "%1$s on a Wooden Chest to convert it to a Netherite Chest.");
+        add("tooltip.expandedstorage.conversion_kit_iron_gold", "%1$s on an Iron Chest to convert it to a Gold Chest.");
+        add("tooltip.expandedstorage.conversion_kit_iron_diamond", "%1$s on an Iron Chest to convert it to a Diamond Chest.");
+        add("tooltip.expandedstorage.conversion_kit_iron_obsidian", "%1$s on an Iron Chest to convert it to an Obsidian Chest.");
+        add("tooltip.expandedstorage.conversion_kit_iron_netherite", "%1$s on an Iron Chest to convert it to a Netherite Chest.");
+        add("tooltip.expandedstorage.conversion_kit_gold_diamond", "%1$s on a Gold Chest to convert it to a Diamond Chest.");
+        add("tooltip.expandedstorage.conversion_kit_gold_obsidian", "%1$s on a Gold Chest to convert it to an Obsidian Chest.");
+        add("tooltip.expandedstorage.conversion_kit_gold_netherite", "%1$s on a Gold Chest to convert it to a Netherite Chest.");
+        add("tooltip.expandedstorage.conversion_kit_diamond_obsidian", "%1$s on a Diamond Chest to convert it to an Obsidian Chest.");
+        add("tooltip.expandedstorage.conversion_kit_diamond_netherite", "%1$s on a Diamond Chest to convert it to a Netherite Chest.");
+        add("tooltip.expandedstorage.conversion_kit_obsidian_netherite", "%1$s on an Obsidian Chest to convert it to a Netherite Chest.");
+        add("tooltip.expandedstorage.conversion_kit_double_requires_2", "Double chests require 2 upgrades.");
         add("tooltip.expandedstorage.left_shift_right_click", "%1$s + %2$s");
         // Creative Group
         add("itemGroup.expandedstorage", "Expanded Storage");
@@ -100,7 +99,6 @@ public final class Language extends LanguageProvider
         add("screen.expandedstorage.page_x_y", "%d/%d");
         add("screen.expandedstorage.next_page", "Next Page");
         add("screen.expandedstorage.prev_page", "Previous Page");
-        // @formatter:on
     }
 
     @Override

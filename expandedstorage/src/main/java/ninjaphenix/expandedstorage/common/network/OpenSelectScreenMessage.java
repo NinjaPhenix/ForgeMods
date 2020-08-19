@@ -14,7 +14,6 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import ninjaphenix.expandedstorage.client.screen.SelectContainerScreen;
 import ninjaphenix.expandedstorage.common.inventory.AbstractContainer;
 import ninjaphenix.expandedstorage.common.inventory.IDataNamedContainerProvider;
-
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
@@ -42,13 +41,15 @@ public final class OpenSelectScreenMessage
             @Override
             public void writeExtraData(final PacketBuffer buffer)
             {
-                buffer.writeInt(container.getInv().getSizeInventory());
-                buffer.writeBlockPos(container.ORIGIN);
+                buffer.writeBlockPos(container.ORIGIN).writeInt(container.getInv().getSizeInventory());
             }
 
-            @Nullable @Override
+            @Nullable
+            @Override
             public Container createMenu(final int windowId, final PlayerInventory playerInventory, final PlayerEntity player)
-            { return Networker.INSTANCE.getContainer(windowId, container.ORIGIN, container.getInv(), player, container.DISPLAY_NAME); }
+            {
+                return Networker.INSTANCE.getContainer(windowId, container.ORIGIN, container.getInv(), player, container.DISPLAY_NAME);
+            }
 
             @Override
             public ITextComponent getDisplayName() { return container.DISPLAY_NAME; }

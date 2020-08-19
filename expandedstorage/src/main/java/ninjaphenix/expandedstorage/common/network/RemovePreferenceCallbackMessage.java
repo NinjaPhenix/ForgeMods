@@ -1,10 +1,9 @@
 package ninjaphenix.expandedstorage.common.network;
 
+import java.util.function.Supplier;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public final class RemovePreferenceCallbackMessage
 {
@@ -18,7 +17,9 @@ public final class RemovePreferenceCallbackMessage
     {
         final NetworkEvent.Context context = contextSupplier.get();
         if (context.getDirection().getOriginationSide() == LogicalSide.CLIENT)
-        { Networker.INSTANCE.removePlayerPreferenceCallback(context.getSender()); }
+        {
+            Networker.INSTANCE.removePlayerPreferenceCallback(context.getSender());
+        }
         context.setPacketHandled(true);
     }
 }

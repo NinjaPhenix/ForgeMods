@@ -54,7 +54,9 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
 
     @Override
     public boolean canInsertItem(final int slot, final ItemStack stack, final Direction direction)
-    { return this.isItemValidForSlot(slot, stack); }
+    {
+        return isItemValidForSlot(slot, stack);
+    }
 
     @Override
     public boolean canExtractItem(final int slot, final ItemStack stack, final Direction direction) { return true; }
@@ -69,7 +71,7 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     public void read(final BlockState state, final CompoundNBT tag)
     {
         super.read(state, tag);
-        this.initialize(new ResourceLocation(tag.getString("type")));
+        initialize(new ResourceLocation(tag.getString("type")));
         if (!checkLootAndRead(tag)) { ItemStackHelper.loadAllItems(tag, inventory); }
     }
 
@@ -85,7 +87,7 @@ public abstract class AbstractChestTileEntity extends LockableLootTileEntity imp
     @Override
     public CompoundNBT getUpdateTag()
     {
-        final CompoundNBT tag = this.write(new CompoundNBT());
+        final CompoundNBT tag = super.write(new CompoundNBT());
         tag.putString("type", block.toString());
         return tag;
     }

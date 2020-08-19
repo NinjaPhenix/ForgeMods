@@ -21,7 +21,6 @@ import ninjaphenix.expandedstorage.common.block.BaseChestBlock;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.inventory.AbstractContainer;
 import ninjaphenix.expandedstorage.common.inventory.DoubleSidedInventory;
-
 import javax.annotation.Nullable;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
@@ -30,21 +29,19 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
     private float animationAngle, lastAnimationAngle;
     private int viewerCount, ticksOpen;
 
-    public CursedChestTileEntity() { this(null); }
-
-    public CursedChestTileEntity(@Nullable final ResourceLocation block) { super(ModContent.CURSED_CHEST_TE, block); }
+    public CursedChestTileEntity(final @Nullable ResourceLocation block) { super(ModContent.CURSED_CHEST_TE, block); }
 
     private static int tickViewerCount(final World world, final CursedChestTileEntity instance, final int ticksOpen, final int x,
-            final int y, final int z, final int viewCount)
+                                       final int y, final int z, final int viewCount)
     {
         if (!world.isRemote && viewCount != 0 && (ticksOpen + x + y + z) % 200 == 0)
         {
             return world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(x - 5, y - 5, z - 5, x + 6, y + 6, z + 6)).stream()
-                        .filter(player -> player.openContainer instanceof AbstractContainer)
-                        .map(player -> ((AbstractContainer<?>) player.openContainer).getInv())
-                        .filter(inventory -> inventory == instance ||
-                                inventory instanceof DoubleSidedInventory && ((DoubleSidedInventory) inventory).isPart(instance))
-                        .mapToInt(inv -> 1).sum();
+                    .filter(player -> player.openContainer instanceof AbstractContainer)
+                    .map(player -> ((AbstractContainer<?>) player.openContainer).getInv())
+                    .filter(inventory -> inventory == instance ||
+                            inventory instanceof DoubleSidedInventory && ((DoubleSidedInventory) inventory).isPart(instance))
+                    .mapToInt(inv -> 1).sum();
         }
         return viewCount;
     }
@@ -73,9 +70,10 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
     }
 
     @Override
-    public float getLidAngle(final float partialTicks) { return MathHelper.lerp(partialTicks, lastAnimationAngle, animationAngle); }
+    public float getLidAngle(final float f) { return MathHelper.lerp(f, lastAnimationAngle, animationAngle); }
 
-    @Override @SuppressWarnings("ConstantConditions")
+    @Override
+    @SuppressWarnings("ConstantConditions")
     public void tick()
     {
         viewerCount = tickViewerCount(world, this, ++ticksOpen, pos.getX(), pos.getY(), pos.getZ(), viewerCount);
@@ -93,9 +91,10 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
     {
         final BlockState state = getBlockState();
         if (BaseChestBlock.getMergeType(state) == TileEntityMerger.Type.SECOND) { return; }
-        final Vector3i offset = BaseChestBlock.getDirectionToAttached(getBlockState()).getDirectionVec();
+        final Vector3i offset = BaseChestBlock.getDirectionToAttached(state).getDirectionVec();
         final Vector3d soundPos = Vector3d.copyCentered(pos).add(offset.getX() * 0.5D, offset.getY() * 0.5D, offset.getZ() * 0.5D);
-        world.playSound(null, soundPos.getX(), soundPos.getY(), soundPos.getZ(), soundEvent, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
+        world.playSound(null, soundPos.getX(), soundPos.getY(), soundPos.getZ(), soundEvent, SoundCategory.BLOCKS, 0.5F,
+                        world.rand.nextFloat() * 0.1F + 0.9F);
     }
 
     @Override

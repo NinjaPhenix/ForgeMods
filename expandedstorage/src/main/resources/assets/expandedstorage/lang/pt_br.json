@@ -36,6 +36,5 @@
 	"tooltip.expandedstorage.chest_mutator.rotate": "Girar",
 	"tooltip.expandedstorage.chest_mutator.merge_start": "Unificação inicada, agora clique no outro baú.",
 	"tooltip.expandedstorage.chest_mutator.merge_end": "Unificação concluída.",
-	"tooltip.expandedstorage.tool_mode": "Modo da ferramenta: %s",
-	"itemGroup.expandedstorage": "Expanded Storage"
+	"tooltip.expandedstorage.tool_mode": "Modo da ferramenta: %s"
 }

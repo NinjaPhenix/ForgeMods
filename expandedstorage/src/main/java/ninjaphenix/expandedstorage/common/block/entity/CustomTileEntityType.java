@@ -14,7 +14,8 @@ public final class CustomTileEntityType<T extends TileEntity> extends TileEntity
     private final Predicate<Block> predicate;
 
     @SuppressWarnings("ConstantConditions")
-    public CustomTileEntityType(final Supplier<? extends T> tileEntityFactory, final Predicate<Block> supportedBlocks, final ResourceLocation registryName)
+    public CustomTileEntityType(final Supplier<? extends T> tileEntityFactory, final Predicate<Block> supportedBlocks,
+                                final ResourceLocation registryName)
     {
         super(tileEntityFactory, null, null);
         predicate = supportedBlocks;

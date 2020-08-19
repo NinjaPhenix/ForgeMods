@@ -63,9 +63,7 @@ public final class SingleContainer extends AbstractContainer<SingleScreenMeta>
         {
             if (data != null)
             {
-                final int inventorySize = data.readInt();
-                final BlockPos pos = data.readBlockPos();
-                return new SingleContainer(windowId, pos, new Inventory(inventorySize), playerInventory.player, null);
+                return new SingleContainer(windowId, data.readBlockPos(), new Inventory(data.readInt()), playerInventory.player, null);
             }
             return null;
         }

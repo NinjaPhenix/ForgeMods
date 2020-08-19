@@ -21,9 +21,11 @@ import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
+import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+
 public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntity>
 {
-    private static final BlockState defaultState = ModContent.WOOD_CHEST.getFirst().getDefaultState().with(CursedChestBlock.FACING, Direction.SOUTH)
+    private static final BlockState defaultState = ModContent.WOOD_CHEST.getFirst().getDefaultState().with(HORIZONTAL_FACING, Direction.SOUTH)
                                                                         .with(CursedChestBlock.TYPE, CursedChestType.SINGLE);
 
     private static final ImmutableMap<CursedChestType, SingleChestModel> MODELS = new ImmutableMap.Builder<CursedChestType, SingleChestModel>()

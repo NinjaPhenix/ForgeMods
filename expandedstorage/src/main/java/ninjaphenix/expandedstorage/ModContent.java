@@ -69,12 +69,8 @@ public final class ModContent
     public static final ChestConversionItem CONVERSION_KIT_DIAMOND_OBSIDIAN;
     public static final ChestConversionItem CONVERSION_KIT_DIAMOND_NETHERITE;
     public static final ChestConversionItem CONVERSION_KIT_OBSIDIAN_NETHERITE;
-    // @formatter:off
-    public static final CustomTileEntityType<CursedChestTileEntity> CURSED_CHEST_TE = new CustomTileEntityType<>(CursedChestTileEntity::new,
-            (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
-    public static final CustomTileEntityType<OldChestTileEntity> OLD_CHEST_TE = new CustomTileEntityType<>(OldChestTileEntity::new,
-            (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
-    // @formatter:on
+    public static final CustomTileEntityType<CursedChestTileEntity> CURSED_CHEST_TE = new CustomTileEntityType<>(() -> new CursedChestTileEntity(null), (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
+    public static final CustomTileEntityType<OldChestTileEntity> OLD_CHEST_TE = new CustomTileEntityType<>(() -> new OldChestTileEntity(null), (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
 
     static
     {
@@ -127,11 +123,10 @@ public final class ModContent
         final ResourceLocation registryRl = ExpandedStorage.getRl(name);
         final CursedChestBlock block = new CursedChestBlock(Block.Properties.from(copy), registryRl);
         final BlockItem item = new BlockItem(block, new Item.Properties().setISTER(() -> CursedChestTileEntityItemStackRenderer::new)
-                                                                         .group(ExpandedStorage.group));
+                .group(ExpandedStorage.group));
         item.setRegistryName(registryRl);
         Registry.register(Registries.MODELED, registryRl, new ModeledTierData(rows * 9, registryRl,
-                new TranslationTextComponent("container.expandedstorage." + name), type -> ExpandedStorage.getRl(String.format("entity/%s/%s", name,
-                type.getString()))));
+                                                                              new TranslationTextComponent("container.expandedstorage." + name), type -> ExpandedStorage.getRl(String.format("entity/%s/%s", name, type.getString()))));
         return new Pair<>(block, item);
     }
 
@@ -142,7 +137,7 @@ public final class ModContent
         final BlockItem item = new BlockItem(block, new Item.Properties().group(ExpandedStorage.group));
         item.setRegistryName(registryRl);
         Registry.register(Registries.OLD, ExpandedStorage.getRl(name), new Registries.TierData(rows * 9, registryRl,
-                new TranslationTextComponent("container.expandedstorage." + name)));
+                                                                                               new TranslationTextComponent("container.expandedstorage." + name)));
         return new Pair<>(block, item);
     }
 

@@ -1,11 +1,10 @@
 package ninjaphenix.expandedstorage.common.network;
 
+import java.util.function.Supplier;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public final class PreferenceUpdateMessage
 {
@@ -13,7 +12,10 @@ public final class PreferenceUpdateMessage
 
     public PreferenceUpdateMessage(final ResourceLocation preference) { this.preference = preference; }
 
-    static void encode(final PreferenceUpdateMessage message, final PacketBuffer buffer) { buffer.writeResourceLocation(message.preference); }
+    static void encode(final PreferenceUpdateMessage message, final PacketBuffer buffer)
+    {
+        buffer.writeResourceLocation(message.preference);
+    }
 
     static PreferenceUpdateMessage decode(final PacketBuffer buffer) { return new PreferenceUpdateMessage(buffer.readResourceLocation()); }
 

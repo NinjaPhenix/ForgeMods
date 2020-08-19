@@ -1,6 +1,10 @@
 package ninjaphenix.expandedstorage.common.network;
 
 import com.google.common.collect.ImmutableMap;
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -20,11 +24,6 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
 import ninjaphenix.expandedstorage.common.inventory.*;
-
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.function.Consumer;
 
 public final class Networker
 {
@@ -47,14 +46,12 @@ public final class Networker
 
     public void registerMessages()
     {
-        // @formatter:off
         channel.registerMessage(0, PreferenceUpdateMessage.class, PreferenceUpdateMessage::encode, PreferenceUpdateMessage::decode,
-                PreferenceUpdateMessage::handle);
+                                PreferenceUpdateMessage::handle);
         channel.registerMessage(1, OpenSelectScreenMessage.class, OpenSelectScreenMessage::encode, OpenSelectScreenMessage::decode,
-                OpenSelectScreenMessage::handle);
-        channel.registerMessage(2, RemovePreferenceCallbackMessage.class, RemovePreferenceCallbackMessage::encode, RemovePreferenceCallbackMessage::decode,
-                RemovePreferenceCallbackMessage::handle);
-        // @formatter:on
+                                OpenSelectScreenMessage::handle);
+        channel.registerMessage(2, RemovePreferenceCallbackMessage.class, RemovePreferenceCallbackMessage::encode,
+                                RemovePreferenceCallbackMessage::decode, RemovePreferenceCallbackMessage::handle);
     }
 
     public void sendPreferenceToServer()
@@ -68,7 +65,9 @@ public final class Networker
 
     @SuppressWarnings("InstantiationOfUtilityClass")
     public void openSelectionScreen(final ServerPlayerEntity player)
-    { channel.send(PacketDistributor.PLAYER.with(() -> player), new OpenSelectScreenMessage()); }
+    {
+        channel.send(PacketDistributor.PLAYER.with(() -> player), new OpenSelectScreenMessage());
+    }
 
     public void setPlayerPreference(final PlayerEntity player, @Nullable final ResourceLocation containerType)
     {
@@ -95,8 +94,13 @@ public final class Networker
     {
         final UUID uuid = player.getUniqueID();
         if (playerPreferences.containsKey(uuid) && containerFactories.containsKey(playerPreferences.get(uuid)))
-        { NetworkHooks.openGui(player, containerProvider, containerProvider::writeExtraData); }
-        else { openSelectScreen(player, (type) -> openContainer(player, containerProvider)); }
+        {
+            NetworkHooks.openGui(player, containerProvider, containerProvider::writeExtraData);
+        }
+        else
+        {
+            openSelectScreen(player, (type) -> openContainer(player, containerProvider));
+        }
     }
 
     void openSelectScreen(final ServerPlayerEntity player, @Nullable final Consumer<ResourceLocation> preferenceSetCallback)
@@ -106,16 +110,19 @@ public final class Networker
     }
 
     public Container getContainer(final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player,
-            final ITextComponent displayName)
+                                  final ITextComponent displayName)
     {
         final UUID uuid = player.getUniqueID();
         final ResourceLocation playerPreference;
         if (playerPreferences.containsKey(uuid) && containerFactories.containsKey(playerPreference = playerPreferences.get(uuid)))
-        { return containerFactories.get(playerPreference).create(windowId, pos, inventory, player, displayName); }
+        {
+            return containerFactories.get(playerPreference).create(windowId, pos, inventory, player, displayName);
+        }
         return null;
     }
 
-    @SubscribeEvent @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public void onPlayerConnected(final ClientPlayerNetworkEvent.LoggedInEvent event) { Networker.INSTANCE.sendPreferenceToServer(); }
 
     @SubscribeEvent

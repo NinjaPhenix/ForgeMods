@@ -75,9 +75,7 @@ public final class PagedContainer extends AbstractContainer<PagedScreenMeta>
         {
             if (data != null)
             {
-                final int inventorySize = data.readInt();
-                final BlockPos pos = data.readBlockPos();
-                return new PagedContainer(windowId, pos, new Inventory(inventorySize), playerInventory.player, null);
+                return new PagedContainer(windowId, data.readBlockPos(), new Inventory(data.readInt()), playerInventory.player, null);
             }
             return null;
         }

@@ -76,9 +76,7 @@ public final class ScrollableContainer extends AbstractContainer<ScrollableScree
         {
             if (data != null)
             {
-                final int inventorySize = data.readInt();
-                final BlockPos pos = data.readBlockPos();
-                return new ScrollableContainer(windowId, pos, new Inventory(inventorySize), playerInventory.player, null);
+                return new ScrollableContainer(windowId, data.readBlockPos(), new Inventory(data.readInt()), playerInventory.player, null);
             }
             return null;
         }
