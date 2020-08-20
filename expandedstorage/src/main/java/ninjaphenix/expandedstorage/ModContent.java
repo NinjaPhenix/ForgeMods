@@ -201,7 +201,9 @@ public final class ModContent
 
     @SubscribeEvent
     public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event)
-    { event.getRegistry().registerAll(CURSED_CHEST_TE, OLD_CHEST_TE); }
+    {
+        event.getRegistry().registerAll(CURSED_CHEST_TE, OLD_CHEST_TE);
+    }
 
     @SubscribeEvent
     public static void registerContainerTypes(final RegistryEvent.Register<ContainerType<?>> event)

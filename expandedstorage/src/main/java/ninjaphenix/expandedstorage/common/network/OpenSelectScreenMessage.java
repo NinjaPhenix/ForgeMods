@@ -19,6 +19,7 @@ import java.util.function.Supplier;
 
 public final class OpenSelectScreenMessage
 {
+    @SuppressWarnings("EmptyMethod")
     static void encode(final OpenSelectScreenMessage message, final PacketBuffer buffer) { }
 
     @SuppressWarnings("InstantiationOfUtilityClass")

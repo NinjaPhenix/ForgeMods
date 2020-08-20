@@ -29,14 +29,15 @@ public final class ScreenTypeSelectionScreenButton extends Button
     public void renderButton(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
         Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         blit(stack, x, y, 0, isHovered() ? height : 0, width, height, 16, 32);
-
     }
 
     public void renderTooltip(final MatrixStack stack, final int x, final int y)
-    { if (isHovered()) { onTooltip.onTooltip(this, stack, x, y); } }
+    {
+        if (isHovered()) { onTooltip.onTooltip(this, stack, x, y); }
+    }
 }

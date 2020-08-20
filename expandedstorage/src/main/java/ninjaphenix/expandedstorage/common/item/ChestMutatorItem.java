@@ -136,7 +136,7 @@ public final class ChestMutatorItem extends ChestModifierItem
         return ActionResultType.FAIL;
     }
 
-    @Override @SuppressWarnings({ "ConstantConditions", "OptionalGetWithoutIsPresent" })
+    @Override @SuppressWarnings({ "ConstantConditions"})
     protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state)
     {
         final PlayerEntity player = context.getPlayer();
@@ -295,7 +295,9 @@ public final class ChestMutatorItem extends ChestModifierItem
 
     @Override
     public void fillItemGroup(final ItemGroup itemGroup, final NonNullList<ItemStack> stackList)
-    { if (isInGroup(itemGroup)) { stackList.add(getDefaultInstance()); } }
+    {
+        if (isInGroup(itemGroup)) { stackList.add(getDefaultInstance()); }
+    }
 
     private MutatorMode getMode(final ItemStack stack)
     {

@@ -19,7 +19,9 @@ public final class BlockStatesAndModels extends BlockStateProvider
     private ModelFile OLD_CHEST_VERTICAL;
 
     public BlockStatesAndModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper)
-    { super(generator, modId, fileHelper); }
+    {
+        super(generator, modId, fileHelper);
+    }
 
     @Override
     protected void registerStatesAndModels()
@@ -144,7 +146,9 @@ public final class BlockStatesAndModels extends BlockStateProvider
     {
         final String chestName = blockPath.substring(0, blockPath.indexOf('_'));
         if (blockPath.equals("pumpkin_chest"))
-        { return models().getBuilder(blockPath).texture("particle", modLoc(String.format("block/%s_break", chestName))); }
+        {
+            return models().getBuilder(blockPath).texture("particle", modLoc(String.format("block/%s_break", chestName)));
+        }
         else if (blockPath.equals("christmas_chest"))
         {
             final String chestType = CursedChestType.TOP == type || CursedChestType.BOTTOM == type ? "tall" :

@@ -36,7 +36,9 @@ public class SingleChestModel extends Model
     }
 
     public void render(final MatrixStack stack, final IVertexBuilder builder, final int light, final int overlay)
-    { render(stack, builder, light, overlay, 1, 1, 1, 1); }
+    {
+        render(stack, builder, light, overlay, 1, 1, 1, 1);
+    }
 
     @Override
     public void render(final MatrixStack stack, final IVertexBuilder builder, final int light, final int overlay, final float r,

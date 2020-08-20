@@ -16,7 +16,7 @@ import ninjaphenix.expandedstorage.common.screen.PagedScreenMeta;
 
 public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
 {
-    private Rectangle blankArea = null;
+    private Rectangle blankArea;
     private PageButtonWidget leftPageButton, rightPageButton;
     private int page;
     private TranslationTextComponent currentPageText;
@@ -172,14 +172,14 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         public void setActive(final boolean active)
         {
             this.active = active;
-            if (!active) { this.setFocused(false); }
+            if (!active) { setFocused(false); }
         }
 
         @Override @SuppressWarnings("deprecation")
         public void renderButton(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
         {
             Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);

@@ -7,6 +7,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public final class RemovePreferenceCallbackMessage
 {
+    @SuppressWarnings("EmptyMethod")
     public static void encode(final RemovePreferenceCallbackMessage message, final PacketBuffer buffer) {}
 
     @SuppressWarnings("InstantiationOfUtilityClass")

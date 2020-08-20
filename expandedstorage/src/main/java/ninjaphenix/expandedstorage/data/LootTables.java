@@ -22,7 +22,9 @@ public final class LootTables extends LootTableProvider
 
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables()
-    { return Collections.singletonList(new Pair<>(BlockLoot::new, LootParameterSets.BLOCK)); }
+    {
+        return Collections.singletonList(new Pair<>(BlockLoot::new, LootParameterSets.BLOCK));
+    }
 
     @Override
     protected void validate(final Map<ResourceLocation, LootTable> map, final ValidationTracker validationtracker) {}

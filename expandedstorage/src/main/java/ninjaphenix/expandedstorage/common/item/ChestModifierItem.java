@@ -77,7 +77,9 @@ public abstract class ChestModifierItem extends Item
 
     @Override
     public ActionResultType itemInteractionForEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
-    { return useModifierOnEntity(stack, player, entity, hand); }
+    {
+        return useModifierOnEntity(stack, player, entity, hand);
+    }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(final World world, final PlayerEntity player, final Hand hand)
@@ -89,13 +91,20 @@ public abstract class ChestModifierItem extends Item
 
     protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainBlockPos,
             @Nullable final BlockState otherState, @Nullable final BlockPos otherBlockPos)
-    { return ActionResultType.PASS; }
+    {
+        return ActionResultType.PASS;
+    }
 
     protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state) { return ActionResultType.PASS; }
 
-    protected ActionResultType useModifierOnEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
-    { return ActionResultType.PASS; }
+    protected ActionResultType useModifierOnEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity,
+                                                   final Hand hand)
+    {
+        return ActionResultType.PASS;
+    }
 
     protected ActionResult<ItemStack> useModifierInAir(final World world, final PlayerEntity player, final Hand hand)
-    { return ActionResult.resultPass(player.getHeldItem(hand)); }
+    {
+        return ActionResult.resultPass(player.getHeldItem(hand));
+    }
 }

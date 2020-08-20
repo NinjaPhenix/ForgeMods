@@ -55,7 +55,9 @@ public final class Networker
     }
 
     public void sendPreferenceToServer()
-    { channel.sendToServer(new PreferenceUpdateMessage(new ResourceLocation(ExpandedStorageConfig.CLIENT.preferredContainerType.get()))); }
+    {
+        channel.sendToServer(new PreferenceUpdateMessage(new ResourceLocation(ExpandedStorageConfig.CLIENT.preferredContainerType.get())));
+    }
 
     @SuppressWarnings("InstantiationOfUtilityClass")
     public void sendRemovePreferenceCallbackToServer() { channel.sendToServer(new RemovePreferenceCallbackMessage()); }
@@ -106,7 +108,7 @@ public final class Networker
     void openSelectScreen(final ServerPlayerEntity player, @Nullable final Consumer<ResourceLocation> preferenceSetCallback)
     {
         if (preferenceSetCallback != null) { preferenceCallbacks.put(player.getUniqueID(), preferenceSetCallback); }
-        Networker.INSTANCE.openSelectionScreen(player);
+        INSTANCE.openSelectionScreen(player);
     }
 
     public Container getContainer(final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player,
@@ -123,7 +125,7 @@ public final class Networker
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onPlayerConnected(final ClientPlayerNetworkEvent.LoggedInEvent event) { Networker.INSTANCE.sendPreferenceToServer(); }
+    public void onPlayerConnected(final ClientPlayerNetworkEvent.LoggedInEvent event) { INSTANCE.sendPreferenceToServer(); }
 
     @SubscribeEvent
     public void onPlayerDisconnected(final PlayerEvent.PlayerLoggedOutEvent event) { setPlayerPreference(event.getPlayer(), null); }

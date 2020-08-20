@@ -9,7 +9,9 @@ import ninjaphenix.expandedstorage.ModContent;
 public final class ItemModels extends ItemModelProvider
 {
     public ItemModels(final DataGenerator generator, final String modId, final ExistingFileHelper fileHelper)
-    { super(generator, modId, fileHelper); }
+    {
+        super(generator, modId, fileHelper);
+    }
 
     @Override
     protected void registerModels()

@@ -53,7 +53,9 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     {
         @Override
         public Optional<ISidedInventory> func_225539_a_(final T first, final T second)
-        { return Optional.of(new DoubleSidedInventory(first, second)); }
+        {
+            return Optional.of(new DoubleSidedInventory(first, second));
+        }
 
         @Override
         public Optional<ISidedInventory> func_225538_a_(final T single) { return Optional.of(single); }
@@ -209,7 +211,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
             containerProvider.ifPresent(provider ->
                                         {
                                             Networker.INSTANCE.openContainer((ServerPlayerEntity) player, provider);
-                                            player.addStat(this.getOpenStat());
+                                            player.addStat(getOpenStat());
                                         });
         }
         return ActionResultType.SUCCESS;
@@ -264,7 +266,9 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                 state = world.getBlockState(pos.offset(direction_2.getOpposite()));
                 direction_3 = state.getBlock() == this && state.get(TYPE) == CursedChestType.SINGLE ? state.get(HORIZONTAL_FACING) : null;
                 if (direction_3 != null && direction_3.getAxis() != direction_2.getAxis() && direction_3 == direction_1)
-                { chestType = direction_2 == Direction.UP ? CursedChestType.TOP : CursedChestType.BOTTOM; }
+                {
+                    chestType = direction_2 == Direction.UP ? CursedChestType.TOP : CursedChestType.BOTTOM;
+                }
             }
             else
             {
@@ -273,7 +277,9 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                 if (clickedBlock.getBlock() == this && clickedBlock.get(TYPE) == CursedChestType.SINGLE)
                 {
                     if (clickedBlock.get(HORIZONTAL_FACING) == direction_2 && clickedBlock.get(HORIZONTAL_FACING) == direction_1)
-                    { chestType = CursedChestType.FRONT; }
+                    {
+                        chestType = CursedChestType.FRONT;
+                    }
                     else
                     {
                         state = world.getBlockState(pos.offset(direction_2.getOpposite()));
@@ -332,7 +338,9 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     @Override
     @SuppressWarnings("deprecation")
     public int getComparatorInputOverride(final BlockState state, final World world, final BlockPos pos)
-    { return combine(state, world, pos, true).apply(INVENTORY_GETTER).map(Container::calcRedstoneFromInventory).orElse(0); }
+    {
+        return combine(state, world, pos, true).apply(INVENTORY_GETTER).map(Container::calcRedstoneFromInventory).orElse(0);
+    }
 
     private Stat<ResourceLocation> getOpenStat() { return Stats.CUSTOM.get(Stats.OPEN_CHEST); }
 
@@ -349,12 +357,16 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     @Override
     @SuppressWarnings("deprecation")
     public final BlockState mirror(final BlockState state, final Mirror mirror)
-    { return state.rotate(mirror.toRotation(state.get(HORIZONTAL_FACING))); }
+    {
+        return state.rotate(mirror.toRotation(state.get(HORIZONTAL_FACING)));
+    }
 
     @Override
     @SuppressWarnings("deprecation")
     public final BlockState rotate(final BlockState state, final Rotation rotation)
-    { return state.with(HORIZONTAL_FACING, rotation.rotate(state.get(HORIZONTAL_FACING))); }
+    {
+        return state.with(HORIZONTAL_FACING, rotation.rotate(state.get(HORIZONTAL_FACING)));
+    }
 
     @Override
     @SuppressWarnings("deprecation")

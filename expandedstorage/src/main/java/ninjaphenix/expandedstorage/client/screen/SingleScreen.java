@@ -9,7 +9,7 @@ import ninjaphenix.expandedstorage.common.screen.SingleScreenMeta;
 
 public final class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMeta>
 {
-    private Rectangle blankArea = null;
+    private Rectangle blankArea;
     private ScreenTypeSelectionScreenButton screenSelectButton;
 
     public SingleScreen(final SingleContainer container, final PlayerInventory playerInventory, final ITextComponent title)

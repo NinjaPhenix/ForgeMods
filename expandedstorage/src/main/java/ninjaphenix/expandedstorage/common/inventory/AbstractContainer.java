@@ -33,7 +33,9 @@ public abstract class AbstractContainer<T extends ScreenMeta> extends Container
     }
 
     public static ResourceLocation getTexture(final String prefix, final int width, final int height)
-    { return ExpandedStorage.getRl(String.format("textures/gui/container/%s_%d_%d.png", prefix, width, height)); }
+    {
+        return ExpandedStorage.getRl(String.format("textures/gui/container/%s_%d_%d.png", prefix, width, height));
+    }
 
     @Override
     public boolean canInteractWith(final PlayerEntity player) { return INVENTORY.isUsableByPlayer(player); }
@@ -48,7 +50,10 @@ public abstract class AbstractContainer<T extends ScreenMeta> extends Container
             final ItemStack slotStack = slot.getStack();
             final int inventorySize = INVENTORY.getSizeInventory();
             stack = slotStack.copy();
-            if (index < inventorySize) { if (!mergeItemStack(slotStack, inventorySize, inventorySlots.size(), true)) { return ItemStack.EMPTY; }}
+            if (index < inventorySize)
+            {
+                if (!mergeItemStack(slotStack, inventorySize, inventorySlots.size(), true)) { return ItemStack.EMPTY; }
+            }
             else if (!mergeItemStack(slotStack, 0, inventorySize, false)) { return ItemStack.EMPTY; }
             if (slotStack.isEmpty()) { slot.putStack(ItemStack.EMPTY); }
             else {slot.onSlotChanged(); }

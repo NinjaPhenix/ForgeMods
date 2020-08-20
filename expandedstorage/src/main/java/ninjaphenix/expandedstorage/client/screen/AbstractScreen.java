@@ -38,14 +38,14 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     {
         renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(stack, mouseX, mouseY);
+        renderHoveredTooltip(stack, mouseX, mouseY);
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(final MatrixStack stack, final int mouseX, final int mouseY)
     {
         font.func_243248_b(stack, title, 8, 6, 0x404040);
-        font.func_243248_b(stack, playerInventory.getDisplayName(), INVENTORY_LABEL_LEFT, this.ySize - 96 + 2, 0x404040);
+        font.func_243248_b(stack, playerInventory.getDisplayName(), INVENTORY_LABEL_LEFT, ySize - 96 + 2, 0x404040);
     }
 
     @Override @SuppressWarnings("ConstantConditions")
@@ -61,14 +61,16 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     }
 
     protected final void renderButtonTooltip(final Widget widget, final MatrixStack stack, final int x, final int y)
-    { renderTooltip(stack, widget.getMessage(), x, y); }
+    {
+        renderTooltip(stack, widget.getMessage(), x, y);
+    }
 
     protected static class Rectangle
     {
         public final int X, Y, WIDTH, HEIGHT, TEXTURE_X, TEXTURE_Y, TEXTURE_WIDTH, TEXTURE_HEIGHT;
 
-        public Rectangle(final int x, final int y, final int width, final int height, final int textureX, final int textureY, final int textureWidth,
-                final int textureHeight)
+        public Rectangle(final int x, final int y, final int width, final int height, final int textureX, final int textureY,
+                         final int textureWidth, final int textureHeight)
         {
             X = x;
             Y = y;
@@ -81,6 +83,8 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
         }
 
         public void render(final MatrixStack stack)
-        { blit(stack, X, Y, TEXTURE_X, TEXTURE_Y, WIDTH, HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT); }
+        {
+            blit(stack, X, Y, TEXTURE_X, TEXTURE_Y, WIDTH, HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        }
     }
 }

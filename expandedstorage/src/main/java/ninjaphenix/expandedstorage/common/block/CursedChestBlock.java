@@ -50,11 +50,15 @@ public final class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity
 
     @Override
     public TileEntity createTileEntity(@Nullable final BlockState state, @Nullable final IBlockReader world)
-    { return new CursedChestTileEntity(getRegistryName()); }
+    {
+        return new CursedChestTileEntity(getRegistryName());
+    }
 
     @Override @SuppressWarnings("deprecation")
     public FluidState getFluidState(final BlockState state)
-    { return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state); }
+    {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+    }
 
     @Override
     protected void fillStateContainer(final StateContainer.Builder<Block, BlockState> builder)
@@ -76,7 +80,10 @@ public final class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity
 
     @Override
     public BlockState getStateForPlacement(final BlockItemUseContext context)
-    { return super.getStateForPlacement(context).with(WATERLOGGED, context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER); }
+    {
+        return super.getStateForPlacement(context).with(WATERLOGGED,
+                                                        context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER);
+    }
 
     @Override
     public BlockState updatePostPlacement(final BlockState state, final Direction offset,

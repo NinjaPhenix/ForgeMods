@@ -52,7 +52,7 @@ public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTil
             final SingleChestModel model = getModel(chestType);
             stack.push();
             stack.translate(0.5D, 0.5D, 0.5D);
-            stack.rotate(Vector3f.YP.rotationDegrees(-state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle()));
+            stack.rotate(Vector3f.YP.rotationDegrees(-state.get(HORIZONTAL_FACING).getHorizontalAngle()));
             stack.translate(-0.5D, -0.5D, -0.5D);
             model.setLidPitch(te.getLidAngle(v));
             final TileEntityMerger.ICallbackWrapper<? extends CursedChestTileEntity> wrapper = te.hasWorld() ?

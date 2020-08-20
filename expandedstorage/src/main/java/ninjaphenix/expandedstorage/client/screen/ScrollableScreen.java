@@ -17,7 +17,7 @@ import java.util.List;
 public final class ScrollableScreen extends AbstractScreen<ScrollableContainer, ScrollableScreenMeta>
 {
     private final boolean hasScrollbar;
-    private Rectangle blankArea = null;
+    private Rectangle blankArea;
     private boolean isDragging;
     private int topRow;
     private ScreenTypeSelectionScreenButton screenSelectButton;
@@ -92,7 +92,9 @@ public final class ScrollableScreen extends AbstractScreen<ScrollableContainer, 
 
     @Override
     protected boolean hasClickedOutside(final double mouseX, final double mouseY, final int left, final int top, final int button)
-    { return super.hasClickedOutside(mouseX, mouseY, left, top, button) && !isMouseOverScrollbar(mouseX, mouseY); }
+    {
+        return super.hasClickedOutside(mouseX, mouseY, left, top, button) && !isMouseOverScrollbar(mouseX, mouseY);
+    }
 
     @Override
     public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
