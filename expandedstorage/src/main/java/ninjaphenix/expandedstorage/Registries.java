@@ -33,7 +33,6 @@ public final class Registries
             leftTexture = textureFunction.apply(CursedChestType.LEFT);
         }
 
-
         public ResourceLocation getChestTexture(final CursedChestType type)
         {
             switch (type)
@@ -65,9 +64,7 @@ public final class Registries
 
         public int getSlotCount() { return slots; }
 
-
         public ITextComponent getContainerName() { return containerName; }
-
 
         public ResourceLocation getBlockId() { return blockId; }
     }
