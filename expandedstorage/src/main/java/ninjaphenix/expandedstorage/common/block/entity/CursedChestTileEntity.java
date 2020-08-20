@@ -70,7 +70,7 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
     }
 
     @Override
-    public float getLidAngle(final float f) { return MathHelper.lerp(f, lastAnimationAngle, animationAngle); }
+    public float getLidAngle(final float partialTicks) { return MathHelper.lerp(partialTicks, lastAnimationAngle, animationAngle); }
 
     @Override
     @SuppressWarnings("ConstantConditions")

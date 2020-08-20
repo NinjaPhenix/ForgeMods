@@ -1,1 +1,1 @@
-- Updated to 1.16.2
+- Changed the conversion kit tooltip so they are more likely to fit on the screen.
