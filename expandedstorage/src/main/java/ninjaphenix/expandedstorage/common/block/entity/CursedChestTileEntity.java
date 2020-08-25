@@ -90,9 +90,14 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
     private void playSound(final SoundEvent soundEvent)
     {
         final BlockState state = getBlockState();
-        if (BaseChestBlock.getMergeType(state) == TileEntityMerger.Type.SECOND) { return; }
-        final Vector3i offset = BaseChestBlock.getDirectionToAttached(state).getDirectionVec();
-        final Vector3d soundPos = Vector3d.copyCentered(pos).add(offset.getX() * 0.5D, offset.getY() * 0.5D, offset.getZ() * 0.5D);
+        final TileEntityMerger.Type mergeType = BaseChestBlock.getMergeType(state);
+        final Vector3d soundPos;
+        if (mergeType == TileEntityMerger.Type.SINGLE) { soundPos = Vector3d.copyCentered(pos); }
+        else if (mergeType == TileEntityMerger.Type.FIRST)
+        {
+            soundPos = Vector3d.copyCentered(pos).add(Vector3d.copy(BaseChestBlock.getDirectionToAttached(state).getDirectionVec()).scale(0.5D));
+        }
+        else { return; }
         world.playSound(null, soundPos.getX(), soundPos.getY(), soundPos.getZ(), soundEvent, SoundCategory.BLOCKS, 0.5F,
                         world.rand.nextFloat() * 0.1F + 0.9F);
     }

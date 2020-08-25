@@ -1,1 +1,1 @@
-- Changed the conversion kit tooltip so they are more likely to fit on the screen.
+- Fix crash when opening regular chests.
