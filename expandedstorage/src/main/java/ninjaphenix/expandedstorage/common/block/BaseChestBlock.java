@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ISidedInventoryProvider;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -45,7 +46,7 @@ import java.util.function.Supplier;
 
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
-public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends ContainerBlock
+public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends ContainerBlock implements ISidedInventoryProvider
 {
     public static final EnumProperty<CursedChestType> TYPE = EnumProperty.create("type", CursedChestType.class);
     private final Supplier<TileEntityType<? extends T>> tileEntityType;
@@ -186,7 +187,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         builder.add(HORIZONTAL_FACING, TYPE);
     }
 
-    public final TileEntityMerger.ICallbackWrapper<? extends T> combine(final BlockState state, final World world, final BlockPos pos,
+    public final TileEntityMerger.ICallbackWrapper<? extends T> combine(final BlockState state, final IWorld world, final BlockPos pos,
                                                                         final boolean alwaysOpen)
     {
         final BiPredicate<IWorld, BlockPos> isChestBlocked = alwaysOpen ? (_world, _pos) -> false : this::isBlocked;
@@ -373,4 +374,10 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     public final boolean hasComparatorInputOverride(final BlockState state) { return true; }
 
     public abstract <R extends Registries.TierData> SimpleRegistry<R> getDataRegistry();
+
+    @Override // keep for hoppers.
+    public ISidedInventory createInventory(final BlockState state, final IWorld world, final BlockPos pos)
+    {
+        return combine(state, world, pos, true).apply(INVENTORY_GETTER).orElse(null);
+    }
 }
