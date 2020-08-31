@@ -1,1 +1,1 @@
-- Fix crash when opening regular chests.
+- Fix hoppers only inserting into one chest of a double chest.
