@@ -17,7 +17,7 @@ public final class ScreenTypeSelectionScreenButton extends Button
     @SuppressWarnings("ConstantConditions")
     public ScreenTypeSelectionScreenButton(final int x, final int y, final ITooltip onTooltip)
     {
-        super(x, y, 12, 12, new TranslationTextComponent("screen.expandedstorage.change_screen_button"), button ->
+        super(x, y, 22, 22, new TranslationTextComponent("screen.expandedstorage.change_screen_button"), button ->
         {
             Minecraft.getInstance().player.closeScreenAndDropStack();
             Networker.INSTANCE.requestOpenSelectionScreen();
@@ -33,7 +33,7 @@ public final class ScreenTypeSelectionScreenButton extends Button
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        blit(stack, x, y, 0, isHovered() ? height : 0, width, height, 16, 32);
+        blit(stack, x, y, 0, isHovered() ? height : 0, width, height, 32, 48);
     }
 
     public void renderTooltip(final MatrixStack stack, final int x, final int y)

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -13,6 +14,8 @@ import net.minecraftforge.fml.ModList;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.inventory.PagedContainer;
 import ninjaphenix.expandedstorage.common.screen.PagedScreenMeta;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
 {
@@ -78,17 +81,22 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         screenSelectButton.renderTooltip(stack, mouseX, mouseY);
     }
 
+    public List<Rectangle2d> getJeiRectangles()
+    {
+        final List<Rectangle2d> excludedAreas = new ArrayList<>();
+        excludedAreas.add(new Rectangle2d(guiLeft + xSize + 4, guiTop, 22, 22));
+        return excludedAreas;
+    }
+
     @Override
     protected void init()
     {
         super.init();
-        int settingsXOffset = -19;
-        final boolean isQuarkLoaded = ModList.get().isLoaded("quark");
-        if (isQuarkLoaded && SCREEN_META.WIDTH <= 9) { settingsXOffset -= 24; }
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4, this::renderButtonTooltip));
+        final int settingsButtonX = guiLeft + xSize + 4;
+        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(settingsButtonX, guiTop, this::renderButtonTooltip));
         if (SCREEN_META.PAGES != 1)
         {
-            final int pageButtonsXOffset = isQuarkLoaded ? 36 : 0;
+            final int pageButtonsXOffset = ModList.get().isLoaded("quark") ? 36 : 0;
             page = 1;
             setPageText();
             leftPageButton = new PageButtonWidget(guiLeft + xSize - 61 - pageButtonsXOffset, guiTop + ySize - 96, 0,

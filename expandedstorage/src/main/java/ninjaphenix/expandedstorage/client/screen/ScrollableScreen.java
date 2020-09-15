@@ -11,6 +11,7 @@ import ninjaphenix.expandedstorage.common.ExpandedStorageConfig;
 import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
 import ninjaphenix.expandedstorage.common.screen.ScrollableScreenMeta;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,25 +26,29 @@ public final class ScrollableScreen extends AbstractScreen<ScrollableContainer, 
     public ScrollableScreen(final ScrollableContainer container, final PlayerInventory playerInventory, final ITextComponent title)
     {
         super(container, playerInventory, title, (screenMeta) -> (screenMeta.WIDTH * 18 + 14) / 2 - 80);
+        hasScrollbar = SCREEN_META.TOTAL_ROWS != SCREEN_META.HEIGHT;
         xSize = 14 + 18 * SCREEN_META.WIDTH;
         ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
-        hasScrollbar = SCREEN_META.TOTAL_ROWS != SCREEN_META.HEIGHT;
     }
 
-    public List<Rectangle2d> getJeiRectangle()
+    public List<Rectangle2d> getJeiRectangles()
     {
-        if (!hasScrollbar) { return Collections.emptyList(); }
-        final int height = SCREEN_META.HEIGHT * 18 + (SCREEN_META.WIDTH > 9 ? 34 : 24);
-        return Collections.singletonList(new Rectangle2d(guiLeft + xSize - 4, guiTop, 22, height));
+        final List<Rectangle2d> excludedAreas = new ArrayList<>();
+        if (hasScrollbar)
+        {
+            final int height = SCREEN_META.HEIGHT * 18 + (SCREEN_META.WIDTH > 9 ? 34 : 24);
+            excludedAreas.add(new Rectangle2d(guiLeft + xSize - 4, guiTop, 22, height));
+        }
+        excludedAreas.add(new Rectangle2d(guiLeft + xSize + (hasScrollbar ? 19 + 4 : 4), guiTop, 22, 22));
+        return excludedAreas;
     }
 
     @Override
     protected void init()
     {
         super.init();
-        final int settingsXOffset = -(hasScrollbar ? (ExpandedStorageConfig.CLIENT.centerSettingsButtonOnScrollbar.get() ? 2 : 1) :
-                ModList.get().isLoaded("quark") ? 43 : 19);
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4, this::renderButtonTooltip));
+        final int settingsButtonX = guiLeft + xSize + (hasScrollbar ? 19 + 4 : 4);
+        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(settingsButtonX, guiTop, this::renderButtonTooltip));
         if (hasScrollbar)
         {
             isDragging = false;

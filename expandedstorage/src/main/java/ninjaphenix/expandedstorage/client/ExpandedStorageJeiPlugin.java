@@ -7,7 +7,10 @@ import mezz.jei.api.registration.IGuiHandlerRegistration;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.util.ResourceLocation;
 import ninjaphenix.expandedstorage.ExpandedStorage;
+import ninjaphenix.expandedstorage.client.screen.AbstractScreen;
+import ninjaphenix.expandedstorage.client.screen.PagedScreen;
 import ninjaphenix.expandedstorage.client.screen.ScrollableScreen;
+import ninjaphenix.expandedstorage.client.screen.SingleScreen;
 
 import java.util.List;
 
@@ -20,10 +23,10 @@ public final class ExpandedStorageJeiPlugin implements IModPlugin
     @Override
     public void registerGuiHandlers(final IGuiHandlerRegistration registration)
     {
-        registration.addGuiContainerHandler(ScrollableScreen.class, new IGuiContainerHandler<ScrollableScreen>()
+        registration.addGenericGuiContainerHandler(AbstractScreen.class, new IGuiContainerHandler<AbstractScreen<?, ?>>()
         {
             @Override
-            public List<Rectangle2d> getGuiExtraAreas(final ScrollableScreen screen) { return screen.getJeiRectangle(); }
+            public List<Rectangle2d> getGuiExtraAreas(final AbstractScreen<?, ?> screen) { return screen.getJeiRectangles(); }
         });
     }
 }

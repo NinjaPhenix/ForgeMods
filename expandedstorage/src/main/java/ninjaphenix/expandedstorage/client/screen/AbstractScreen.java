@@ -4,12 +4,14 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import ninjaphenix.expandedstorage.common.inventory.AbstractContainer;
 import ninjaphenix.expandedstorage.common.network.Networker;
 import ninjaphenix.expandedstorage.common.screen.ScreenMeta;
 
+import java.util.List;
 import java.util.function.Function;
 
 public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends ScreenMeta> extends ContainerScreen<T>
@@ -24,6 +26,8 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
         SCREEN_META = container.SCREEN_META;
         INVENTORY_LABEL_LEFT = inventoryLabelLeftFunction.apply(SCREEN_META);
     }
+
+    public abstract List<Rectangle2d> getJeiRectangles();
 
     @Override @SuppressWarnings({ "ConstantConditions", "deprecation" })
     protected void drawGuiContainerBackgroundLayer(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)

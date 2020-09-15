@@ -14,8 +14,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.1.10:api")
-    //runtimeOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.1.10")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.2:7.1.1.15:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:7.1.1.15")
     //runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-40.79')
     //runtimeOnly fg.deobf('vazkii.quark:Quark:r2.1-245.1160')
 }

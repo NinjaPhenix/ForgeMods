@@ -1,11 +1,14 @@
 package ninjaphenix.expandedstorage.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.ModList;
 import ninjaphenix.expandedstorage.common.inventory.SingleContainer;
 import ninjaphenix.expandedstorage.common.screen.SingleScreenMeta;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class SingleScreen extends AbstractScreen<SingleContainer, SingleScreenMeta>
 {
@@ -19,13 +22,19 @@ public final class SingleScreen extends AbstractScreen<SingleContainer, SingleSc
         ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
     }
 
+    public List<Rectangle2d> getJeiRectangles()
+    {
+        final List<Rectangle2d> excludedAreas = new ArrayList<>();
+        excludedAreas.add(new Rectangle2d(guiLeft + xSize + 4, guiTop, 22, 22));
+        return excludedAreas;
+    }
+
     @Override
     protected void init()
     {
         super.init();
-        int settingsXOffset = -19;
-        if (ModList.get().isLoaded("quark") && SCREEN_META.WIDTH <= 9) { settingsXOffset -= 24; }
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + settingsXOffset, guiTop + 4, this::renderButtonTooltip));
+        final int settingsButtonX = guiLeft + xSize + 4;
+        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(settingsButtonX, guiTop, this::renderButtonTooltip));
         final int blanked = SCREEN_META.BLANK_SLOTS;
         if (blanked > 0)
         {
