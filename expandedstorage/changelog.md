@@ -1,1 +1,2 @@
-- Fix hoppers only inserting into one chest of a double chest.
+- Moves select container screen button so it's less likely to conflict with other mods.
+- If using JEI, requires >= 7.1.1.15
