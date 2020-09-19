@@ -14,7 +14,7 @@ import net.minecraftforge.fml.ModList;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.common.inventory.PagedContainer;
 import ninjaphenix.expandedstorage.common.screen.PagedScreenMeta;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScreenMeta>
@@ -83,9 +83,7 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
 
     public List<Rectangle2d> getJeiRectangles()
     {
-        final List<Rectangle2d> excludedAreas = new ArrayList<>();
-        excludedAreas.add(new Rectangle2d(guiLeft + xSize + 4, guiTop, 22, 22));
-        return excludedAreas;
+        return Collections.singletonList(new Rectangle2d(guiLeft + xSize + 4, guiTop, 22, 22));
     }
 
     @Override
