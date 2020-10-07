@@ -47,8 +47,7 @@ public final class ScrollableScreen extends AbstractScreen<ScrollableContainer, 
     protected void init()
     {
         super.init();
-        final int settingsButtonX = guiLeft + xSize + (hasScrollbar ? 19 + 4 : 4);
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(settingsButtonX, guiTop, this::renderButtonTooltip));
+        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(guiLeft + xSize + (hasScrollbar ? 19 + 4 : 4), guiTop, this::renderButtonTooltip));
         if (hasScrollbar)
         {
             isDragging = false;
