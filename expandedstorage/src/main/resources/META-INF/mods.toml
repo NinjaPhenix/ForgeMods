@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[33,)"
+loaderVersion="[34,)"
 issueTrackerURL="https://github.com/NinjaPhenix/ForgeMods"
 license="mit no attribution"
 [[mods]]
@@ -14,12 +14,12 @@ license="mit no attribution"
 [[dependencies.expandedstorage]]
   modId="forge"
   mandatory=true
-  versionRange="[33,)"
+  versionRange="[34,)"
   ordering="NONE"
   side="BOTH"
 [[dependencies.expandedstorage]]
   modId="minecraft"
   mandatory=true
-  versionRange="[${minecraft_version}]"
+  versionRange="[1.16.3,1.17)"
   ordering="NONE"
   side="BOTH"
