@@ -16,6 +16,7 @@ public enum CursedChestType implements IStringSerializable
         offset = outlineOffset;
     }
 
+    // todo: dead code?
     public static CursedChestType valueOf(final ChestType type)
     {
         if (type == ChestType.SINGLE) { return SINGLE; }
@@ -36,7 +37,7 @@ public enum CursedChestType implements IStringSerializable
     }
 
     @Override
-    public String getString() { return name; }
+    public String getSerializedName() { return name; }
 
     public int getOffset() { return offset; }
 }

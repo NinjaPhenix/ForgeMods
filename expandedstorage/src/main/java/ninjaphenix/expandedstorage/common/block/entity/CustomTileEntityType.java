@@ -23,5 +23,5 @@ public final class CustomTileEntityType<T extends TileEntity> extends TileEntity
     }
 
     @Override
-    public final boolean isValidBlock(final Block block) { return predicate.test(block); }
+    public final boolean isValid(final Block block) { return predicate.test(block); }
 }

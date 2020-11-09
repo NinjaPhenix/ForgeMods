@@ -29,8 +29,8 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
     public PagedScreen(final PagedContainer container, final PlayerInventory playerInventory, final ITextComponent title)
     {
         super(container, playerInventory, title, (screenMeta) -> (screenMeta.WIDTH * 18 + 14) / 2 - 80);
-        xSize = 14 + 18 * SCREEN_META.WIDTH;
-        ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
+        imageWidth = 14 + 18 * SCREEN_META.WIDTH;
+        imageHeight = 17 + 97 + 18 * SCREEN_META.HEIGHT;
     }
 
     private void setPage(final int oldPage, final int newPage)
@@ -45,8 +45,8 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
                 if (blanked > 0)
                 {
                     final int xOffset = 7 + (SCREEN_META.WIDTH - blanked) * 18;
-                    blankArea = new Rectangle(guiLeft + xOffset, guiTop + ySize - 115, blanked * 18, 18, xOffset, ySize, SCREEN_META.TEXTURE_WIDTH,
-                            SCREEN_META.TEXTURE_HEIGHT);
+                    blankArea = new Rectangle(leftPos + xOffset, topPos + imageHeight - 115, blanked * 18, 18, xOffset, imageHeight,
+                                              SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
                 }
             }
             if (!leftPageButton.active) { leftPageButton.setActive(true); }
@@ -60,10 +60,10 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         final int slotsPerPage = SCREEN_META.WIDTH * SCREEN_META.HEIGHT;
         final int oldMin = slotsPerPage * (oldPage - 1);
         final int oldMax = Math.min(oldMin + slotsPerPage, SCREEN_META.TOTAL_SLOTS);
-        container.moveSlotRange(oldMin, oldMax, -2000);
+        menu.moveSlotRange(oldMin, oldMax, -2000);
         final int newMin = slotsPerPage * (newPage - 1);
         final int newMax = Math.min(newMin + slotsPerPage, SCREEN_META.TOTAL_SLOTS);
-        container.moveSlotRange(newMin, newMax, 2000);
+        menu.moveSlotRange(newMin, newMax, 2000);
         setPageText();
     }
 
@@ -81,37 +81,36 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         screenSelectButton.renderTooltip(stack, mouseX, mouseY);
     }
 
-    public List<Rectangle2d> getJeiRectangles()
-    {
-        return Collections.singletonList(new Rectangle2d(guiLeft + xSize + 4, guiTop, 22, 22));
-    }
+    public List<Rectangle2d> getJeiRectangles() { return Collections.singletonList(new Rectangle2d(leftPos + imageWidth + 4, topPos, 22, 22)); }
 
     @Override
     protected void init()
     {
         super.init();
-        final int settingsButtonX = guiLeft + xSize + 4;
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(settingsButtonX, guiTop, this::renderButtonTooltip));
+        final int settingsButtonX = leftPos + imageWidth + 4;
+        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(settingsButtonX, topPos, this::renderButtonTooltip));
         if (SCREEN_META.PAGES != 1)
         {
             final int pageButtonsXOffset = ModList.get().isLoaded("quark") ? 36 : 0;
             page = 1;
             setPageText();
-            leftPageButton = new PageButtonWidget(guiLeft + xSize - 61 - pageButtonsXOffset, guiTop + ySize - 96, 0,
-                    new TranslationTextComponent("screen.expandedstorage.prev_page"), button -> setPage(page, page - 1), this::renderButtonTooltip);
+            leftPageButton = new PageButtonWidget(leftPos + imageWidth - 61 - pageButtonsXOffset, topPos + imageHeight - 96, 0,
+                                                  new TranslationTextComponent("screen.expandedstorage.prev_page"),
+                                                  button -> setPage(page, page - 1), this::renderButtonTooltip);
             leftPageButton.setActive(false);
             addButton(leftPageButton);
-            rightPageButton = new PageButtonWidget(guiLeft + xSize - 19 - pageButtonsXOffset, guiTop + ySize - 96, 1,
-                    new TranslationTextComponent("screen.expandedstorage.next_page"), button -> setPage(page, page + 1), this::renderButtonTooltip);
+            rightPageButton = new PageButtonWidget(leftPos + imageWidth - 19 - pageButtonsXOffset, topPos + imageHeight - 96, 1,
+                                                   new TranslationTextComponent("screen.expandedstorage.next_page"),
+                                                   button -> setPage(page, page + 1), this::renderButtonTooltip);
             addButton(rightPageButton);
             pageTextX = (1 + leftPageButton.x + rightPageButton.x - rightPageButton.getWidth() / 2F) / 2F;
         }
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    protected void renderBg(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
-        super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
+        super.renderBg(stack, partialTicks, mouseX, mouseY);
         if (blankArea != null) { blankArea.render(stack); }
     }
 
@@ -123,7 +122,7 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
             final int currentPage = page;
             if (currentPage != 1)
             {
-                container.resetSlotPositions(false);
+                menu.resetSlotPositions(false);
                 super.resize(minecraft, width, height);
                 setPage(1, currentPage);
                 return;
@@ -133,10 +132,10 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(final MatrixStack stack, final int mouseX, final int mouseY)
+    protected void renderLabels(final MatrixStack stack, final int mouseX, final int mouseY)
     {
-        super.drawGuiContainerForegroundLayer(stack, mouseX, mouseY);
-        if (currentPageText != null) { font.func_243248_b(stack, currentPageText, pageTextX - guiLeft, ySize - 94, 0x404040); }
+        super.renderLabels(stack, mouseX, mouseY);
+        if (currentPageText != null) { font.draw(stack, currentPageText, pageTextX - leftPos, imageHeight - 94, 0x404040); }
     }
 
     @Override
@@ -169,7 +168,7 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
         private final ResourceLocation TEXTURE = ExpandedStorage.getRl("textures/gui/page_buttons.png");
 
         public PageButtonWidget(final int x, final int y, final int textureOffset, final ITextComponent message, final IPressable onPress,
-                final ITooltip onTooltip)
+                                final ITooltip onTooltip)
         {
             super(x, y, 12, 12, message, onPress, onTooltip);
             TEXTURE_OFFSET = textureOffset;
@@ -181,10 +180,11 @@ public final class PagedScreen extends AbstractScreen<PagedContainer, PagedScree
             if (!active) { setFocused(false); }
         }
 
-        @Override @SuppressWarnings("deprecation")
+        @Override
+        @SuppressWarnings("deprecation")
         public void renderButton(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
         {
-            Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+            Minecraft.getInstance().getTextureManager().bind(TEXTURE);
             RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();

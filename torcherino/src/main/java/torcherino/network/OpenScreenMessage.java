@@ -29,13 +29,13 @@ public final class OpenScreenMessage
 
     static void encode(final OpenScreenMessage message, final PacketBuffer buffer)
     {
-        buffer.writeBlockPos(message.pos).writeTextComponent(message.title).writeInt(message.xRange)
+        buffer.writeBlockPos(message.pos).writeComponent(message.title).writeInt(message.xRange)
               .writeInt(message.zRange).writeInt(message.yRange).writeInt(message.speed).writeInt(message.redstoneMode);
     }
 
     static OpenScreenMessage decode(final PacketBuffer buffer)
     {
-        return new OpenScreenMessage(buffer.readBlockPos(), buffer.readTextComponent(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(),
+        return new OpenScreenMessage(buffer.readBlockPos(), buffer.readComponent(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(),
                 buffer.readInt());
     }
 

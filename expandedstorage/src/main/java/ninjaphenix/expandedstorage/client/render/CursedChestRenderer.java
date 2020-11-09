@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.tileentity.DualBrightnessCallback;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Vector3f;
@@ -25,8 +24,8 @@ import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FAC
 
 public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntity>
 {
-    private static final BlockState defaultState = ModContent.WOOD_CHEST.getFirst().getDefaultState().with(HORIZONTAL_FACING, Direction.SOUTH)
-                                                                        .with(CursedChestBlock.TYPE, CursedChestType.SINGLE);
+    private static final BlockState defaultState = ModContent.WOOD_CHEST.getFirst().defaultBlockState().setValue(HORIZONTAL_FACING, Direction.SOUTH)
+            .setValue(CursedChestBlock.TYPE, CursedChestType.SINGLE);
 
     private static final ImmutableMap<CursedChestType, SingleChestModel> MODELS = new ImmutableMap.Builder<CursedChestType, SingleChestModel>()
             .put(CursedChestType.SINGLE, new SingleChestModel())
@@ -40,27 +39,28 @@ public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTil
 
     public CursedChestRenderer(final TileEntityRendererDispatcher dispatcher) { super(dispatcher); }
 
-    @Override @SuppressWarnings("ConstantConditions")
+    @Override
+    @SuppressWarnings("ConstantConditions")
     public void render(final CursedChestTileEntity te, final float v, final MatrixStack stack, final IRenderTypeBuffer buffer,
-            final int light, final int overlay)
+                       final int light, final int overlay)
     {
-        final BlockState state = te.hasWorld() ? te.getBlockState() : defaultState;
+        final BlockState state = te.hasLevel() ? te.getBlockState() : defaultState;
         if (state.getBlock() instanceof CursedChestBlock)
         {
             final CursedChestBlock block = (CursedChestBlock) state.getBlock();
-            final CursedChestType chestType = state.get(CursedChestBlock.TYPE);
+            final CursedChestType chestType = state.getValue(CursedChestBlock.TYPE);
             final SingleChestModel model = getModel(chestType);
-            stack.push();
+            stack.pushPose();
             stack.translate(0.5D, 0.5D, 0.5D);
-            stack.rotate(Vector3f.YP.rotationDegrees(-state.get(HORIZONTAL_FACING).getHorizontalAngle()));
+            stack.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(HORIZONTAL_FACING).get2DDataValue()));
             stack.translate(-0.5D, -0.5D, -0.5D);
-            model.setLidPitch(te.getLidAngle(v));
-            final TileEntityMerger.ICallbackWrapper<? extends CursedChestTileEntity> wrapper = te.hasWorld() ?
-                    block.combine(state, te.getWorld(), te.getPos(), true) : TileEntityMerger.ICallback::func_225537_b_;
+            model.setLidPitch(te.getOpenNess(v));
+            final TileEntityMerger.ICallbackWrapper<? extends CursedChestTileEntity> wrapper = te.hasLevel() ?
+                    block.combine(state, te.getLevel(), te.getBlockPos(), true) : TileEntityMerger.ICallback::acceptNone;
             final int combinedLight = wrapper.apply(new DualBrightnessCallback<>()).applyAsInt(light);
-            final RenderMaterial material = new RenderMaterial(Atlases.CHEST_ATLAS, Registries.MODELED.getOrDefault(te.getBlock()).getChestTexture(chestType));
-            model.render(stack, material.getBuffer(buffer, RenderType::getEntityCutout), combinedLight, overlay);
-            stack.pop();
+            final RenderMaterial material = new RenderMaterial(Atlases.CHEST_SHEET, Registries.MODELED.get(te.getBlock()).getChestTexture(chestType));
+            model.render(stack, material.buffer(buffer, RenderType::entityCutout), combinedLight, overlay);
+            stack.popPose();
         }
     }
 

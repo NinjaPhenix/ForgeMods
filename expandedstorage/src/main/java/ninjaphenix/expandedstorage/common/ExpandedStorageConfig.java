@@ -33,14 +33,14 @@ public final class ExpandedStorageConfig
         {
             builder.push("client");
             preferredContainerType = builder.comment("Preferred Container Type, set to expandedstorage:auto to display selection screen.")
-                                            .translation("expandedstorage.config_gui.preferred_container_type")
-                                            .define("preferred_container_type", new ResourceLocation("expandedstorage", "auto").toString());
+                    .translation("expandedstorage.config_gui.preferred_container_type")
+                    .define("preferred_container_type", new ResourceLocation("expandedstorage", "auto").toString());
             restrictiveScrolling = builder.comment("Only allows scrolling with mouse-wheel whilst hovering over the scroll bar.")
-                                          .translation("expandedstorage.config_gui.restrictive_scrolling")
-                                          .define("restrictive_scrolling", false);
+                    .translation("expandedstorage.config_gui.restrictive_scrolling")
+                    .define("restrictive_scrolling", false);
             centerSettingsButtonOnScrollbar = builder.comment("Centers the settings button on the scrollbar of the scrollable screen.")
-                                                     .translation("expandedstorage.config_gui.settings_button_center_on_scrollbar")
-                                                     .define("settings_button_center_on_scrollbar", true);
+                    .translation("expandedstorage.config_gui.settings_button_center_on_scrollbar")
+                    .define("settings_button_center_on_scrollbar", true);
         }
     }
 }

@@ -39,7 +39,7 @@ public class TorcherinoBlock extends TorchBlock implements TierSupplier
 
     public TorcherinoBlock(final ResourceLocation tierName, final IParticleData flameParticle)
     {
-        super(Properties.from(Blocks.TORCH), flameParticle);
+        super(Properties.copy(Blocks.TORCH), flameParticle);
         this.tierName = tierName;
     }
 
@@ -53,68 +53,68 @@ public class TorcherinoBlock extends TorchBlock implements TierSupplier
     public TileEntity createTileEntity(final BlockState state, final IBlockReader world) { return new TorcherinoTileEntity(); }
 
     @Override
-    protected void fillStateContainer(final StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(final StateContainer.Builder<Block, BlockState> builder)
     {
-        super.fillStateContainer(builder);
+        super.createBlockStateDefinition(builder);
         builder.add(POWERED);
     }
 
     @Override @SuppressWarnings("deprecation")
-    public ActionResultType onBlockActivated(final BlockState state, final World world, final BlockPos pos, final PlayerEntity player, final Hand hand,
+    public ActionResultType use(final BlockState state, final World world, final BlockPos pos, final PlayerEntity player, final Hand hand,
             final BlockRayTraceResult hit)
     {
-        if (!world.isRemote) { Networker.INSTANCE.openScreenServer(world, (ServerPlayerEntity) player, pos); }
+        if (!world.isClientSide) { Networker.INSTANCE.openScreenServer(world, (ServerPlayerEntity) player, pos); }
         return ActionResultType.SUCCESS;
     }
 
     @Override
-    public void onBlockPlacedBy(final World world, final BlockPos pos, final BlockState state, @Nullable final LivingEntity placer, final ItemStack stack)
+    public void setPlacedBy(final World world, final BlockPos pos, final BlockState state, @Nullable final LivingEntity placer, final ItemStack stack)
     {
-        if (world.isRemote) { return; }
-        if (stack.hasDisplayName())
+        if (world.isClientSide) { return; }
+        if (stack.hasCustomHoverName())
         {
-            final TileEntity tile = world.getTileEntity(pos);
+            final TileEntity tile = world.getBlockEntity(pos);
             if (tile instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tile).setCustomName(stack.getDisplayName()); }
         }
         if (Config.INSTANCE.log_placement)
         {
             String prefix = "Something";
-            if (placer != null) { prefix = placer.getDisplayName().getString() + "(" + placer.getCachedUniqueIdString() + ")"; }
+            if (placer != null) { prefix = placer.getDisplayName().getString() + "(" + placer.getStringUUID() + ")"; }
             Torcherino.LOGGER.info("[Torcherino] {} placed a {} at {} {} {}.", prefix,
-                    StringUtils.capitalize(getTranslationKey().replace("block.torcherino.", "").replace("_", " ")), pos.getX(), pos.getY(), pos.getZ());
+                    StringUtils.capitalize(getDescriptionId().replace("block.torcherino.", "").replace("_", " ")), pos.getX(), pos.getY(), pos.getZ());
         }
     }
 
     @Override @SuppressWarnings("deprecation")
     public void tick(final BlockState state, final ServerWorld world, final BlockPos pos, final Random random)
     {
-        final TileEntity tileEntity = world.getTileEntity(pos);
+        final TileEntity tileEntity = world.getBlockEntity(pos);
         if (tileEntity instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tileEntity).tick(); }
     }
 
     @Override @SuppressWarnings("deprecation")
-    public PushReaction getPushReaction(final BlockState state) { return PushReaction.IGNORE; }
+    public PushReaction getPistonPushReaction(final BlockState state) { return PushReaction.IGNORE; }
 
     @Override @SuppressWarnings("deprecation")
-    public void onBlockAdded(final BlockState state, final World world, final BlockPos pos, final BlockState oldState, final boolean b)
+    public void onPlace(final BlockState state, final World world, final BlockPos pos, final BlockState oldState, final boolean b)
     {
-        final TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(state.get(POWERED)); }
+        final TileEntity tileEntity = world.getBlockEntity(pos);
+        if (tileEntity instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(state.getValue(POWERED)); }
     }
 
     @Override @SuppressWarnings("ConstantConditions")
     public BlockState getStateForPlacement(final BlockItemUseContext context)
-    { return super.getStateForPlacement(context).with(POWERED, context.getWorld().isBlockPowered(context.getPos().down())); }
+    { return super.getStateForPlacement(context).setValue(POWERED, context.getLevel().hasNeighborSignal(context.getClickedPos().below())); }
 
     @Override @SuppressWarnings("deprecation")
     public void neighborChanged(final BlockState state, final World world, final BlockPos pos, final Block block, final BlockPos fromPos, final boolean b)
     {
-        if (world.isRemote) { return; }
-        final boolean powered = world.isBlockPowered(pos.down());
-        if (state.get(POWERED) != powered)
+        if (world.isClientSide) { return; }
+        final boolean powered = world.hasNeighborSignal(pos.below());
+        if (state.getValue(POWERED) != powered)
         {
-            world.setBlockState(pos, state.with(POWERED, powered));
-            final TileEntity tileEntity = world.getTileEntity(pos);
+            world.setBlockAndUpdate(pos, state.setValue(POWERED, powered));
+            final TileEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof TorcherinoTileEntity) { ((TorcherinoTileEntity) tileEntity).setPoweredByRedstone(powered); }
         }
     }

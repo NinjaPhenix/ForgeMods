@@ -32,8 +32,8 @@ public final class SingleContainer extends AbstractContainer<SingleScreenMeta>
     public SingleContainer(final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player,
                            @Nullable final ITextComponent displayName)
     {
-        super(ModContent.SINGLE_CONTAINER_TYPE, windowId, pos, inventory, player, getNearestSize(inventory.getSizeInventory()), displayName);
-        for (int i = 0; i < inventory.getSizeInventory(); i++)
+        super(ModContent.SINGLE_CONTAINER_TYPE, windowId, pos, inventory, player, getNearestSize(inventory.getContainerSize()), displayName);
+        for (int i = 0; i < inventory.getContainerSize(); i++)
         {
             final int x = i % SCREEN_META.WIDTH, y = (i - x) / SCREEN_META.WIDTH;
             addSlot(new Slot(inventory, i, x * 18 + 8, y * 18 + 18));

@@ -31,20 +31,20 @@ import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FAC
 public final class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity> implements IWaterLoggable
 {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    private static final VoxelShape SINGLE_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 14, 15);
-    private static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 14, 15);
-    private static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 16, 15);
+    private static final VoxelShape SINGLE_SHAPE = Block.box(1, 0, 1, 15, 14, 15);
+    private static final VoxelShape TOP_SHAPE = Block.box(1, 0, 1, 15, 14, 15);
+    private static final VoxelShape BOTTOM_SHAPE = Block.box(1, 0, 1, 15, 16, 15);
     private static final VoxelShape[] HORIZONTAL_VALUES = {
-            Block.makeCuboidShape(1, 0, 0, 15, 14, 15),
-            Block.makeCuboidShape(1, 0, 1, 16, 14, 15),
-            Block.makeCuboidShape(1, 0, 1, 15, 14, 16),
-            Block.makeCuboidShape(0, 0, 1, 15, 14, 15)
+            Block.box(1, 0, 0, 15, 14, 15),
+            Block.box(1, 0, 1, 16, 14, 15),
+            Block.box(1, 0, 1, 15, 14, 16),
+            Block.box(0, 0, 1, 15, 14, 15)
     };
 
     public CursedChestBlock(final Properties properties, final ResourceLocation registryName)
     {
         super(properties, () -> ModContent.CURSED_CHEST_TE);
-        setDefaultState(getDefaultState().with(WATERLOGGED, false));
+        registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
         setRegistryName(registryName);
     }
 
@@ -54,48 +54,51 @@ public final class CursedChestBlock extends BaseChestBlock<CursedChestTileEntity
         return new CursedChestTileEntity(getRegistryName());
     }
 
-    @Override @SuppressWarnings("deprecation")
+    @Override
+    @SuppressWarnings("deprecation")
     public FluidState getFluidState(final BlockState state)
     {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    protected void fillStateContainer(final StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(final StateContainer.Builder<Block, BlockState> builder)
     {
-        super.fillStateContainer(builder);
+        super.createBlockStateDefinition(builder);
         builder.add(WATERLOGGED);
     }
 
-    @Override @SuppressWarnings("deprecation")
+    @Override
+    @SuppressWarnings("deprecation")
     public VoxelShape getShape(final BlockState state,
-            final IBlockReader reader, final BlockPos pos, final ISelectionContext context)
+                               final IBlockReader reader, final BlockPos pos, final ISelectionContext context)
     {
-        final CursedChestType type = state.get(TYPE);
+        final CursedChestType type = state.getValue(TYPE);
         if (type == CursedChestType.TOP) { return TOP_SHAPE; }
         else if (type == CursedChestType.BOTTOM) { return BOTTOM_SHAPE; }
         else if (type == CursedChestType.SINGLE) {return SINGLE_SHAPE; }
-        else { return HORIZONTAL_VALUES[(state.get(HORIZONTAL_FACING).getHorizontalIndex() + type.getOffset()) % 4]; }
+        else { return HORIZONTAL_VALUES[(state.getValue(HORIZONTAL_FACING).get2DDataValue() + type.getOffset()) % 4]; }
     }
 
     @Override
     public BlockState getStateForPlacement(final BlockItemUseContext context)
     {
-        return super.getStateForPlacement(context).with(WATERLOGGED,
-                                                        context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER);
+        return super.getStateForPlacement(context).setValue(
+                WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
     }
 
     @Override
-    public BlockState updatePostPlacement(final BlockState state, final Direction offset,
-            final BlockState offsetState, final IWorld world, final BlockPos pos, final BlockPos offsetPos)
+    public BlockState updateShape(final BlockState state, final Direction offset, final BlockState offsetState, final IWorld world,
+                                  final BlockPos pos, final BlockPos offsetPos)
     {
-        if (state.get(WATERLOGGED)) { world.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world)); }
-        return super.updatePostPlacement(state, offset, offsetState, world, pos, offsetPos);
+        if (state.getValue(WATERLOGGED)) { world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world)); }
+        return super.updateShape(state, offset, offsetState, world, pos, offsetPos);
     }
 
-    @Override @SuppressWarnings("deprecation")
-    public BlockRenderType getRenderType(final BlockState state) { return BlockRenderType.ENTITYBLOCK_ANIMATED; }
+    @Override
+    public BlockRenderType getRenderShape(final BlockState state) { return BlockRenderType.ENTITYBLOCK_ANIMATED; }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public SimpleRegistry<Registries.ModeledTierData> getDataRegistry() { return Registries.MODELED; }
 }

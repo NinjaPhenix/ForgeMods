@@ -17,27 +17,27 @@ public final class SingleScreen extends AbstractScreen<SingleContainer, SingleSc
     public SingleScreen(final SingleContainer container, final PlayerInventory playerInventory, final ITextComponent title)
     {
         super(container, playerInventory, title, (screenMeta) -> (screenMeta.WIDTH * 18 + 14) / 2 - 80);
-        xSize = 14 + 18 * SCREEN_META.WIDTH;
-        ySize = 17 + 97 + 18 * SCREEN_META.HEIGHT;
+        imageWidth = 14 + 18 * SCREEN_META.WIDTH;
+        imageHeight = 17 + 97 + 18 * SCREEN_META.HEIGHT;
     }
 
     public List<Rectangle2d> getJeiRectangles()
     {
-        return Collections.singletonList(new Rectangle2d(guiLeft + xSize + 4, guiTop, 22, 22));
+        return Collections.singletonList(new Rectangle2d(leftPos + imageWidth + 4, topPos, 22, 22));
     }
 
     @Override
     protected void init()
     {
         super.init();
-        final int settingsButtonX = guiLeft + xSize + 4;
-        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(settingsButtonX, guiTop, this::renderButtonTooltip));
+        final int settingsButtonX = leftPos + imageWidth + 4;
+        screenSelectButton = addButton(new ScreenTypeSelectionScreenButton(settingsButtonX, topPos, this::renderButtonTooltip));
         final int blanked = SCREEN_META.BLANK_SLOTS;
         if (blanked > 0)
         {
             final int xOffset = 7 + (SCREEN_META.WIDTH - blanked) * 18;
-            blankArea = new Rectangle(guiLeft + xOffset, guiTop + ySize - 115, blanked * 18, 18, xOffset, ySize, SCREEN_META.TEXTURE_WIDTH,
-                    SCREEN_META.TEXTURE_HEIGHT);
+            blankArea = new Rectangle(leftPos + xOffset, topPos + imageHeight - 115, blanked * 18, 18, xOffset, imageHeight,
+                                      SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
         }
     }
 
@@ -49,9 +49,9 @@ public final class SingleScreen extends AbstractScreen<SingleContainer, SingleSc
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+    protected void renderBg(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
-        super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
+        super.renderBg(stack, partialTicks, mouseX, mouseY);
         if (blankArea != null) { blankArea.render(stack); }
     }
 }

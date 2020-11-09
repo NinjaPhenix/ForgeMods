@@ -38,7 +38,7 @@ public abstract class StateButton extends AbstractButton
         super.renderButton(stack, mouseX, mouseY, partialTicks);
         if (active)
         {
-            Minecraft.getInstance().getItemRenderer().renderItemIntoGUI(getButtonIcon(), x + 2, y + 2);
+            Minecraft.getInstance().getItemRenderer().renderGuiItem(getButtonIcon(), x + 2, y + 2);
             if (isHovered())
             {
                 drawHoveringText(stack, narrationMessage, mouseX, mouseY);
@@ -51,8 +51,7 @@ public abstract class StateButton extends AbstractButton
     @Override
     public void onPress() { setInternalState(++state); }
 
-    @Override
-    protected IFormattableTextComponent getNarrationMessage() { return new TranslationTextComponent("gui.narrate.button", narrationMessage); }
+    public IFormattableTextComponent createNarrationMessage() { return new TranslationTextComponent("gui.narrate.button", narrationMessage); }
 
     public void setNarrationMessage(final ITextComponent narrationMessage) { this.narrationMessage = narrationMessage; }
 }

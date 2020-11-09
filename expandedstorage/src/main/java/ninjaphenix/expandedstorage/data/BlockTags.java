@@ -10,7 +10,7 @@ public final class BlockTags extends BlockTagsProvider
     public BlockTags(final DataGenerator generator) { super(generator); }
 
     @Override
-    protected void registerTags() { getOrCreateBuilder(Tags.Blocks.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getFirst().getBlock()); }
+    protected void addTags() { tag(Tags.Blocks.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getFirst().getBlock()); }
 
     @Override
     public String getName() { return "Expanded Storage - Block Tags"; }

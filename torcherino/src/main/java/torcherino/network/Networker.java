@@ -29,16 +29,16 @@ public final class Networker
 
     public void openScreenServer(final World world, final ServerPlayerEntity player, final BlockPos pos)
     {
-        if (world.isRemote) { return; }
-        final TileEntity tile = world.getTileEntity(pos);
+        if (world.isClientSide) { return; }
+        final TileEntity tile = world.getBlockEntity(pos);
         if (tile instanceof TorcherinoTileEntity)
-        { torcherinoChannel.sendTo(((TorcherinoTileEntity) tile).createOpenMessage(), player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT); }
+        { torcherinoChannel.sendTo(((TorcherinoTileEntity) tile).createOpenMessage(), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT); }
     }
 
     public void sendServerTiers(final ServerPlayerEntity player)
     {
         final S2CTierSyncMessage message = new S2CTierSyncMessage(TorcherinoAPI.INSTANCE.getTiers());
-        torcherinoChannel.sendTo(message, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
+        torcherinoChannel.sendTo(message, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     public void processPlayerJoin(final PlayerEvent.PlayerLoggedInEvent event) { sendServerTiers((ServerPlayerEntity) event.getPlayer()); }

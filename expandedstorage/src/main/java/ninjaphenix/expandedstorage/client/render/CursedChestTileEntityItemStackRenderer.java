@@ -15,10 +15,10 @@ public final class CursedChestTileEntityItemStackRenderer extends ItemStackTileE
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void func_239207_a_(final ItemStack stack, final ItemCameraTransforms.TransformType transformType, final MatrixStack matrix,
-                               final IRenderTypeBuffer buffer, final int light, final int overlay)
+    public void renderByItem(final ItemStack stack, final ItemCameraTransforms.TransformType transformType, final MatrixStack matrix,
+                             final IRenderTypeBuffer buffer, final int light, final int overlay)
     {
-        cursedChestRenderEntity.setBlock(Block.getBlockFromItem(stack.getItem()).getRegistryName());
+        cursedChestRenderEntity.setBlock(Block.byItem(stack.getItem()).getRegistryName());
         TileEntityRendererDispatcher.instance.renderItem(cursedChestRenderEntity, matrix, buffer, light, overlay);
     }
 }

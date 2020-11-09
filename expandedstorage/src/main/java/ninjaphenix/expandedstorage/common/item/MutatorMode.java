@@ -24,7 +24,7 @@ public enum MutatorMode
             final int next)
     {
         this.title = title;
-        this.description = description.apply(ExpandedStorage.leftShiftRightClick).mergeStyle(TextFormatting.GRAY);
+        this.description = description.apply(ExpandedStorage.leftShiftRightClick).withStyle(TextFormatting.GRAY);
         this.next = (byte) next;
     }
 }

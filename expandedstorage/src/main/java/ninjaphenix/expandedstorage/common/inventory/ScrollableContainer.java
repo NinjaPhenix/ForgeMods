@@ -35,8 +35,8 @@ public final class ScrollableContainer extends AbstractContainer<ScrollableScree
                                @Nullable final ITextComponent displayName)
     {
         super(ModContent.SCROLLABLE_CONTAINER_TYPE, windowId, pos, inventory, player,
-              getNearestSize(inventory.getSizeInventory()), displayName);
-        for (int i = 0; i < INVENTORY.getSizeInventory(); i++)
+              getNearestSize(inventory.getContainerSize()), displayName);
+        for (int i = 0; i < INVENTORY.getContainerSize(); i++)
         {
             final int x = i % SCREEN_META.WIDTH;
             int y = MathHelper.ceil((((double) (i - x)) / SCREEN_META.WIDTH));
@@ -66,12 +66,12 @@ public final class ScrollableContainer extends AbstractContainer<ScrollableScree
 
     public void moveSlotRange(final int min, final int max, final int yChange)
     {
-        for (int i = min; i < max; i++) { inventorySlots.get(i).yPos += yChange; }
+        for (int i = min; i < max; i++) { slots.get(i).y += yChange; }
     }
 
     public void setSlotRange(final int min, final int max, final IntUnaryOperator yPos)
     {
-        for (int i = min; i < max; i++) { inventorySlots.get(i).yPos = yPos.applyAsInt(i); }
+        for (int i = min; i < max; i++) { slots.get(i).y = yPos.applyAsInt(i); }
     }
 
     public static class Factory implements IContainerFactory<ScrollableContainer>

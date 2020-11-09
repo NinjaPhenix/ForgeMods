@@ -42,8 +42,8 @@ public final class ValueUpdateMessage
         final NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() ->
         {
-            final World world = context.getSender().world;
-            final TileEntity tileEntity = world.getTileEntity(message.pos);
+            final World world = context.getSender().level;
+            final TileEntity tileEntity = world.getBlockEntity(message.pos);
             if (tileEntity instanceof TorcherinoTileEntity)
             {
                 final TorcherinoTileEntity torcherinoTileEntity = (TorcherinoTileEntity) tileEntity;

@@ -52,22 +52,29 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     private final Supplier<TileEntityType<? extends T>> tileEntityType;
     private final TileEntityMerger.ICallback<T, Optional<ISidedInventory>> INVENTORY_GETTER = new TileEntityMerger.ICallback<T, Optional<ISidedInventory>>()
     {
+
         @Override
-        public Optional<ISidedInventory> func_225539_a_(final T first, final T second)
+        public Optional<ISidedInventory> acceptDouble(final T first, final T second)
         {
             return Optional.of(new DoubleSidedInventory(first, second));
         }
 
         @Override
-        public Optional<ISidedInventory> func_225538_a_(final T single) { return Optional.of(single); }
+        public Optional<ISidedInventory> acceptSingle(final T single)
+        {
+            return Optional.of(single);
+        }
 
         @Override
-        public Optional<ISidedInventory> func_225537_b_() { return Optional.empty(); }
+        public Optional<ISidedInventory> acceptNone()
+        {
+            return Optional.empty();
+        }
     };
     private final TileEntityMerger.ICallback<T, Optional<IDataNamedContainerProvider>> CONTAINER_GETTER = new TileEntityMerger.ICallback<T, Optional<IDataNamedContainerProvider>>()
     {
         @Override
-        public Optional<IDataNamedContainerProvider> func_225539_a_(final T first, final T second)
+        public Optional<IDataNamedContainerProvider> acceptDouble(final T first, final T second)
         {
             return Optional.of(new IDataNamedContainerProvider()
             {
@@ -76,7 +83,7 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                 @Override
                 public void writeExtraData(final PacketBuffer buffer)
                 {
-                    buffer.writeBlockPos(first.getPos()).writeInt(inventory.getSizeInventory());
+                    buffer.writeBlockPos(first.getBlockPos()).writeInt(inventory.getContainerSize());
                 }
 
                 @Override
@@ -93,9 +100,9 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                 {
                     if (first.canOpen(player) && second.canOpen(player))
                     {
-                        first.fillWithLoot(player);
-                        second.fillWithLoot(player);
-                        return Networker.INSTANCE.getContainer(windowId, first.getPos(), inventory, player, getDisplayName());
+                        first.unpackLootTable(player);
+                        second.unpackLootTable(player);
+                        return Networker.INSTANCE.getContainer(windowId, first.getBlockPos(), inventory, player, getDisplayName());
                     }
                     return null;
                 }
@@ -103,14 +110,14 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         }
 
         @Override
-        public Optional<IDataNamedContainerProvider> func_225538_a_(final T single)
+        public Optional<IDataNamedContainerProvider> acceptSingle(final T single)
         {
             return Optional.of(new IDataNamedContainerProvider()
             {
                 @Override
                 public void writeExtraData(final PacketBuffer buffer)
                 {
-                    buffer.writeBlockPos(single.getPos()).writeInt(single.getSizeInventory());
+                    buffer.writeBlockPos(single.getBlockPos()).writeInt(single.getContainerSize());
                 }
 
                 @Override
@@ -122,8 +129,8 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                 {
                     if (single.canOpen(player))
                     {
-                        single.fillWithLoot(player);
-                        return Networker.INSTANCE.getContainer(windowId, single.getPos(), single, player, getDisplayName());
+                        single.unpackLootTable(player);
+                        return Networker.INSTANCE.getContainer(windowId, single.getBlockPos(), single, player, getDisplayName());
                     }
                     return null;
                 }
@@ -131,33 +138,36 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         }
 
         @Override
-        public Optional<IDataNamedContainerProvider> func_225537_b_() { return Optional.empty(); }
+        public Optional<IDataNamedContainerProvider> acceptNone()
+        {
+            return Optional.empty();
+        }
     };
 
     protected BaseChestBlock(final Properties builder, final Supplier<TileEntityType<? extends T>> tileEntityType)
     {
         super(builder);
         this.tileEntityType = tileEntityType;
-        setDefaultState(getDefaultState().with(HORIZONTAL_FACING, Direction.NORTH).with(TYPE, CursedChestType.SINGLE));
+        registerDefaultState(defaultBlockState().setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(TYPE, CursedChestType.SINGLE));
     }
 
     public static Direction getDirectionToAttached(final BlockState state)
     {
-        switch (state.get(TYPE))
+        switch (state.getValue(TYPE))
         {
             case TOP: return Direction.DOWN;
-            case BACK: return state.get(HORIZONTAL_FACING);
-            case RIGHT: return state.get(HORIZONTAL_FACING).rotateY();
+            case BACK: return state.getValue(HORIZONTAL_FACING);
+            case RIGHT: return state.getValue(HORIZONTAL_FACING).getClockWise();
             case BOTTOM: return Direction.UP;
-            case FRONT: return state.get(HORIZONTAL_FACING).getOpposite();
-            case LEFT: return state.get(HORIZONTAL_FACING).rotateYCCW();
+            case FRONT: return state.getValue(HORIZONTAL_FACING).getOpposite();
+            case LEFT: return state.getValue(HORIZONTAL_FACING).getCounterClockWise();
             default: throw new IllegalArgumentException("BaseChestBlock#getDirectionToAttached received an unexpected state.");
         }
     }
 
     public static TileEntityMerger.Type getMergeType(final BlockState state)
     {
-        switch (state.get(TYPE))
+        switch (state.getValue(TYPE))
         {
             case TOP:
             case LEFT:
@@ -171,8 +181,8 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
 
     public static CursedChestType getChestType(final Direction facing, final Direction offset)
     {
-        if (facing.rotateY() == offset) { return CursedChestType.RIGHT; }
-        else if (facing.rotateYCCW() == offset) { return CursedChestType.LEFT; }
+        if (facing.getClockWise() == offset) { return CursedChestType.RIGHT; }
+        else if (facing.getCounterClockWise() == offset) { return CursedChestType.LEFT; }
         else if (facing == offset) { return CursedChestType.BACK; }
         else if (facing == offset.getOpposite()) { return CursedChestType.FRONT; }
         else if (offset == Direction.DOWN) { return CursedChestType.TOP; }
@@ -181,9 +191,9 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     }
 
     @Override
-    protected void fillStateContainer(final StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(final StateContainer.Builder<Block, BlockState> builder)
     {
-        super.fillStateContainer(builder);
+        super.createBlockStateDefinition(builder);
         builder.add(HORIZONTAL_FACING, TYPE);
     }
 
@@ -191,40 +201,40 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                                                                         final boolean alwaysOpen)
     {
         final BiPredicate<IWorld, BlockPos> isChestBlocked = alwaysOpen ? (_world, _pos) -> false : this::isBlocked;
-        return TileEntityMerger.func_226924_a_(tileEntityType.get(), BaseChestBlock::getMergeType, BaseChestBlock::getDirectionToAttached,
-                                               HORIZONTAL_FACING, state, world, pos, isChestBlocked);
+        return TileEntityMerger.combineWithNeigbour(tileEntityType.get(), BaseChestBlock::getMergeType, BaseChestBlock::getDirectionToAttached,
+                                                    HORIZONTAL_FACING, state, world, pos, isChestBlocked);
     }
 
-    protected boolean isBlocked(final IWorld world, final BlockPos pos) { return ChestBlock.isBlocked(world, pos); }
+    protected boolean isBlocked(final IWorld world, final BlockPos pos) { return ChestBlock.isChestBlockedAt(world, pos); }
 
     @Nullable
     @Override
-    public final INamedContainerProvider getContainer(final BlockState state, final World world, final BlockPos pos) { return null; }
+    public final INamedContainerProvider getMenuProvider(final BlockState state, final World world, final BlockPos pos) { return null; }
 
     @Override
     @SuppressWarnings("deprecation")
-    public final ActionResultType onBlockActivated(final BlockState state, final World world, final BlockPos pos, final PlayerEntity player,
-                                                   final Hand handIn, final BlockRayTraceResult hit)
+    public final ActionResultType use(final BlockState state, final World world, final BlockPos pos, final PlayerEntity player,
+                                      final Hand handIn, final BlockRayTraceResult hit)
     {
-        if (!world.isRemote)
+        if (!world.isClientSide)
         {
             final Optional<IDataNamedContainerProvider> containerProvider = combine(state, world, pos, false).apply(CONTAINER_GETTER);
             containerProvider.ifPresent(provider ->
                                         {
                                             Networker.INSTANCE.openContainer((ServerPlayerEntity) player, provider);
-                                            player.addStat(getOpenStat());
+                                            player.awardStat(getOpenStat());
                                         });
         }
         return ActionResultType.SUCCESS;
     }
 
     @Override
-    public final void onBlockPlacedBy(final World world, final BlockPos pos, final BlockState state, @Nullable final LivingEntity placer,
-                                      final ItemStack stack)
+    public final void setPlacedBy(final World world, final BlockPos pos, final BlockState state, @Nullable final LivingEntity placer,
+                                  final ItemStack stack)
     {
-        if (stack.hasDisplayName())
+        if (stack.hasCustomHoverName())
         {
-            final TileEntity tileEntity = world.getTileEntity(pos);
+            final TileEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof AbstractChestTileEntity)
             {
                 ((AbstractChestTileEntity) tileEntity).setCustomName(stack.getDisplayName());
@@ -234,17 +244,17 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onReplaced(final BlockState state, final World world, final BlockPos pos, final BlockState newState, final boolean moved)
+    public void onRemove(final BlockState state, final World world, final BlockPos pos, final BlockState newState, final boolean moved)
     {
         if (state.getBlock() != newState.getBlock())
         {
-            final TileEntity tileEntity = world.getTileEntity(pos);
+            final TileEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof IInventory)
             {
-                InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity);
-                world.notifyNeighborsOfStateChange(pos, this);
+                InventoryHelper.dropContents(world, pos, (IInventory) tileEntity);
+                world.updateNeighborsAt(pos, this);
             }
-            super.onReplaced(state, world, pos, newState, moved);
+            super.onRemove(state, world, pos, newState, moved);
         }
     }
 
@@ -253,19 +263,19 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     @Override
     public BlockState getStateForPlacement(final BlockItemUseContext context)
     {
-        final World world = context.getWorld();
-        final BlockPos pos = context.getPos();
+        final World world = context.getLevel();
+        final BlockPos pos = context.getClickedPos();
         CursedChestType chestType = CursedChestType.SINGLE;
-        final Direction direction_1 = context.getPlacementHorizontalFacing().getOpposite();
-        final Direction direction_2 = context.getFace();
-        if (context.func_225518_g_())
+        final Direction direction_1 = context.getHorizontalDirection().getOpposite();
+        final Direction direction_2 = context.getClickedFace();
+        if (context.isSecondaryUseActive())
         {
             final BlockState state;
             final Direction direction_3;
             if (direction_2.getAxis().isVertical())
             {
-                state = world.getBlockState(pos.offset(direction_2.getOpposite()));
-                direction_3 = state.getBlock() == this && state.get(TYPE) == CursedChestType.SINGLE ? state.get(HORIZONTAL_FACING) : null;
+                state = world.getBlockState(pos.relative(direction_2.getOpposite()));
+                direction_3 = state.getBlock() == this && state.getValue(TYPE) == CursedChestType.SINGLE ? state.getValue(HORIZONTAL_FACING) : null;
                 if (direction_3 != null && direction_3.getAxis() != direction_2.getAxis() && direction_3 == direction_1)
                 {
                     chestType = direction_2 == Direction.UP ? CursedChestType.TOP : CursedChestType.BOTTOM;
@@ -274,18 +284,18 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
             else
             {
                 Direction offsetDir = direction_2.getOpposite();
-                final BlockState clickedBlock = world.getBlockState(pos.offset(offsetDir));
-                if (clickedBlock.getBlock() == this && clickedBlock.get(TYPE) == CursedChestType.SINGLE)
+                final BlockState clickedBlock = world.getBlockState(pos.relative(offsetDir));
+                if (clickedBlock.getBlock() == this && clickedBlock.getValue(TYPE) == CursedChestType.SINGLE)
                 {
-                    if (clickedBlock.get(HORIZONTAL_FACING) == direction_2 && clickedBlock.get(HORIZONTAL_FACING) == direction_1)
+                    if (clickedBlock.getValue(HORIZONTAL_FACING) == direction_2 && clickedBlock.getValue(HORIZONTAL_FACING) == direction_1)
                     {
                         chestType = CursedChestType.FRONT;
                     }
                     else
                     {
-                        state = world.getBlockState(pos.offset(direction_2.getOpposite()));
-                        if (state.get(HORIZONTAL_FACING).getHorizontalIndex() < 2) { offsetDir = offsetDir.getOpposite(); }
-                        if (direction_1 == state.get(HORIZONTAL_FACING))
+                        state = world.getBlockState(pos.relative(direction_2.getOpposite()));
+                        if (state.getValue(HORIZONTAL_FACING).get2DDataValue() < 2) { offsetDir = offsetDir.getOpposite(); }
+                        if (direction_1 == state.getValue(HORIZONTAL_FACING))
                         {
                             chestType = (offsetDir == Direction.WEST || offsetDir == Direction.NORTH) ? CursedChestType.LEFT : CursedChestType.RIGHT;
                         }
@@ -297,8 +307,8 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
         {
             for (final Direction dir : Direction.values())
             {
-                final BlockState state = world.getBlockState(pos.offset(dir));
-                if (state.getBlock() != this || state.get(TYPE) != CursedChestType.SINGLE || state.get(HORIZONTAL_FACING) != direction_1)
+                final BlockState state = world.getBlockState(pos.relative(dir));
+                if (state.getBlock() != this || state.getValue(TYPE) != CursedChestType.SINGLE || state.getValue(HORIZONTAL_FACING) != direction_1)
                 {
                     continue;
                 }
@@ -310,44 +320,44 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
                 }
             }
         }
-        return getDefaultState().with(HORIZONTAL_FACING, direction_1).with(TYPE, chestType);
+        return defaultBlockState().setValue(HORIZONTAL_FACING, direction_1).setValue(TYPE, chestType);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updatePostPlacement(final BlockState state, final Direction offset, final BlockState offsetState, final IWorld world, final BlockPos pos,
-                                          final BlockPos offsetPos)
+    public BlockState updateShape(final BlockState state, final Direction offset, final BlockState offsetState, final IWorld world,
+                                  final BlockPos pos, final BlockPos offsetPos)
     {
         final TileEntityMerger.Type mergeType = getMergeType(state);
         if (mergeType == TileEntityMerger.Type.SINGLE)
         {
-            final Direction facing = state.get(HORIZONTAL_FACING);
-            if (!offsetState.hasProperty(TYPE)) { return state.with(TYPE, CursedChestType.SINGLE); }
+            final Direction facing = state.getValue(HORIZONTAL_FACING);
+            if (!offsetState.hasProperty(TYPE)) { return state.setValue(TYPE, CursedChestType.SINGLE); }
             final CursedChestType newType = getChestType(facing, offset);
-            if (offsetState.get(TYPE) == newType.getOpposite() && facing == offsetState.get(HORIZONTAL_FACING))
+            if (offsetState.getValue(TYPE) == newType.getOpposite() && facing == offsetState.getValue(HORIZONTAL_FACING))
             {
-                return state.with(TYPE, newType);
+                return state.setValue(TYPE, newType);
             }
         }
-        else if (world.getBlockState(pos.offset(getDirectionToAttached(state))).getBlock() != this)
+        else if (world.getBlockState(pos.relative(getDirectionToAttached(state))).getBlock() != this)
         {
-            return state.with(TYPE, CursedChestType.SINGLE);
+            return state.setValue(TYPE, CursedChestType.SINGLE);
         }
-        return super.updatePostPlacement(state, offset, offsetState, world, pos, offsetPos);
+        return super.updateShape(state, offset, offsetState, world, pos, offsetPos);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getComparatorInputOverride(final BlockState state, final World world, final BlockPos pos)
+    public int getAnalogOutputSignal(final BlockState state, final World world, final BlockPos pos)
     {
-        return combine(state, world, pos, true).apply(INVENTORY_GETTER).map(Container::calcRedstoneFromInventory).orElse(0);
+        return combine(state, world, pos, true).apply(INVENTORY_GETTER).map(Container::getRedstoneSignalFromContainer).orElse(0);
     }
 
     private Stat<ResourceLocation> getOpenStat() { return Stats.CUSTOM.get(Stats.OPEN_CHEST); }
 
     @Nullable
     @Override
-    public final TileEntity createNewTileEntity(@Nullable final IBlockReader world) { return null; }
+    public final TileEntity newBlockEntity(@Nullable final IBlockReader world) { return null; }
 
     @Override
     public final boolean hasTileEntity(@Nullable final BlockState state) { return true; }
@@ -359,24 +369,24 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     @SuppressWarnings("deprecation")
     public final BlockState mirror(final BlockState state, final Mirror mirror)
     {
-        return state.rotate(mirror.toRotation(state.get(HORIZONTAL_FACING)));
+        return state.rotate(mirror.getRotation(state.getValue(HORIZONTAL_FACING)));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public final BlockState rotate(final BlockState state, final Rotation rotation)
     {
-        return state.with(HORIZONTAL_FACING, rotation.rotate(state.get(HORIZONTAL_FACING)));
+        return state.setValue(HORIZONTAL_FACING, rotation.rotate(state.getValue(HORIZONTAL_FACING)));
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public final boolean hasComparatorInputOverride(final BlockState state) { return true; }
+    public final boolean hasAnalogOutputSignal(final BlockState state) { return true; }
 
     public abstract <R extends Registries.TierData> SimpleRegistry<R> getDataRegistry();
 
     @Override // keep for hoppers.
-    public ISidedInventory createInventory(final BlockState state, final IWorld world, final BlockPos pos)
+    public ISidedInventory getContainer(final BlockState state, final IWorld world, final BlockPos pos)
     {
         return combine(state, world, pos, true).apply(INVENTORY_GETTER).orElse(null);
     }

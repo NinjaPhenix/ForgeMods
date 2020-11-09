@@ -36,7 +36,7 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
 
     @Override @SuppressWarnings("ConstantConditions")
     public ITextComponent getName()
-    { return hasCustomName() ? customName : new TranslationTextComponent(world.getBlockState(pos).getBlock().getTranslationKey()); }
+    { return hasCustomName() ? customName : new TranslationTextComponent(level.getBlockState(worldPosition).getBlock().getDescriptionId()); }
 
     @Override
     public boolean hasCustomName() { return customName != null; }
@@ -51,19 +51,19 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
     {
         if (tierName == null)
         {
-            final Block block = world.getBlockState(pos).getBlock();
+            final Block block = level.getBlockState(worldPosition).getBlock();
             if (block instanceof TierSupplier) { tierName = ((TierSupplier) block).getTierName(); }
         }
         return tierName;
     }
 
-    public OpenScreenMessage createOpenMessage() { return new OpenScreenMessage(pos, getName(), xRange, zRange, yRange, speed, redstoneMode); }
+    public OpenScreenMessage createOpenMessage() { return new OpenScreenMessage(worldPosition, getName(), xRange, zRange, yRange, speed, redstoneMode); }
 
     @Override
-    public void read(final BlockState state, final CompoundNBT tag)
+    public void load(final BlockState state, final CompoundNBT tag)
     {
-        super.read(state, tag);
-        if (tag.contains("CustomName", 8)) { setCustomName(ITextComponent.Serializer.func_240643_a_(tag.getString("CustomName"))); }
+        super.load(state, tag);
+        if (tag.contains("CustomName", 8)) { setCustomName(ITextComponent.Serializer.fromJson(tag.getString("CustomName"))); }
         this.xRange = tag.getInt("XRange");
         this.zRange = tag.getInt("ZRange");
         this.yRange = tag.getInt("YRange");
@@ -72,9 +72,9 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
     }
 
     @Override
-    public CompoundNBT write(final CompoundNBT tag)
+    public CompoundNBT save(final CompoundNBT tag)
     {
-        super.write(tag);
+        super.save(tag);
         if (hasCustomName()) { tag.putString("CustomName", ITextComponent.Serializer.toJson(getCustomName())); }
         tag.putInt("XRange", this.xRange);
         tag.putInt("ZRange", this.zRange);
@@ -90,35 +90,35 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
         this.xRange = xRange;
         this.zRange = zRange;
         this.yRange = yRange;
-        area = BlockPos.getAllInBoxMutable(pos.getX() - xRange, pos.getY() - yRange, pos.getZ() - zRange, pos.getX() + xRange, pos.getY() + yRange,
-                pos.getZ() + zRange);
+        area = BlockPos.betweenClosed(worldPosition.getX() - xRange, worldPosition.getY() - yRange, worldPosition.getZ() - zRange, worldPosition.getX() + xRange, worldPosition.getY() + yRange,
+                                      worldPosition.getZ() + zRange);
         this.speed = speed;
         this.redstoneMode = redstoneMode;
-        final BlockState state = world.getBlockState(pos);
-        if (state.hasProperty(BlockStateProperties.POWERED)) { setPoweredByRedstone(state.get(BlockStateProperties.POWERED)); }
-        this.markDirty();
+        final BlockState state = level.getBlockState(worldPosition);
+        if (state.hasProperty(BlockStateProperties.POWERED)) { setPoweredByRedstone(state.getValue(BlockStateProperties.POWERED)); }
+        this.setChanged();
     }
 
     @Override @SuppressWarnings("ConstantConditions")
     public void tick()
     {
-        if (world.isRemote) { return; }
+        if (level.isClientSide) { return; }
         if (!active || speed == 0 || (xRange == 0 && yRange == 0 && zRange == 0)) { return; }
-        randomTicks = world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED);
+        randomTicks = level.getGameRules().getInt(GameRules.RULE_RANDOMTICKING);
         area.forEach(this::tickBlock);
     }
 
     @SuppressWarnings({ "ConstantConditions", "deprecation" })
     private void tickBlock(final BlockPos blockPos)
     {
-        final BlockState blockState = world.getBlockState(blockPos);
+        final BlockState blockState = level.getBlockState(blockPos);
         final Block block = blockState.getBlock();
         if (TorcherinoAPI.INSTANCE.isBlockBlacklisted(block)) { return; }
-        if (block.ticksRandomly(blockState) &&
-                world.getRandom().nextInt(MathHelper.clamp(4096 / (speed * Config.INSTANCE.random_tick_rate), 1, 4096)) < randomTicks)
-        { block.randomTick(blockState, (ServerWorld) world, blockPos, world.getRandom()); }
+        if (block.isRandomlyTicking(blockState) &&
+                level.getRandom().nextInt(MathHelper.clamp(4096 / (speed * Config.INSTANCE.random_tick_rate), 1, 4096)) < randomTicks)
+        { block.randomTick(blockState, (ServerWorld) level, blockPos, level.getRandom()); }
         if (!block.hasTileEntity(blockState)) { return; }
-        final TileEntity tileEntity = world.getTileEntity(blockPos);
+        final TileEntity tileEntity = level.getBlockEntity(blockPos);
         if (tileEntity == null || tileEntity.isRemoved() || TorcherinoAPI.INSTANCE.isTileEntityBlacklisted(tileEntity.getType()) ||
                 !(tileEntity instanceof ITickableTileEntity)) { return; }
         for (int i = 0; i < speed; i++)
@@ -140,10 +140,10 @@ public class TorcherinoTileEntity extends TileEntity implements INameable, ITick
     public void onLoad()
     {
         super.onLoad();
-        if (world.isRemote) { return; }
-        area = BlockPos.getAllInBoxMutable(pos.getX() - xRange, pos.getY() - yRange, pos.getZ() - zRange, pos.getX() + xRange, pos.getY() + yRange,
-                pos.getZ() + zRange);
-        world.getServer().enqueue(new TickDelayedTask(world.getServer().getTickCounter(),
-                () -> setPoweredByRedstone(world.getBlockState(pos).get(BlockStateProperties.POWERED))));
+        if (level.isClientSide) { return; }
+        area = BlockPos.betweenClosed(worldPosition.getX() - xRange, worldPosition.getY() - yRange, worldPosition.getZ() - zRange, worldPosition.getX() + xRange, worldPosition.getY() + yRange,
+                worldPosition.getZ() + zRange);
+        level.getServer().tell(new TickDelayedTask(level.getServer().getTickCount(),
+                () -> setPoweredByRedstone(level.getBlockState(worldPosition).getValue(BlockStateProperties.POWERED))));
     }
 }

@@ -53,14 +53,14 @@ public class TorcherinoScreen extends Screen
     public static void open(final OpenScreenMessage msg)
     {
         final Minecraft minecraft = Minecraft.getInstance();
-        minecraft.deferTask(() ->
+        minecraft.submitAsync(() ->
         {
-            final TileEntity tileEntity = minecraft.player.world.getTileEntity(msg.pos);
+            final TileEntity tileEntity = minecraft.player.level.getBlockEntity(msg.pos);
             if (tileEntity instanceof TorcherinoTileEntity)
             {
                 final TorcherinoScreen screen = new TorcherinoScreen((TorcherinoTileEntity) tileEntity, msg.title, msg.xRange, msg.zRange, msg.yRange,
                         msg.speed, msg.redstoneMode);
-                minecraft.displayGuiScreen(screen);
+                minecraft.setScreen(screen);
             }
         });
     }
@@ -75,49 +75,49 @@ public class TorcherinoScreen extends Screen
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 20, 205, (double) (speed - 1) / (tier.MAX_SPEED - 1), tier.MAX_SPEED - 1)
         {
             @Override
-            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.speed", 100 * TorcherinoScreen.this.speed)); }
+            protected void updateMessage() { setMessage(new TranslationTextComponent("gui.torcherino.speed", 100 * TorcherinoScreen.this.speed)); }
 
             @Override
-            protected void func_230972_a_()
+            protected void applyValue()
             {
-                TorcherinoScreen.this.speed = 1 + (int) Math.round(sliderValue * (TorcherinoScreen.this.tier.MAX_SPEED - 1));
-                sliderValue = (double) (speed - 1) / (tier.MAX_SPEED - 1);
+                TorcherinoScreen.this.speed = 1 + (int) Math.round(value * (TorcherinoScreen.this.tier.MAX_SPEED - 1));
+                value = (double) (speed - 1) / (tier.MAX_SPEED - 1);
             }
         });
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 45, 205, (double) xRange / tier.XZ_RANGE, tier.XZ_RANGE)
         {
             @Override
-            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.x_range", TorcherinoScreen.this.xRange * 2 + 1)); }
+            protected void updateMessage() { setMessage(new TranslationTextComponent("gui.torcherino.x_range", TorcherinoScreen.this.xRange * 2 + 1)); }
 
             @Override
-            protected void func_230972_a_()
+            protected void applyValue()
             {
-                TorcherinoScreen.this.xRange = (int) Math.round(sliderValue * TorcherinoScreen.this.tier.XZ_RANGE);
-                sliderValue = (double) xRange / tier.XZ_RANGE;
+                TorcherinoScreen.this.xRange = (int) Math.round(value * TorcherinoScreen.this.tier.XZ_RANGE);
+                value = (double) xRange / tier.XZ_RANGE;
             }
         });
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 70, 205, (double) zRange / tier.XZ_RANGE, tier.XZ_RANGE)
         {
             @Override
-            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.z_range", TorcherinoScreen.this.zRange * 2 + 1)); }
+            protected void updateMessage() { setMessage(new TranslationTextComponent("gui.torcherino.z_range", TorcherinoScreen.this.zRange * 2 + 1)); }
 
             @Override
-            protected void func_230972_a_()
+            protected void applyValue()
             {
-                TorcherinoScreen.this.zRange = (int) Math.round(sliderValue * TorcherinoScreen.this.tier.XZ_RANGE);
-                sliderValue = (double) zRange / tier.XZ_RANGE;
+                TorcherinoScreen.this.zRange = (int) Math.round(value * TorcherinoScreen.this.tier.XZ_RANGE);
+                value = (double) zRange / tier.XZ_RANGE;
             }
         });
         addButton(new GradatedSlider(guiLeft + 8, guiTop + 95, 205, (double) yRange / tier.Y_RANGE, tier.Y_RANGE)
         {
             @Override
-            protected void func_230979_b_() { setMessage(new TranslationTextComponent("gui.torcherino.y_range", TorcherinoScreen.this.yRange * 2 + 1)); }
+            protected void updateMessage() { setMessage(new TranslationTextComponent("gui.torcherino.y_range", TorcherinoScreen.this.yRange * 2 + 1)); }
 
             @Override
-            protected void func_230972_a_()
+            protected void applyValue()
             {
-                TorcherinoScreen.this.yRange = (int) Math.round(sliderValue * TorcherinoScreen.this.tier.Y_RANGE);
-                sliderValue = (double) yRange / tier.Y_RANGE;
+                TorcherinoScreen.this.yRange = (int) Math.round(value * TorcherinoScreen.this.tier.Y_RANGE);
+                value = (double) yRange / tier.Y_RANGE;
             }
         });
         addButton(new StateButton(guiLeft + 217, guiTop + 20, redstoneMode)
@@ -152,7 +152,7 @@ public class TorcherinoScreen extends Screen
                         break;
                 }
                 setNarrationMessage(new TranslationTextComponent("gui.torcherino.mode", modeText));
-                nextNarration = Util.milliTime() + 250L;
+                nextNarration = Util.getMillis() + 250L;
                 TorcherinoScreen.this.redstoneMode = state;
             }
 
@@ -175,17 +175,17 @@ public class TorcherinoScreen extends Screen
     {
         renderBackground(stack);
         RenderSystem.color4f(1, 1, 1, 1);
-        minecraft.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
+        minecraft.getTextureManager().bind(BACKGROUND_TEXTURE);
         blit(stack, guiLeft, guiTop, 0, 0, xSize, ySize);
-        font.func_243248_b(stack, title, guiLeft + (xSize - font.func_238414_a_(title)) / 2.0F, guiTop + 6, 4210752);
+        font.draw(stack, title, guiLeft + (xSize - font.width(title)) / 2.0F, guiTop + 6, 4210752);
         super.render(stack, mouseX, mouseY, partialTicks);
     }
 
     @Override
-    public void onClose()
+    public void removed()
     {
-        Networker.INSTANCE.torcherinoChannel.sendToServer(new ValueUpdateMessage(tileEntity.getPos(), xRange, zRange, yRange, speed, redstoneMode));
-        super.onClose();
+        Networker.INSTANCE.torcherinoChannel.sendToServer(new ValueUpdateMessage(tileEntity.getBlockPos(), xRange, zRange, yRange, speed, redstoneMode));
+        super.removed();
     }
 
     @Override
@@ -194,8 +194,8 @@ public class TorcherinoScreen extends Screen
     @SuppressWarnings("ConstantConditions")
     public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
     {
-        if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode)))
-        { closeScreen(); return true; }
+        if (keyCode == 256 || minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(keyCode, scanCode)))
+        { onClose(); return true; }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 }

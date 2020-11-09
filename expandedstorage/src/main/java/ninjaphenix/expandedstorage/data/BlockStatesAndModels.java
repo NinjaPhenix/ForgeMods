@@ -69,10 +69,10 @@ public final class BlockStatesAndModels extends BlockStateProvider
     {
         getVariantBuilder(block).forAllStatesExcept(state -> {
             final String blockPath = block.getRegistryName().getPath();
-            final CursedChestType chestType = state.get(BaseChestBlock.TYPE);
+            final CursedChestType chestType = state.getValue(BaseChestBlock.TYPE);
             final ConfiguredModel[] result = ConfiguredModel
                     .builder()
-                    .rotationY(((state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalIndex() + 2) % 4) * 90)
+                    .rotationY(((state.getValue(BlockStateProperties.HORIZONTAL_FACING).get2DDataValue() + 2) % 4) * 90)
                     .modelFile(oldChestGetModel(blockPath, chestType))
                     .build();
             if (chestType == CursedChestType.SINGLE) { SINGLE_OLD_MODELS.put(block.asItem(), result[0].model); }
@@ -139,7 +139,7 @@ public final class BlockStatesAndModels extends BlockStateProvider
     @SuppressWarnings("ConstantConditions")
     private void chestBlock(final CursedChestBlock block)
     {
-        getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(chestGetParticleTexture(state.get(BaseChestBlock.TYPE),
+        getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(chestGetParticleTexture(state.getValue(BaseChestBlock.TYPE),
                 block.getRegistryName().getPath())).build(), BlockStateProperties.WATERLOGGED, BlockStateProperties.HORIZONTAL_FACING);
     }
 

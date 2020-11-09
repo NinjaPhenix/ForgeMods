@@ -12,8 +12,8 @@ public abstract class GradatedSlider extends AbstractSlider
     {
         super(x, y, width, 20, StringTextComponent.EMPTY, progress);
         nudgeAmount = 1.0F / permutations;
-        func_230972_a_();
-        func_230979_b_();
+        applyValue();
+        updateMessage();
     }
 
     @Override
@@ -22,17 +22,17 @@ public abstract class GradatedSlider extends AbstractSlider
         final boolean leftArrowKeyDown = keyCode == 263;
         if (leftArrowKeyDown || keyCode == 262)
         {
-            setValue(sliderValue + (leftArrowKeyDown ? -nudgeAmount : nudgeAmount));
+            setValue(value + (leftArrowKeyDown ? -nudgeAmount : nudgeAmount));
             return true;
         }
         return false;
     }
 
-    private void setValue(final double value)
+    private void setValue(final double valueIn)
     {
-        final double oldValue = sliderValue;
-        sliderValue = MathHelper.clamp(value, 0, 1);
-        if (oldValue != sliderValue) { func_230972_a_(); }
-        func_230979_b_();
+        final double oldValue = valueIn;
+        value = MathHelper.clamp(valueIn, 0, 1);
+        if (oldValue != value) { applyValue(); }
+        updateMessage();
     }
 }

@@ -11,17 +11,17 @@ import java.util.function.Function;
 
 public final class Registries
 {
-    public static final SimpleRegistry<ModeledTierData> MODELED = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
-            ExpandedStorage.getRl("modeled")), Lifecycle.experimental());
-    public static final SimpleRegistry<TierData> OLD = new SimpleRegistry<>(RegistryKey.func_240905_a_(ExpandedStorage.getRl("root"),
-            ExpandedStorage.getRl("old")), Lifecycle.experimental());
+    public static final SimpleRegistry<ModeledTierData> MODELED = new SimpleRegistry<>(
+            RegistryKey.create(ExpandedStorage.getRl("root"), ExpandedStorage.getRl("modeled")), Lifecycle.experimental());
+    public static final SimpleRegistry<TierData> OLD = new SimpleRegistry<>(
+            RegistryKey.create(ExpandedStorage.getRl("root"), ExpandedStorage.getRl("old")), Lifecycle.experimental());
 
     public static class ModeledTierData extends TierData
     {
         private final ResourceLocation singleTexture, topTexture, backTexture, rightTexture, bottomTexture, frontTexture, leftTexture;
 
         public ModeledTierData(final int slots, final ResourceLocation blockId, final ITextComponent containerName,
-                final Function<CursedChestType, ResourceLocation> textureFunction)
+                               final Function<CursedChestType, ResourceLocation> textureFunction)
         {
             super(slots, blockId, containerName);
             singleTexture = textureFunction.apply(CursedChestType.SINGLE);

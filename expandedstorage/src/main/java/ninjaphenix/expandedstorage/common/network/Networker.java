@@ -73,7 +73,7 @@ public final class Networker
 
     public void setPlayerPreference(final PlayerEntity player, @Nullable final ResourceLocation containerType)
     {
-        final UUID uuid = player.getUniqueID();
+        final UUID uuid = player.getUUID();
         if (containerFactories.containsKey(containerType))
         {
             playerPreferences.put(uuid, containerType);
@@ -90,11 +90,11 @@ public final class Networker
         }
     }
 
-    void removePlayerPreferenceCallback(final PlayerEntity player) { preferenceCallbacks.remove(player.getUniqueID()); }
+    void removePlayerPreferenceCallback(final PlayerEntity player) { preferenceCallbacks.remove(player.getUUID()); }
 
     public void openContainer(final ServerPlayerEntity player, final IDataNamedContainerProvider containerProvider)
     {
-        final UUID uuid = player.getUniqueID();
+        final UUID uuid = player.getUUID();
         if (playerPreferences.containsKey(uuid) && containerFactories.containsKey(playerPreferences.get(uuid)))
         {
             NetworkHooks.openGui(player, containerProvider, containerProvider::writeExtraData);
@@ -107,14 +107,14 @@ public final class Networker
 
     void openSelectScreen(final ServerPlayerEntity player, @Nullable final Consumer<ResourceLocation> preferenceSetCallback)
     {
-        if (preferenceSetCallback != null) { preferenceCallbacks.put(player.getUniqueID(), preferenceSetCallback); }
+        if (preferenceSetCallback != null) { preferenceCallbacks.put(player.getUUID(), preferenceSetCallback); }
         INSTANCE.openSelectionScreen(player);
     }
 
     public Container getContainer(final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player,
                                   final ITextComponent displayName)
     {
-        final UUID uuid = player.getUniqueID();
+        final UUID uuid = player.getUUID();
         final ResourceLocation playerPreference;
         if (playerPreferences.containsKey(uuid) && containerFactories.containsKey(playerPreference = playerPreferences.get(uuid)))
         {

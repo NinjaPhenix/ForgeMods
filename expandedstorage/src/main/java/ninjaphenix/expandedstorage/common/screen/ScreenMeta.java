@@ -8,7 +8,7 @@ public abstract class ScreenMeta
     public final ResourceLocation TEXTURE;
 
     protected ScreenMeta(final int width, final int height, final int totalSlots, final ResourceLocation texture, final int textureWidth,
-            final int textureHeight)
+                         final int textureHeight)
     {
         WIDTH = width;
         HEIGHT = height;

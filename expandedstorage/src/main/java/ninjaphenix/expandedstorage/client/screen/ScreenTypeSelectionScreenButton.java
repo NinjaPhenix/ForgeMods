@@ -19,16 +19,17 @@ public final class ScreenTypeSelectionScreenButton extends Button
     {
         super(x, y, 22, 22, new TranslationTextComponent("screen.expandedstorage.change_screen_button"), button ->
         {
-            Minecraft.getInstance().player.closeScreenAndDropStack();
+            Minecraft.getInstance().player.clientSideCloseContainer();
             Networker.INSTANCE.requestOpenSelectionScreen();
         }, onTooltip);
         TEXTURE = ExpandedStorage.getRl("textures/gui/select_screen_button.png");
     }
 
-    @Override @SuppressWarnings("deprecation")
+    @Override
+    @SuppressWarnings("deprecation")
     public void renderButton(final MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks)
     {
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();

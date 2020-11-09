@@ -15,7 +15,7 @@ public final class OldChestTileEntity extends AbstractChestTileEntity
     protected void initialize(final ResourceLocation block)
     {
         this.block = block;
-        final Registries.TierData data = Registries.OLD.getOrDefault(block);
+        final Registries.TierData data = Registries.OLD.get(block);
         defaultContainerName = data.getContainerName();
         inventorySize = data.getSlotCount();
         inventory = NonNullList.withSize(inventorySize, ItemStack.EMPTY);

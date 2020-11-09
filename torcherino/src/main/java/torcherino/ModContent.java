@@ -59,11 +59,11 @@ public final class ModContent
             PARTICLE_TYPES.register(getPath(tierID, "flame"), particleType.delegate);
             final TorcherinoBlock standingBlock = new TorcherinoBlock(tierID, particleType);
             final TorcherinoWallBlock wallBlock = new TorcherinoWallBlock(standingBlock, particleType);
-            final Item torcherinoItem = new WallOrFloorItem(standingBlock, wallBlock, new Item.Properties().group(ItemGroup.DECORATIONS));
+            final Item torcherinoItem = new WallOrFloorItem(standingBlock, wallBlock, new Item.Properties().tab(ItemGroup.TAB_DECORATIONS));
             final JackoLanterinoBlock jackoLanterinoBlock = new JackoLanterinoBlock(tierID);
-            final Item jackoLanterinoItem = new BlockItem(jackoLanterinoBlock, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
+            final Item jackoLanterinoItem = new BlockItem(jackoLanterinoBlock, new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS));
             final LanterinoBlock lanterinoBlock = new LanterinoBlock(tierID);
-            final Item lanterinoItem = new BlockItem(lanterinoBlock, new Item.Properties().group(ItemGroup.DECORATIONS));
+            final Item lanterinoItem = new BlockItem(lanterinoBlock, new Item.Properties().tab(ItemGroup.TAB_DECORATIONS));
             final String torcherinoPath = getPath(tierID, "torcherino");
             final String jackoLanterinoPath = getPath(tierID, "lanterino");
             final String lanterinoPath = getPath(tierID, "lantern");
@@ -77,11 +77,11 @@ public final class ModContent
             TorcherinoAPI.INSTANCE.blacklistBlock(lanterinoBlock);
             if (FMLLoader.getDist().isClient())
             {
-                Minecraft.getInstance().deferTask(() ->
+                Minecraft.getInstance().submitAsync(() ->
                 {
-                    RenderTypeLookup.setRenderLayer(standingBlock, RenderType.getCutout());
-                    RenderTypeLookup.setRenderLayer(wallBlock, RenderType.getCutout());
-                    RenderTypeLookup.setRenderLayer(lanterinoBlock, RenderType.getCutout());
+                    RenderTypeLookup.setRenderLayer(standingBlock, RenderType.cutout());
+                    RenderTypeLookup.setRenderLayer(wallBlock, RenderType.cutout());
+                    RenderTypeLookup.setRenderLayer(lanterinoBlock, RenderType.cutout());
                 });
             }
             ITEMS.register(torcherinoPath, torcherinoItem.delegate);
@@ -93,7 +93,7 @@ public final class ModContent
     @SubscribeEvent
     public static void registerParticleFactories(final ParticleFactoryRegisterEvent event)
     {
-        PARTICLE_TYPES.getEntries().forEach(registryObject -> Minecraft.getInstance().particles.registerFactory((BasicParticleType) registryObject.get(),
+        PARTICLE_TYPES.getEntries().forEach(registryObject -> Minecraft.getInstance().particleEngine.register((BasicParticleType) registryObject.get(),
                 FlameParticle.Factory::new));
     }
 }

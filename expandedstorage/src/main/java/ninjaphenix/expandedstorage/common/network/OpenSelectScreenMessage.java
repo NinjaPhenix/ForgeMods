@@ -36,13 +36,13 @@ public final class OpenSelectScreenMessage
             return;
         }
         final ServerPlayerEntity sender = context.getSender();
-        final AbstractContainer<?> container = (AbstractContainer<?>) sender.openContainer;
+        final AbstractContainer<?> container = (AbstractContainer<?>) sender.containerMenu;
         Networker.INSTANCE.openSelectScreen(sender, (type) -> Networker.INSTANCE.openContainer(sender, new IDataNamedContainerProvider()
         {
             @Override
             public void writeExtraData(final PacketBuffer buffer)
             {
-                buffer.writeBlockPos(container.ORIGIN).writeInt(container.getInv().getSizeInventory());
+                buffer.writeBlockPos(container.ORIGIN).writeInt(container.getInv().getContainerSize());
             }
 
             @Nullable
@@ -59,5 +59,5 @@ public final class OpenSelectScreenMessage
     }
 
     @OnlyIn(Dist.CLIENT)
-    private static void handleClient() { Minecraft.getInstance().displayGuiScreen(new SelectContainerScreen()); }
+    private static void handleClient() { Minecraft.getInstance().setScreen(new SelectContainerScreen()); }
 }

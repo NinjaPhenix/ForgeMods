@@ -11,7 +11,7 @@ public final class ItemTags extends ItemTagsProvider
     public ItemTags(final DataGenerator generator, final BlockTagsProvider blockTagsProvider) { super(generator, blockTagsProvider); }
 
     @Override
-    protected void registerTags() { getOrCreateBuilder(Tags.Items.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getSecond()); }
+    protected void addTags() { tag(Tags.Items.CHESTS_WOODEN).add(ModContent.WOOD_CHEST.getSecond()); }
 
     @Override
     public String getName() { return "Expanded Storage - Item Tags"; }

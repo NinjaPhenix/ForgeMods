@@ -33,7 +33,7 @@ public final class PagedContainer extends AbstractContainer<PagedScreenMeta>
     public PagedContainer(final int windowId, final BlockPos pos, final IInventory inventory, final PlayerEntity player,
                           @Nullable final ITextComponent displayName)
     {
-        super(ModContent.PAGED_CONTAINER_TYPE, windowId, pos, inventory, player, getNearestSize(inventory.getSizeInventory()), displayName);
+        super(ModContent.PAGED_CONTAINER_TYPE, windowId, pos, inventory, player, getNearestSize(inventory.getContainerSize()), displayName);
         resetSlotPositions(true);
         final int left = (SCREEN_META.WIDTH * 18 + 14) / 2 - 80, top = 18 + 14 + (SCREEN_META.HEIGHT * 18);
         for (int x = 0; x < 9; x++)
@@ -60,20 +60,20 @@ public final class PagedContainer extends AbstractContainer<PagedScreenMeta>
 
     public void resetSlotPositions(final boolean makeSlots)
     {
-        for (int i = 0; i < INVENTORY.getSizeInventory(); i++)
+        for (int i = 0; i < INVENTORY.getContainerSize(); i++)
         {
             final int x = i % SCREEN_META.WIDTH;
             int y = MathHelper.ceil((((double) (i - x)) / SCREEN_META.WIDTH));
             if (y >= SCREEN_META.HEIGHT) { y = (18 * (y % SCREEN_META.HEIGHT)) - 2000; }
             else {y = y * 18;}
             if (makeSlots) { addSlot(new Slot(INVENTORY, i, x * 18 + 8, y + 18)); }
-            else { inventorySlots.get(i).yPos = y + 18; }
+            else { slots.get(i).y = y + 18; }
         }
     }
 
     public void moveSlotRange(final int min, final int max, final int yChange)
     {
-        for (int i = min; i < max; i++) { inventorySlots.get(i).yPos += yChange; }
+        for (int i = min; i < max; i++) { slots.get(i).y += yChange; }
     }
 
     public static class Factory implements IContainerFactory<PagedContainer>

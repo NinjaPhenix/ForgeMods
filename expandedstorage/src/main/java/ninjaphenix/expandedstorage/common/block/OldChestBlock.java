@@ -3,6 +3,7 @@ package ninjaphenix.expandedstorage.common.block;
 import javax.annotation.Nullable;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -34,17 +35,16 @@ public final class OldChestBlock extends BaseChestBlock<OldChestTileEntity>
     @Override
     protected boolean isBlocked(final IWorld world, final BlockPos pos)
     {
-        final BlockPos upPos = pos.up();
+        final BlockPos upPos = pos.above();
         final BlockState upState = world.getBlockState(upPos);
-        return (upState.isNormalCube(world, upPos) && upState.getBlock() != this) ||
-                world.getEntitiesWithinAABB(CatEntity.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1,
+        return (upState.isRedstoneConductor(world, upPos) && upState.getBlock() != this) ||
+                world.getEntitiesOfClass(CatEntity.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1,
                                                                                pos.getY() + 2, pos.getZ() + 1))
-                        .stream().anyMatch(CatEntity::func_233684_eK_);
+                        .stream().anyMatch(CatEntity::isInSittingPose);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockRenderType getRenderType(@Nullable final BlockState state) { return BlockRenderType.MODEL; }
+    public BlockRenderType getRenderShape(@Nullable final BlockState state) { return BlockRenderType.MODEL; }
 
     @Override
     @SuppressWarnings("unchecked")

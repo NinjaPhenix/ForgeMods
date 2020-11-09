@@ -20,10 +20,10 @@ public final class ExpandedStorageClient
     @SubscribeEvent
     public static void preStitchTextures(final TextureStitchEvent.Pre event)
     {
-        if (!event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS)) { return; }
+        if (!event.getMap().location().equals(Atlases.CHEST_SHEET)) { return; }
         for (final ResourceLocation entry : Registries.MODELED.keySet())
         {
-            final Registries.ModeledTierData data = Registries.MODELED.getOrDefault(entry);
+            final Registries.ModeledTierData data = Registries.MODELED.get(entry);
             for (final CursedChestType value : CursedChestType.values())
             {
                 event.addSprite(new ResourceLocation(ExpandedStorage.MOD_ID, data.getChestTexture(value).getPath()));

@@ -8,9 +8,6 @@ import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.util.ResourceLocation;
 import ninjaphenix.expandedstorage.ExpandedStorage;
 import ninjaphenix.expandedstorage.client.screen.AbstractScreen;
-import ninjaphenix.expandedstorage.client.screen.PagedScreen;
-import ninjaphenix.expandedstorage.client.screen.ScrollableScreen;
-import ninjaphenix.expandedstorage.client.screen.SingleScreen;
 
 import java.util.List;
 

@@ -34,11 +34,11 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
     private static int tickViewerCount(final World world, final CursedChestTileEntity instance, final int ticksOpen, final int x,
                                        final int y, final int z, final int viewCount)
     {
-        if (!world.isRemote && viewCount != 0 && (ticksOpen + x + y + z) % 200 == 0)
+        if (!world.isClientSide && viewCount != 0 && (ticksOpen + x + y + z) % 200 == 0)
         {
-            return world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(x - 5, y - 5, z - 5, x + 6, y + 6, z + 6)).stream()
-                    .filter(player -> player.openContainer instanceof AbstractContainer)
-                    .map(player -> ((AbstractContainer<?>) player.openContainer).getInv())
+            return world.getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB(x - 5, y - 5, z - 5, x + 6, y + 6, z + 6)).stream()
+                    .filter(player -> player.containerMenu instanceof AbstractContainer)
+                    .map(player -> ((AbstractContainer<?>) player.containerMenu).getInv())
                     .filter(inventory -> inventory == instance ||
                             inventory instanceof DoubleSidedInventory && ((DoubleSidedInventory) inventory).isPart(instance))
                     .mapToInt(inv -> 1).sum();
@@ -50,7 +50,7 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
     protected void initialize(final ResourceLocation block)
     {
         this.block = block;
-        final Registries.ModeledTierData data = Registries.MODELED.getOrDefault(block);
+        final Registries.ModeledTierData data = Registries.MODELED.get(block);
         defaultContainerName = data.getContainerName();
         inventorySize = data.getSlotCount();
         inventory = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
@@ -59,30 +59,30 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
     }
 
     @Override
-    public boolean receiveClientEvent(final int actionId, final int value)
+    public boolean triggerEvent(final int actionId, final int value)
     {
         if (actionId == 1)
         {
             viewerCount = value;
             return true;
         }
-        else { return super.receiveClientEvent(actionId, value); }
+        else { return super.triggerEvent(actionId, value); }
     }
 
     @Override
-    public float getLidAngle(final float partialTicks) { return MathHelper.lerp(partialTicks, lastAnimationAngle, animationAngle); }
+    public float getOpenNess(final float partialTicks) { return MathHelper.lerp(partialTicks, lastAnimationAngle, animationAngle); }
 
     @Override
     @SuppressWarnings("ConstantConditions")
     public void tick()
     {
-        viewerCount = tickViewerCount(world, this, ++ticksOpen, pos.getX(), pos.getY(), pos.getZ(), viewerCount);
+        viewerCount = tickViewerCount(level, this, ++ticksOpen, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), viewerCount);
         lastAnimationAngle = animationAngle;
-        if (viewerCount > 0 && animationAngle == 0.0F) { playSound(SoundEvents.BLOCK_CHEST_OPEN); }
+        if (viewerCount > 0 && animationAngle == 0.0F) { playSound(SoundEvents.CHEST_OPEN); }
         if (viewerCount == 0 && animationAngle > 0.0F || viewerCount > 0 && animationAngle < 1.0F)
         {
             animationAngle = MathHelper.clamp(animationAngle + (viewerCount > 0 ? 0.1F : -0.1F), 0, 1);
-            if (animationAngle < 0.5F && lastAnimationAngle >= 0.5F) { playSound(SoundEvents.BLOCK_CHEST_CLOSE); }
+            if (animationAngle < 0.5F && lastAnimationAngle >= 0.5F) { playSound(SoundEvents.CHEST_CLOSE); }
         }
     }
 
@@ -92,18 +92,18 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
         final BlockState state = getBlockState();
         final TileEntityMerger.Type mergeType = BaseChestBlock.getMergeType(state);
         final Vector3d soundPos;
-        if (mergeType == TileEntityMerger.Type.SINGLE) { soundPos = Vector3d.copyCentered(pos); }
+        if (mergeType == TileEntityMerger.Type.SINGLE) { soundPos = Vector3d.atCenterOf(worldPosition); }
         else if (mergeType == TileEntityMerger.Type.FIRST)
         {
-            soundPos = Vector3d.copyCentered(pos).add(Vector3d.copy(BaseChestBlock.getDirectionToAttached(state).getDirectionVec()).scale(0.5D));
+            soundPos = Vector3d.atCenterOf(worldPosition).add(Vector3d.atLowerCornerOf(BaseChestBlock.getDirectionToAttached(state).getNormal()).scale(0.5D));
         }
         else { return; }
-        world.playSound(null, soundPos.getX(), soundPos.getY(), soundPos.getZ(), soundEvent, SoundCategory.BLOCKS, 0.5F,
-                        world.rand.nextFloat() * 0.1F + 0.9F);
+        level.playSound(null, soundPos.x(), soundPos.y(), soundPos.z(), soundEvent, SoundCategory.BLOCKS, 0.5F,
+                        level.random.nextFloat() * 0.1F + 0.9F);
     }
 
     @Override
-    public void openInventory(final PlayerEntity player)
+    public void startOpen(final PlayerEntity player)
     {
         if (player.isSpectator()) { return; }
         if (viewerCount < 0) { viewerCount = 0; }
@@ -112,7 +112,7 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
     }
 
     @Override
-    public void closeInventory(final PlayerEntity player)
+    public void stopOpen(final PlayerEntity player)
     {
         if (player.isSpectator()) { return; }
         viewerCount--;
@@ -125,8 +125,8 @@ public final class CursedChestTileEntity extends AbstractChestTileEntity impleme
         final Block block = getBlockState().getBlock();
         if (block instanceof CursedChestBlock)
         {
-            world.addBlockEvent(pos, block, 1, viewerCount);
-            world.notifyNeighborsOfStateChange(pos, block);
+            level.blockEvent(worldPosition, block, 1, viewerCount);
+            level.updateNeighborsAt(worldPosition, block);
         }
     }
 }

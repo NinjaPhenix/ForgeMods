@@ -20,12 +20,14 @@ import ninjaphenix.expandedstorage.common.network.Networker;
 public final class ExpandedStorage
 {
     public static final String MOD_ID = "expandedstorage";
-    public static final ITextComponent leftShiftRightClick = new TranslationTextComponent("tooltip.expandedstorage.left_shift_right_click",
-            new KeybindTextComponent("key.sneak"), new KeybindTextComponent("key.use")).mergeStyle(TextFormatting.GOLD);
+    public static final ITextComponent leftShiftRightClick =
+            new TranslationTextComponent("tooltip.expandedstorage.left_shift_right_click",
+                                         new KeybindTextComponent("key.sneak"),
+                                         new KeybindTextComponent("key.use")).withStyle(TextFormatting.GOLD);
     public static final ItemGroup group = new ItemGroup(MOD_ID)
     {
         @Override
-        public ItemStack createIcon() { return new ItemStack(ModContent.DIAMOND_CHEST.getSecond()); }
+        public ItemStack makeIcon() { return new ItemStack(ModContent.DIAMOND_CHEST.getSecond()); }
     };
 
     public ExpandedStorage()

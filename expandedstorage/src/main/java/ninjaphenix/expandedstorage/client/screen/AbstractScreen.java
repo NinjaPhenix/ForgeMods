@@ -20,7 +20,7 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     private final Integer INVENTORY_LABEL_LEFT;
 
     protected AbstractScreen(final T container, final PlayerInventory playerInventory, final ITextComponent title,
-            final Function<R, Integer> inventoryLabelLeftFunction)
+                             final Function<R, Integer> inventoryLabelLeftFunction)
     {
         super(container, playerInventory, title);
         SCREEN_META = container.SCREEN_META;
@@ -29,12 +29,14 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
 
     public abstract List<Rectangle2d> getJeiRectangles();
 
-    @Override @SuppressWarnings({ "ConstantConditions", "deprecation" })
-    protected void drawGuiContainerBackgroundLayer(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
+
+    @Override
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
+    protected void renderBg(final MatrixStack stack, final float partialTicks, final int mouseX, final int mouseY)
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(SCREEN_META.TEXTURE);
-        blit(stack, guiLeft, guiTop, 0, 0, xSize, ySize, SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
+        minecraft.getTextureManager().bind(SCREEN_META.TEXTURE);
+        blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight, SCREEN_META.TEXTURE_WIDTH, SCREEN_META.TEXTURE_HEIGHT);
     }
 
     @Override
@@ -42,23 +44,24 @@ public abstract class AbstractScreen<T extends AbstractContainer<R>, R extends S
     {
         renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        renderHoveredTooltip(stack, mouseX, mouseY);
+        renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(final MatrixStack stack, final int mouseX, final int mouseY)
+    protected void renderLabels(final MatrixStack stack, final int mouseX, final int mouseY)
     {
-        font.func_243248_b(stack, title, 8, 6, 0x404040);
-        font.func_243248_b(stack, playerInventory.getDisplayName(), INVENTORY_LABEL_LEFT, ySize - 96 + 2, 0x404040);
+        font.draw(stack, title, 8, 6, 0x404040);
+        font.draw(stack, inventory.getDisplayName(), INVENTORY_LABEL_LEFT, imageHeight - 96 + 2, 0x404040);
     }
 
-    @Override @SuppressWarnings("ConstantConditions")
+    @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
     {
-        if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.matchesKey(keyCode, scanCode))
+        if (keyCode == 256 || minecraft.options.keyInventory.matches(keyCode, scanCode))
         {
             Networker.INSTANCE.sendRemovePreferenceCallbackToServer();
-            minecraft.player.closeScreen();
+            minecraft.player.closeContainer();
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);

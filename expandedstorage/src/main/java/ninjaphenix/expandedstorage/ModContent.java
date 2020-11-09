@@ -121,23 +121,25 @@ public final class ModContent
     private static Pair<CursedChestBlock, BlockItem> register(final Block copy, final String name, final int rows)
     {
         final ResourceLocation registryRl = ExpandedStorage.getRl(name);
-        final CursedChestBlock block = new CursedChestBlock(Block.Properties.from(copy), registryRl);
+        final CursedChestBlock block = new CursedChestBlock(Block.Properties.copy(copy), registryRl);
         final BlockItem item = new BlockItem(block, new Item.Properties().setISTER(() -> CursedChestTileEntityItemStackRenderer::new)
-                .group(ExpandedStorage.group));
+                .tab(ExpandedStorage.group));
         item.setRegistryName(registryRl);
-        Registry.register(Registries.MODELED, registryRl, new ModeledTierData(rows * 9, registryRl,
-                                                                              new TranslationTextComponent("container.expandedstorage." + name), type -> ExpandedStorage.getRl(String.format("entity/%s/%s", name, type.getString()))));
+        Registry.register(Registries.MODELED, registryRl,
+                          new ModeledTierData(rows * 9, registryRl,
+                                              new TranslationTextComponent("container.expandedstorage." + name),
+                                              type -> ExpandedStorage.getRl(String.format("entity/%s/%s", name, type.getSerializedName()))));
         return new Pair<>(block, item);
     }
 
     private static Pair<OldChestBlock, BlockItem> registerOld(final Block copy, final String name, final int rows)
     {
         final ResourceLocation registryRl = ExpandedStorage.getRl("old_" + name);
-        final OldChestBlock block = new OldChestBlock(Block.Properties.from(copy), registryRl);
-        final BlockItem item = new BlockItem(block, new Item.Properties().group(ExpandedStorage.group));
+        final OldChestBlock block = new OldChestBlock(Block.Properties.copy(copy), registryRl);
+        final BlockItem item = new BlockItem(block, new Item.Properties().tab(ExpandedStorage.group));
         item.setRegistryName(registryRl);
-        Registry.register(Registries.OLD, ExpandedStorage.getRl(name), new Registries.TierData(rows * 9, registryRl,
-                                                                                               new TranslationTextComponent("container.expandedstorage." + name)));
+        Registry.register(Registries.OLD, ExpandedStorage.getRl(name),
+                          new Registries.TierData(rows * 9, registryRl, new TranslationTextComponent("container.expandedstorage." + name)));
         return new Pair<>(block, item);
     }
 
@@ -216,8 +218,8 @@ public final class ModContent
 
     public static void registerScreenFactory()
     {
-        ScreenManager.registerFactory(SCROLLABLE_CONTAINER_TYPE, ScrollableScreen::new);
-        ScreenManager.registerFactory(PAGED_CONTAINER_TYPE, PagedScreen::new);
-        ScreenManager.registerFactory(SINGLE_CONTAINER_TYPE, SingleScreen::new);
+        ScreenManager.register(SCROLLABLE_CONTAINER_TYPE, ScrollableScreen::new);
+        ScreenManager.register(PAGED_CONTAINER_TYPE, PagedScreen::new);
+        ScreenManager.register(SINGLE_CONTAINER_TYPE, SingleScreen::new);
     }
 }
