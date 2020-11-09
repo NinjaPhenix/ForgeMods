@@ -195,7 +195,7 @@ public class TorcherinoScreen extends Screen
     public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers)
     {
         if (keyCode == 256 || minecraft.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(keyCode, scanCode)))
-        { onClose(); return true; }
+        { closeScreen(); return true; }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 }
