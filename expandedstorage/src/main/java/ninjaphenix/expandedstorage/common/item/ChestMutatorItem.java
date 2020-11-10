@@ -42,41 +42,42 @@ public final class ChestMutatorItem extends ChestModifierItem
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final EnumProperty<CursedChestType> TYPE = BaseChestBlock.TYPE;
 
-    public ChestMutatorItem() { super(new Item.Properties().maxStackSize(1).group(ExpandedStorage.group)); }
+    public ChestMutatorItem() { super(new Item.Properties().stacksTo(1).tab(ExpandedStorage.group)); }
 
-    @Override @SuppressWarnings("ConstantConditions")
+    @Override
+    @SuppressWarnings("ConstantConditions")
     protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState,
-            final BlockPos mainPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
+                                                       final BlockPos mainPos, @Nullable final BlockState otherState, @Nullable final BlockPos otherPos)
     {
         final PlayerEntity player = context.getPlayer();
-        final World world = context.getWorld();
-        final ItemStack stack = context.getItem();
+        final World world = context.getLevel();
+        final ItemStack stack = context.getItemInHand();
         switch (getMode(stack))
         {
             case MERGE:
                 final CompoundNBT tag = stack.getOrCreateTag();
                 if (tag.contains("pos"))
                 {
-                    if (mainState.get(TYPE) == CursedChestType.SINGLE)
+                    if (mainState.getValue(TYPE) == CursedChestType.SINGLE)
                     {
                         final BlockPos pos = NBTUtil.readBlockPos(tag.getCompound("pos"));
                         final BlockState realOtherState = world.getBlockState(pos);
-                        if (realOtherState.getBlock() == mainState.getBlock() && realOtherState.get(FACING) == mainState.get(FACING) &&
-                                realOtherState.get(TYPE) == CursedChestType.SINGLE)
+                        if (realOtherState.getBlock() == mainState.getBlock() && realOtherState.getValue(FACING) == mainState.getValue(FACING) &&
+                                realOtherState.getValue(TYPE) == CursedChestType.SINGLE)
                         {
-                            if (!world.isRemote)
+                            if (!world.isClientSide)
                             {
                                 final BlockPos vec = pos.subtract(mainPos);
                                 final int sum = vec.getX() + vec.getY() + vec.getZ();
                                 if (sum == 1 || sum == -1)
                                 {
-                                    final CursedChestType mainChestType = CursedChestBlock.getChestType(mainState.get(FACING),
-                                            Direction.getFacingFromVector(vec.getX(), vec.getY(), vec.getZ()));
-                                    world.setBlockState(mainPos, mainState.with(TYPE, mainChestType));
-                                    world.setBlockState(pos, world.getBlockState(pos).with(TYPE, mainChestType.getOpposite()));
+                                    final CursedChestType mainChestType = CursedChestBlock.getChestType(
+                                            mainState.getValue(FACING), Direction.getNearest(vec.getX(), vec.getY(), vec.getZ()));
+                                    world.setBlockAndUpdate(mainPos, mainState.setValue(TYPE, mainChestType));
+                                    world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(TYPE, mainChestType.getOpposite()));
                                     tag.remove("pos");
-                                    player.sendStatusMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_end"), true);
-                                    player.getCooldownTracker().setCooldown(this, 5);
+                                    player.displayClientMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_end"), true);
+                                    player.getCooldowns().addCooldown(this, 5);
                                     return ActionResultType.SUCCESS;
                                 }
                             }
@@ -84,65 +85,66 @@ public final class ChestMutatorItem extends ChestModifierItem
                         return ActionResultType.FAIL;
                     }
                 }
-                else if (mainState.get(TYPE) == CursedChestType.SINGLE)
+                else if (mainState.getValue(TYPE) == CursedChestType.SINGLE)
                 {
                     tag.put("pos", NBTUtil.writeBlockPos(mainPos));
-                    player.sendStatusMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_start"), true);
-                    player.getCooldownTracker().setCooldown(this, 5);
+                    player.displayClientMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_start"), true);
+                    player.getCooldowns().addCooldown(this, 5);
                     return ActionResultType.SUCCESS;
                 }
                 break;
             case UNMERGE:
                 if (otherState != null)
                 {
-                    if (!world.isRemote)
+                    if (!world.isClientSide)
                     {
-                        world.setBlockState(mainPos, world.getBlockState(mainPos).with(TYPE, CursedChestType.SINGLE));
-                        world.setBlockState(otherPos, world.getBlockState(otherPos).with(TYPE, CursedChestType.SINGLE));
+                        world.setBlockAndUpdate(mainPos, world.getBlockState(mainPos).setValue(TYPE, CursedChestType.SINGLE));
+                        world.setBlockAndUpdate(otherPos, world.getBlockState(otherPos).setValue(TYPE, CursedChestType.SINGLE));
                     }
-                    player.getCooldownTracker().setCooldown(this, 5);
+                    player.getCooldowns().addCooldown(this, 5);
                     return ActionResultType.SUCCESS;
                 }
                 break;
             case ROTATE:
-                switch (mainState.get(CursedChestBlock.TYPE))
+                switch (mainState.getValue(CursedChestBlock.TYPE))
                 {
                     case SINGLE:
-                        if (!world.isRemote) { world.setBlockState(mainPos, mainState.rotate(world, mainPos, CLOCKWISE_90)); }
-                        player.getCooldownTracker().setCooldown(this, 5);
+                        if (!world.isClientSide) { world.setBlockAndUpdate(mainPos, mainState.rotate(world, mainPos, CLOCKWISE_90)); }
+                        player.getCooldowns().addCooldown(this, 5);
                         return ActionResultType.SUCCESS;
                     case FRONT:
                     case BACK:
                     case LEFT:
                     case RIGHT:
-                        if (!world.isRemote)
+                        if (!world.isClientSide)
                         {
-                            world.setBlockState(mainPos, mainState.rotate(world, mainPos, CLOCKWISE_180).with(TYPE, mainState.get(TYPE).getOpposite()));
-                            world.setBlockState(otherPos, otherState.rotate(world, otherPos, CLOCKWISE_180).with(TYPE, otherState.get(TYPE).getOpposite()));
+                            world.setBlockAndUpdate(mainPos, mainState.rotate(world, mainPos, CLOCKWISE_180).setValue(TYPE, mainState.getValue(TYPE).getOpposite()));
+                            world.setBlockAndUpdate(otherPos, otherState.rotate(world, otherPos, CLOCKWISE_180).setValue(TYPE, otherState.getValue(TYPE).getOpposite()));
                         }
-                        player.getCooldownTracker().setCooldown(this, 5);
+                        player.getCooldowns().addCooldown(this, 5);
                         return ActionResultType.SUCCESS;
                     case TOP:
                     case BOTTOM:
-                        if (!world.isRemote)
+                        if (!world.isClientSide)
                         {
-                            world.setBlockState(mainPos, mainState.rotate(world, mainPos, CLOCKWISE_90));
-                            world.setBlockState(otherPos, otherState.rotate(world, otherPos, CLOCKWISE_90));
+                            world.setBlockAndUpdate(mainPos, mainState.rotate(world, mainPos, CLOCKWISE_90));
+                            world.setBlockAndUpdate(otherPos, otherState.rotate(world, otherPos, CLOCKWISE_90));
                         }
-                        player.getCooldownTracker().setCooldown(this, 5);
+                        player.getCooldowns().addCooldown(this, 5);
                         return ActionResultType.SUCCESS;
                 }
         }
         return ActionResultType.FAIL;
     }
 
-    @Override @SuppressWarnings({ "ConstantConditions"})
+    @Override
+    @SuppressWarnings({"ConstantConditions"})
     protected ActionResultType useModifierOnBlock(final ItemUseContext context, final BlockState state)
     {
         final PlayerEntity player = context.getPlayer();
-        final ItemStack stack = context.getItem();
-        final World world = context.getWorld();
-        final BlockPos mainPos = context.getPos();
+        final ItemStack stack = context.getItemInHand();
+        final World world = context.getLevel();
+        final BlockPos mainPos = context.getClickedPos();
         final MutatorMode mode = getMode(stack);
         if (state.getBlock() instanceof ChestBlock)
         {
@@ -151,42 +153,43 @@ public final class ChestMutatorItem extends ChestModifierItem
                 final CompoundNBT tag = stack.getOrCreateTag();
                 if (tag.contains("pos"))
                 {
-                    if (state.get(ChestBlock.TYPE) == ChestType.SINGLE)
+                    if (state.getValue(ChestBlock.TYPE) == ChestType.SINGLE)
                     {
                         final BlockPos otherPos = NBTUtil.readBlockPos(tag.getCompound("pos"));
                         final BlockState realOtherState = world.getBlockState(otherPos);
-                        if (realOtherState.getBlock() == state.getBlock() && realOtherState.get(FACING) == state.get(FACING) &&
-                                realOtherState.get(ChestBlock.TYPE) == ChestType.SINGLE)
+                        if (realOtherState.getBlock() == state.getBlock() && realOtherState.getValue(FACING) == state.getValue(FACING) &&
+                                realOtherState.getValue(ChestBlock.TYPE) == ChestType.SINGLE)
                         {
                             final BlockPos vec = otherPos.subtract(mainPos);
                             final int sum = vec.getX() + vec.getY() + vec.getZ();
                             if (sum == 1 || sum == -1)
                             {
-                                if (!world.isRemote)
+                                if (!world.isClientSide)
                                 {
-                                    final Registries.TierData entry = Registries.MODELED.getOrDefault(ExpandedStorage.getRl("wood_chest"));
-                                    final CursedChestType mainChestType = BaseChestBlock.getChestType(state.get(FACING),
-                                            Direction.getFacingFromVector(vec.getX(), vec.getY(), vec.getZ()));
-                                    BlockState defState = ForgeRegistries.BLOCKS.getValue(entry.getBlockId()).getDefaultState().with(FACING,
-                                            state.get(FACING)).with(WATERLOGGED, state.get(WATERLOGGED)).with(TYPE, mainChestType);
-                                    TileEntity blockEntity = world.getTileEntity(mainPos);
+                                    final Registries.TierData entry = Registries.MODELED.get(ExpandedStorage.getRl("wood_chest"));
+                                    final CursedChestType mainChestType = BaseChestBlock.getChestType(state.getValue(FACING),
+                                                                                                      Direction.getNearest(vec.getX(), vec.getY(), vec.getZ()));
+                                    BlockState defState = ForgeRegistries.BLOCKS.getValue(entry.getBlockId())
+                                            .defaultBlockState().setValue(FACING, state.getValue(FACING))
+                                            .setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(TYPE, mainChestType);
+                                    TileEntity blockEntity = world.getBlockEntity(mainPos);
                                     NonNullList<ItemStack> invData = NonNullList.withSize(entry.getSlotCount(), ItemStack.EMPTY);
-                                    ItemStackHelper.loadAllItems(blockEntity.write(new CompoundNBT()), invData);
-                                    world.removeTileEntity(mainPos);
-                                    world.setBlockState(mainPos, defState);
-                                    blockEntity = world.getTileEntity(mainPos);
-                                    blockEntity.read(defState, ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
-                                    blockEntity = world.getTileEntity(otherPos);
+                                    ItemStackHelper.loadAllItems(blockEntity.save(new CompoundNBT()), invData);
+                                    world.removeBlockEntity(mainPos);
+                                    world.setBlockAndUpdate(mainPos, defState);
+                                    blockEntity = world.getBlockEntity(mainPos);
+                                    blockEntity.load(defState, ItemStackHelper.saveAllItems(blockEntity.save(new CompoundNBT()), invData));
+                                    blockEntity = world.getBlockEntity(otherPos);
                                     invData = NonNullList.withSize(entry.getSlotCount(), ItemStack.EMPTY);
-                                    ItemStackHelper.loadAllItems(blockEntity.write(new CompoundNBT()), invData);
-                                    world.removeTileEntity(otherPos);
-                                    defState = defState.with(WATERLOGGED, state.get(WATERLOGGED)).with(TYPE, mainChestType.getOpposite());
-                                    world.setBlockState(otherPos, defState);
-                                    blockEntity = world.getTileEntity(otherPos);
-                                    blockEntity.read(defState, ItemStackHelper.saveAllItems(blockEntity.write(new CompoundNBT()), invData));
+                                    ItemStackHelper.loadAllItems(blockEntity.save(new CompoundNBT()), invData);
+                                    world.removeBlockEntity(otherPos);
+                                    defState = defState.setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(TYPE, mainChestType.getOpposite());
+                                    world.setBlockAndUpdate(otherPos, defState);
+                                    blockEntity = world.getBlockEntity(otherPos);
+                                    blockEntity.load(defState, ItemStackHelper.saveAllItems(blockEntity.save(new CompoundNBT()), invData));
                                     tag.remove("pos");
-                                    player.sendStatusMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_end"), true);
-                                    player.getCooldownTracker().setCooldown(this, 5);
+                                    player.displayClientMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_end"), true);
+                                    player.getCooldowns().addCooldown(this, 5);
                                 }
                                 return ActionResultType.SUCCESS;
                             }
@@ -196,11 +199,11 @@ public final class ChestMutatorItem extends ChestModifierItem
                 }
                 else
                 {
-                    if (state.get(ChestBlock.TYPE) == ChestType.SINGLE)
+                    if (state.getValue(ChestBlock.TYPE) == ChestType.SINGLE)
                     {
                         tag.put("pos", NBTUtil.writeBlockPos(mainPos));
-                        player.sendStatusMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_start"), true);
-                        player.getCooldownTracker().setCooldown(this, 5);
+                        player.displayClientMessage(new TranslationTextComponent("tooltip.expandedstorage.chest_mutator.merge_start"), true);
+                        player.getCooldowns().addCooldown(this, 5);
                         return ActionResultType.SUCCESS;
                     }
                 }
@@ -208,45 +211,45 @@ public final class ChestMutatorItem extends ChestModifierItem
             else if (mode == MutatorMode.UNMERGE)
             {
                 final BlockPos otherPos;
-                switch (state.get(ChestBlock.TYPE))
+                switch (state.getValue(ChestBlock.TYPE))
                 {
-                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY());
+                    case LEFT: otherPos = mainPos.relative(state.getValue(ChestBlock.FACING).getClockWise());
                         break;
-                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW());
+                    case RIGHT: otherPos = mainPos.relative(state.getValue(ChestBlock.FACING).getCounterClockWise());
                         break;
                     default: return ActionResultType.FAIL;
                 }
-                if (!world.isRemote)
+                if (!world.isClientSide)
                 {
-                    world.setBlockState(mainPos, state.with(ChestBlock.TYPE, ChestType.SINGLE));
-                    world.setBlockState(otherPos, world.getBlockState(otherPos).with(ChestBlock.TYPE, ChestType.SINGLE));
+                    world.setBlockAndUpdate(mainPos, state.setValue(ChestBlock.TYPE, ChestType.SINGLE));
+                    world.setBlockAndUpdate(otherPos, world.getBlockState(otherPos).setValue(ChestBlock.TYPE, ChestType.SINGLE));
                 }
-                player.getCooldownTracker().setCooldown(this, 5);
+                player.getCooldowns().addCooldown(this, 5);
                 return ActionResultType.SUCCESS;
             }
             else if (mode == MutatorMode.ROTATE)
             {
                 final BlockPos otherPos;
-                switch (state.get(ChestBlock.TYPE))
+                switch (state.getValue(ChestBlock.TYPE))
                 {
-                    case LEFT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateY());
+                    case LEFT: otherPos = mainPos.relative(state.getValue(ChestBlock.FACING).getClockWise());
                         break;
-                    case RIGHT: otherPos = mainPos.offset(state.get(ChestBlock.FACING).rotateYCCW());
+                    case RIGHT: otherPos = mainPos.relative(state.getValue(ChestBlock.FACING).getCounterClockWise());
                         break;
                     case SINGLE:
-                        if (!world.isRemote) { world.setBlockState(mainPos, state.rotate(world, mainPos, CLOCKWISE_90)); }
-                        player.getCooldownTracker().setCooldown(this, 5);
+                        if (!world.isClientSide) { world.setBlockAndUpdate(mainPos, state.rotate(world, mainPos, CLOCKWISE_90)); }
+                        player.getCooldowns().addCooldown(this, 5);
                         return ActionResultType.SUCCESS;
                     default: return ActionResultType.FAIL;
                 }
-                if (!world.isRemote)
+                if (!world.isClientSide)
                 {
                     final BlockState otherState = world.getBlockState(otherPos);
-                    world.setBlockState(mainPos, state.rotate(world, mainPos, CLOCKWISE_180).with(ChestBlock.TYPE, state.get(ChestBlock.TYPE).opposite()));
-                    world.setBlockState(otherPos, otherState.rotate(world, otherPos, CLOCKWISE_180)
-                                                            .with(ChestBlock.TYPE, otherState.get(ChestBlock.TYPE).opposite()));
+                    world.setBlockAndUpdate(mainPos, state.rotate(world, mainPos, CLOCKWISE_180).setValue(ChestBlock.TYPE, state.getValue(ChestBlock.TYPE).getOpposite()));
+                    world.setBlockAndUpdate(otherPos, otherState.rotate(world, otherPos, CLOCKWISE_180)
+                            .setValue(ChestBlock.TYPE, otherState.getValue(ChestBlock.TYPE).getOpposite()));
                 }
-                player.getCooldownTracker().setCooldown(this, 5);
+                player.getCooldowns().addCooldown(this, 5);
                 return ActionResultType.SUCCESS;
             }
         }
@@ -254,8 +257,8 @@ public final class ChestMutatorItem extends ChestModifierItem
         {
             if (mode == MutatorMode.ROTATE)
             {
-                if (!world.isRemote) { world.setBlockState(mainPos, state.rotate(world, mainPos, CLOCKWISE_90)); }
-                player.getCooldownTracker().setCooldown(this, 5);
+                if (!world.isClientSide) { world.setBlockAndUpdate(mainPos, state.rotate(world, mainPos, CLOCKWISE_90)); }
+                player.getCooldowns().addCooldown(this, 5);
                 return ActionResultType.SUCCESS;
             }
             return ActionResultType.FAIL;
@@ -268,20 +271,20 @@ public final class ChestMutatorItem extends ChestModifierItem
     {
         if (player.isCrouching())
         {
-            final ItemStack stack = player.getHeldItem(hand);
+            final ItemStack stack = player.getItemInHand(hand);
             final CompoundNBT tag = stack.getOrCreateTag();
             tag.putByte("mode", getMode(stack).next);
             if (tag.contains("pos")) { tag.remove("pos"); }
-            if (!world.isRemote) { player.sendStatusMessage(getMode(stack).title, true); }
+            if (!world.isClientSide) { player.displayClientMessage(getMode(stack).title, true); }
             return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
         return super.useModifierInAir(world, player, hand);
     }
 
     @Override
-    public void onCreated(final ItemStack stack, final World world, final PlayerEntity player)
+    public void onCraftedBy(final ItemStack stack, final World world, final PlayerEntity player)
     {
-        super.onCreated(stack, world, player);
+        super.onCraftedBy(stack, world, player);
         getMode(stack);
     }
 
@@ -294,9 +297,9 @@ public final class ChestMutatorItem extends ChestModifierItem
     }
 
     @Override
-    public void fillItemGroup(final ItemGroup itemGroup, final NonNullList<ItemStack> stackList)
+    public void fillItemCategory(final ItemGroup itemGroup, final NonNullList<ItemStack> stackList)
     {
-        if (isInGroup(itemGroup)) { stackList.add(getDefaultInstance()); }
+        if (allowdedIn(itemGroup)) { stackList.add(getDefaultInstance()); }
     }
 
     private MutatorMode getMode(final ItemStack stack)
@@ -307,12 +310,12 @@ public final class ChestMutatorItem extends ChestModifierItem
     }
 
     @Override
-    public void addInformation(final ItemStack stack, @Nullable final World world, final List<ITextComponent> tooltip,
-            final ITooltipFlag flag)
+    public void appendHoverText(final ItemStack stack, @Nullable final World world, final List<ITextComponent> tooltip,
+                                final ITooltipFlag flag)
     {
         final MutatorMode mode = getMode(stack);
-        tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", mode.title).mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.expandedstorage.tool_mode", mode.title).withStyle(TextFormatting.GRAY));
         tooltip.add(mode.description);
-        super.addInformation(stack, world, tooltip, flag);
+        super.appendHoverText(stack, world, tooltip, flag);
     }
 }

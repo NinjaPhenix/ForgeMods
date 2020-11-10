@@ -29,45 +29,45 @@ public abstract class ChestModifierItem extends Item
     public ChestModifierItem(final Item.Properties properties) { super(properties); }
 
     @Override
-    public ActionResultType onItemUse(final ItemUseContext context)
+    public ActionResultType useOn(final ItemUseContext context)
     {
-        final World world = context.getWorld();
-        final BlockPos pos = context.getPos();
+        final World world = context.getLevel();
+        final BlockPos pos = context.getClickedPos();
         final BlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BaseChestBlock)
         {
             ActionResultType result = ActionResultType.FAIL;
-            final CursedChestType type = state.get(TYPE);
-            final Direction facing = state.get(FACING);
+            final CursedChestType type = state.getValue(TYPE);
+            final Direction facing = state.getValue(FACING);
             if (type == CursedChestType.SINGLE) { result = useModifierOnChestBlock(context, state, pos, null, null); }
             else if (type == CursedChestType.BOTTOM)
             {
-                final BlockPos otherPos = pos.offset(Direction.UP);
+                final BlockPos otherPos = pos.relative(Direction.UP);
                 result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos);
             }
             else if (type == CursedChestType.TOP)
             {
-                final BlockPos otherPos = pos.offset(Direction.DOWN);
+                final BlockPos otherPos = pos.relative(Direction.DOWN);
                 result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos);
             }
             else if (type == CursedChestType.LEFT)
             {
-                final BlockPos otherPos = pos.offset(facing.rotateYCCW());
+                final BlockPos otherPos = pos.relative(facing.getCounterClockWise());
                 result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos);
             }
             else if (type == CursedChestType.RIGHT)
             {
-                final BlockPos otherPos = pos.offset(facing.rotateY());
+                final BlockPos otherPos = pos.relative(facing.getClockWise());
                 result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos);
             }
             else if (type == CursedChestType.FRONT)
             {
-                final BlockPos otherPos = pos.offset(facing.getOpposite());
+                final BlockPos otherPos = pos.relative(facing.getOpposite());
                 result = useModifierOnChestBlock(context, state, pos, world.getBlockState(otherPos), otherPos);
             }
             else if (type == CursedChestType.BACK)
             {
-                final BlockPos otherPos = pos.offset(facing);
+                final BlockPos otherPos = pos.relative(facing);
                 result = useModifierOnChestBlock(context, world.getBlockState(otherPos), otherPos, state, pos);
             }
             return result;
@@ -76,21 +76,21 @@ public abstract class ChestModifierItem extends Item
     }
 
     @Override
-    public ActionResultType itemInteractionForEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
+    public ActionResultType interactLivingEntity(final ItemStack stack, final PlayerEntity player, final LivingEntity entity, final Hand hand)
     {
         return useModifierOnEntity(stack, player, entity, hand);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(final World world, final PlayerEntity player, final Hand hand)
+    public ActionResult<ItemStack> use(final World world, final PlayerEntity player, final Hand hand)
     {
         final ActionResult<ItemStack> result = useModifierInAir(world, player, hand);
-        if (result.getType() == ActionResultType.SUCCESS) { player.getCooldownTracker().setCooldown(this, 5); }
+        if (result.getResult() == ActionResultType.SUCCESS) { player.getCooldowns().addCooldown(this, 5); }
         return result;
     }
 
     protected ActionResultType useModifierOnChestBlock(final ItemUseContext context, final BlockState mainState, final BlockPos mainBlockPos,
-            @Nullable final BlockState otherState, @Nullable final BlockPos otherBlockPos)
+                                                       @Nullable final BlockState otherState, @Nullable final BlockPos otherBlockPos)
     {
         return ActionResultType.PASS;
     }
@@ -105,6 +105,6 @@ public abstract class ChestModifierItem extends Item
 
     protected ActionResult<ItemStack> useModifierInAir(final World world, final PlayerEntity player, final Hand hand)
     {
-        return ActionResult.resultPass(player.getHeldItem(hand));
+        return ActionResult.pass(player.getItemInHand(hand));
     }
 }
