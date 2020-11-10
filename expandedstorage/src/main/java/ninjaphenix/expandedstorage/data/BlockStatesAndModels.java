@@ -82,7 +82,7 @@ public final class BlockStatesAndModels extends BlockStateProvider
 
     private ModelFile oldChestGetModel(final String blockPath, final CursedChestType chestType)
     {
-        final String chestTypeName = chestType.getString();
+        final String chestTypeName = chestType.getSerializedName();
         final BlockModelBuilder builder = models().getBuilder(String.format("block/%s/%s", blockPath, chestTypeName));
         switch (chestType)
         {
