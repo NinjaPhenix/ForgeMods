@@ -17,18 +17,18 @@ public class Config
     public static Config INSTANCE;
 
     @Comment("\nDefines how much faster randoms ticks are applied compared to what they should be.\nValid Range: 1 to 4096")
-    public final int random_tick_rate = 4;
+    public int random_tick_rate = 4;
 
-    @Comment("Log torcherino placement (Intended for server use)") public final boolean log_placement = FMLLoader.getDist().isDedicatedServer();
+    @Comment("Log torcherino placement (Intended for server use)") public boolean log_placement = FMLLoader.getDist().isDedicatedServer();
 
     @Comment("\nAdd a block by resource location to the blacklist.\nExamples: \"minecraft:dirt\", \"minecraft:furnace\"")
-    public final ResourceLocation[] blacklisted_blocks = new ResourceLocation[]{};
+    public ResourceLocation[] blacklisted_blocks = new ResourceLocation[]{};
 
     @Comment("\nAdd a tile entity by resource location to the blacklist.\nExamples: \"minecraft:furnace\", \"minecraft:mob_spawner\"")
-    public final ResourceLocation[] blacklisted_tiles = new ResourceLocation[]{};
+    public ResourceLocation[] blacklisted_tiles = new ResourceLocation[]{};
 
     @Comment("\nAllows new custom torcherino tiers to be added.\nThis also allows for each tier to have their own max max_speed and ranges.")
-    public final Tier[] tiers = new Tier[]{ new Tier("normal", 4, 4, 1), new Tier("compressed", 36, 4, 1), new Tier("double_compressed", 324, 4, 1) };
+    public Tier[] tiers = new Tier[]{ new Tier("normal", 4, 4, 1), new Tier("compressed", 36, 4, 1), new Tier("double_compressed", 324, 4, 1) };
 
     @SuppressWarnings("ConstantConditions")
     public static void initialise()
