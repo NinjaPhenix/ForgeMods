@@ -22,9 +22,9 @@ import ninjaphenix.expandedstorage.client.screen.ScrollableScreen;
 import ninjaphenix.expandedstorage.client.screen.SingleScreen;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
 import ninjaphenix.expandedstorage.common.block.OldChestBlock;
-import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
-import ninjaphenix.expandedstorage.common.block.entity.CustomTileEntityType;
-import ninjaphenix.expandedstorage.common.block.entity.OldChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.entity.CursedChestBlockEntity;
+import ninjaphenix.expandedstorage.common.block.entity.CustomBlockEntityType;
+import ninjaphenix.expandedstorage.common.block.entity.OldChestBlockEntity;
 import ninjaphenix.expandedstorage.common.inventory.PagedContainer;
 import ninjaphenix.expandedstorage.common.inventory.ScrollableContainer;
 import ninjaphenix.expandedstorage.common.inventory.SingleContainer;
@@ -69,8 +69,8 @@ public final class ModContent
     public static final ChestConversionItem CONVERSION_KIT_DIAMOND_OBSIDIAN;
     public static final ChestConversionItem CONVERSION_KIT_DIAMOND_NETHERITE;
     public static final ChestConversionItem CONVERSION_KIT_OBSIDIAN_NETHERITE;
-    public static final CustomTileEntityType<CursedChestTileEntity> CURSED_CHEST_TE = new CustomTileEntityType<>(() -> new CursedChestTileEntity(null), (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
-    public static final CustomTileEntityType<OldChestTileEntity> OLD_CHEST_TE = new CustomTileEntityType<>(() -> new OldChestTileEntity(null), (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
+    public static final CustomBlockEntityType<CursedChestBlockEntity> CURSED_CHEST_TE = new CustomBlockEntityType<>(() -> new CursedChestBlockEntity(null), (b) -> b instanceof CursedChestBlock, ExpandedStorage.getRl("cursed_chest"));
+    public static final CustomBlockEntityType<OldChestBlockEntity> OLD_CHEST_TE = new CustomBlockEntityType<>(() -> new OldChestBlockEntity(null), (b) -> b instanceof OldChestBlock, ExpandedStorage.getRl("old_cursed_chest"));
 
     static
     {

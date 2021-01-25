@@ -7,11 +7,11 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
-import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.entity.CursedChestBlockEntity;
 
 public final class CursedChestTileEntityItemStackRenderer extends ItemStackTileEntityRenderer
 {
-    private static final CursedChestTileEntity cursedChestRenderEntity = new CursedChestTileEntity(null);
+    private static final CursedChestBlockEntity cursedChestRenderEntity = new CursedChestBlockEntity(null);
 
     @Override
     @SuppressWarnings("ConstantConditions")

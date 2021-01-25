@@ -17,12 +17,12 @@ import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 import ninjaphenix.expandedstorage.client.model.*;
 import ninjaphenix.expandedstorage.common.block.CursedChestBlock;
-import ninjaphenix.expandedstorage.common.block.entity.CursedChestTileEntity;
+import ninjaphenix.expandedstorage.common.block.entity.CursedChestBlockEntity;
 import ninjaphenix.expandedstorage.common.block.enums.CursedChestType;
 
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
-public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTileEntity>
+public final class CursedChestRenderer extends TileEntityRenderer<CursedChestBlockEntity>
 {
     private static final BlockState defaultState = ModContent.WOOD_CHEST.getFirst().defaultBlockState().setValue(HORIZONTAL_FACING, Direction.SOUTH)
             .setValue(CursedChestBlock.TYPE, CursedChestType.SINGLE);
@@ -41,7 +41,7 @@ public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTil
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void render(final CursedChestTileEntity te, final float v, final MatrixStack stack, final IRenderTypeBuffer buffer,
+    public void render(final CursedChestBlockEntity te, final float v, final MatrixStack stack, final IRenderTypeBuffer buffer,
                        final int light, final int overlay)
     {
         final BlockState state = te.hasLevel() ? te.getBlockState() : defaultState;
@@ -52,7 +52,7 @@ public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTil
         stack.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(HORIZONTAL_FACING).toYRot()));
         stack.translate(-0.5D, -0.5D, -0.5D);
         model.setLidPitch(te.getOpenNess(v));
-        final TileEntityMerger.ICallbackWrapper<? extends CursedChestTileEntity> wrapper = te.hasLevel() ?
+        final TileEntityMerger.ICallbackWrapper<? extends CursedChestBlockEntity> wrapper = te.hasLevel() ?
                 ((CursedChestBlock) state.getBlock()).combine(state, te.getLevel(), te.getBlockPos(), true) :
                 TileEntityMerger.ICallback::acceptNone;
         model.render(stack, new RenderMaterial(Atlases.CHEST_SHEET,

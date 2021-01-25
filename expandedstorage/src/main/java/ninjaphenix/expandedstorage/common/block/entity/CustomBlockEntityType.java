@@ -9,13 +9,13 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 // todo: Remove, requires ModContent to be rewritten.
-public final class CustomTileEntityType<T extends TileEntity> extends TileEntityType<T>
+public final class CustomBlockEntityType<T extends TileEntity> extends TileEntityType<T>
 {
     private final Predicate<Block> predicate;
 
     @SuppressWarnings("ConstantConditions")
-    public CustomTileEntityType(final Supplier<? extends T> tileEntityFactory, final Predicate<Block> supportedBlocks,
-                                final ResourceLocation registryName)
+    public CustomBlockEntityType(final Supplier<? extends T> tileEntityFactory, final Predicate<Block> supportedBlocks,
+                                 final ResourceLocation registryName)
     {
         super(tileEntityFactory, null, null);
         predicate = supportedBlocks;

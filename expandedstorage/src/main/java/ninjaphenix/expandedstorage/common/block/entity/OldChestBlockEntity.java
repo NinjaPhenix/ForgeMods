@@ -7,9 +7,9 @@ import net.minecraft.util.ResourceLocation;
 import ninjaphenix.expandedstorage.ModContent;
 import ninjaphenix.expandedstorage.Registries;
 
-public final class OldChestTileEntity extends AbstractChestTileEntity
+public final class OldChestBlockEntity extends AbstractChestTileEntity
 {
-    public OldChestTileEntity(@Nullable final ResourceLocation block) { super(ModContent.OLD_CHEST_TE, block); }
+    public OldChestBlockEntity(@Nullable final ResourceLocation block) { super(ModContent.OLD_CHEST_TE, block); }
 
     @Override
     protected void initialize(final ResourceLocation block)
