@@ -45,23 +45,21 @@ public final class CursedChestRenderer extends TileEntityRenderer<CursedChestTil
                        final int light, final int overlay)
     {
         final BlockState state = te.hasLevel() ? te.getBlockState() : defaultState;
-        if (state.getBlock() instanceof CursedChestBlock)
-        {
-            final CursedChestBlock block = (CursedChestBlock) state.getBlock();
-            final CursedChestType chestType = state.getValue(CursedChestBlock.TYPE);
-            final SingleChestModel model = getModel(chestType);
-            stack.pushPose();
-            stack.translate(0.5D, 0.5D, 0.5D);
-            stack.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(HORIZONTAL_FACING).get2DDataValue()));
-            stack.translate(-0.5D, -0.5D, -0.5D);
-            model.setLidPitch(te.getOpenNess(v));
-            final TileEntityMerger.ICallbackWrapper<? extends CursedChestTileEntity> wrapper = te.hasLevel() ?
-                    block.combine(state, te.getLevel(), te.getBlockPos(), true) : TileEntityMerger.ICallback::acceptNone;
-            final int combinedLight = wrapper.apply(new DualBrightnessCallback<>()).applyAsInt(light);
-            final RenderMaterial material = new RenderMaterial(Atlases.CHEST_SHEET, Registries.MODELED.get(te.getBlock()).getChestTexture(chestType));
-            model.render(stack, material.buffer(buffer, RenderType::entityCutout), combinedLight, overlay);
-            stack.popPose();
-        }
+        final CursedChestType chestType = state.getValue(CursedChestBlock.TYPE);
+        final SingleChestModel model = getModel(chestType);
+        stack.pushPose();
+        stack.translate(0.5D, 0.5D, 0.5D);
+        stack.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(HORIZONTAL_FACING).toYRot()));
+        stack.translate(-0.5D, -0.5D, -0.5D);
+        model.setLidPitch(te.getOpenNess(v));
+        final TileEntityMerger.ICallbackWrapper<? extends CursedChestTileEntity> wrapper = te.hasLevel() ?
+                ((CursedChestBlock) state.getBlock()).combine(state, te.getLevel(), te.getBlockPos(), true) :
+                TileEntityMerger.ICallback::acceptNone;
+        model.render(stack, new RenderMaterial(Atlases.CHEST_SHEET,
+                                         Registries.MODELED.get(te.getBlock()).getChestTexture(chestType))
+                             .buffer(buffer, RenderType::entityCutout),
+                     wrapper.apply(new DualBrightnessCallback<>()).applyAsInt(light), overlay);
+        stack.popPose();
     }
 
     public SingleChestModel getModel(final CursedChestType type) { return MODELS.get(type); }
