@@ -5,20 +5,20 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.0+', changing: true
     }
 }
 
 plugins {
     id  'idea'
-    id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
+    id 'java'
 }
 
 subprojects {
     apply plugin: 'net.minecraftforge.gradle'
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
-    apply plugin: 'com.matthewprenger.cursegradle'
+    apply plugin: 'java'
 
     group = maven_group
     archivesBaseName = mod_id
@@ -33,15 +33,8 @@ subprojects {
         main.resources.srcDirs += file('src/generated/resources')
     }
 
-    repositories {
-        /* For Unofficial MCP Mappings */ maven {
-            url "https://www.dogforce-games.com/maven"
-            name "GigaHerz Maven"
-        }
-    }
-
     minecraft {
-        mappings channel: "${mappings_channel}", version: "${mappings_version}"
+        mappings channel: "${mappings_channel}", version: "1.16.3"
         // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
         runs {
             client {
@@ -117,21 +110,13 @@ subprojects {
     jar { from("LICENSE") }
 
     processResources {
-        inputs.properties(
-                "mod_id": mod_id,
-                "mod_name": mod_name,
-                "mod_version": mod_version
-        )
-        from(sourceSets.main.resources.srcDirs) {
-            include 'META-INF/mods.toml'
-            expand(
-                    "mod_id": mod_id,
-                    "mod_name": mod_name,
-                    "mod_version": mod_version
-            )
-        }
-        from(sourceSets.main.resources.srcDirs) {
-            exclude 'META-INF/mods.toml'
+        def props = ["mod_id": project.properties.mod_id,
+                     "mod_name": project.properties.mod_name,
+                     "mod_version": project.properties.mod_version]
+        inputs.properties props
+
+        filesMatching('META-INF/mods.toml') {
+            expand props
         }
     }
 
@@ -149,87 +134,6 @@ subprojects {
         }
     }
 
-    //<editor-fold desc="Curseforge & Github Release">
-    task release {
-        doLast {
-            def tagName = "${mod_id}-${mod_version}+${minecraft_version}"
-            def commit = "git rev-parse HEAD".execute().in.readLines().get(0)
-            if (extensions.getExtraProperties().has('artifactId')) {
-                def artifactId = extensions.getExtraProperties().get('artifactId')
-                def url = String.format(curseforge_url_template, curseforge_project_slug, artifactId)
-                if ('false'.equalsIgnoreCase(upload_debug)) {
-                    "hub release create -t ${commit} -m ${tagName} -m ${url} ${tagName}".execute()
-                    println "Created release for tag ${tagName} with message ${url}"
-                }
-            } else {
-                if ('false'.equalsIgnoreCase(upload_debug)) {
-                    "hub release create -a ${projectDir.getName()}/build/libs/${tagName}.jar -a ${projectDir.getName()}/build/libs/${tagName}-sources.jar -m ${tagName} -m ${tagName} -t ${commit} ${tagName}".execute()
-                    println "Created release for tag ${tagName} with message ${tagName}"
-                }
-            }
-        }
-    }
-
-    def curseforge_api_key = System.getenv("CURSEFORGE_API_KEY")
-    if (curseforge_api_key != null && project.hasProperty("curseforge_project_id")) {
-        curseforge {
-            apiKey = curseforge_api_key
-            //noinspection GroovyAssignabilityCheck
-            project {
-                id = curseforge_project_id
-                changelogType = "markdown"
-                changelog = file("${projectDir}/changelog.md")
-                releaseType = curseforge_release_type
-                addGameVersion curseforge_game_version
-                addGameVersion "Forge"
-                addGameVersion "Java 8" // lets be honest, we're going to be stuck on java 8 for the next 5 years.
-                if (project.hasProperty("curseforge_required_dependencies") ||
-                        project.hasProperty("curseforge_embedded_dependencies") ||
-                        project.hasProperty("curseforge_optional_dependencies")) {
-                    relations {
-                        if (project.hasProperty("curseforge_required_dependencies")) {
-                            curseforge_required_dependencies.tokenize(':').each { requiredDependency it }
-                        }
-                        if (project.hasProperty("curseforge_embedded_dependencies")) {
-                            curseforge_embedded_dependencies.tokenize(':').each { embeddedLibrary it }
-                        }
-                        if (project.hasProperty("curseforge_optional_dependencies")) {
-                            curseforge_optional_dependencies.tokenize(':').each { optionalDependency it }
-                        }
-                    }
-                }
-                mainArtifact(file("${project.buildDir}/libs/${mod_id}-${mod_version}+${minecraft_version}.jar")) {
-                    displayName = "${mod_name} ${mod_version}+${minecraft_version}"
-                }
-                addArtifact(file("${project.buildDir}/libs/${mod_id}-${mod_version}+${minecraft_version}-sources.jar")) {
-                    changelogType = 'markdown'
-                    changelog = file("${project.rootDir}/sources-changelog.md")
-                }
-                afterEvaluate {
-                    uploadTask.dependsOn("sourcesJar")
-                }
-            }
-            options {
-                forgeGradleIntegration = false
-                debug = "true".equalsIgnoreCase(upload_debug)
-            }
-        }
-
-        release {
-            dependsOn "curseforge"
-            doFirst {
-                extensions.getExtraProperties().set("artifactId", curseforge.curseProjects[0].mainArtifact.getFileID())
-            }
-        }
-    }
-    else
-    {
-        release {
-            dependsOn "reobfJar"
-        }
-    }
-    //</editor-fold>
-
     task sourcesJar(type: Jar) {
         archiveClassifier = "sources"
         from sourceSets.main.allJava
@@ -237,18 +141,13 @@ subprojects {
     }
 
     artifacts { archives sourcesJar }
-
-    idea {
-        module {
-                excludeDirs += file('build')
-                excludeDirs += file('run')
-        }
-    }
 }
 
-idea {
-    module {
-        excludeDirs += file('.idea')
-        excludeDirs += file('gradle')
+allprojects {
+    idea {
+        module {
+            excludeDirs += file('.idea')
+            excludeDirs += file('gradle')
+        }
     }
 }

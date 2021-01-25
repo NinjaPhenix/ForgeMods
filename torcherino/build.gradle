@@ -3,12 +3,12 @@ repositories {
 }
 
 configurations {
-    shade {}
-    compile.extendsFrom(shade)
+    shade
+    implementation.extendsFrom(shade)
 }
 
 dependencies {
-    compile ("blue.endless:jankson:1.2.0")
+    implementation ("blue.endless:jankson:1.2.0") // Is this needed?
     shade ("blue.endless:jankson:1.2.0")
 }
 

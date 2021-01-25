@@ -52,7 +52,6 @@ public abstract class BaseChestBlock<T extends AbstractChestTileEntity> extends 
     private final Supplier<TileEntityType<? extends T>> tileEntityType;
     private final TileEntityMerger.ICallback<T, Optional<ISidedInventory>> INVENTORY_GETTER = new TileEntityMerger.ICallback<T, Optional<ISidedInventory>>()
     {
-
         @Override
         public Optional<ISidedInventory> acceptDouble(final T first, final T second)
         {
