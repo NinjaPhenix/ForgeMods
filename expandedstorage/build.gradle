@@ -14,10 +14,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly fg.deobf("mezz.jei:jei-1.16.3:7.3.2.29:api") {
+    compileOnly fg.deobf('mezz.jei:jei-1.16.3:7.3.2.29:api') {
         exclude group: 'com.feed_the_beast.mods', module: 'ftb-gui-library'
     }
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.65")
+    runtimeOnly fg.deobf('mezz.jei:jei-1.16.4:7.6.1.65')
     //runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-40.79')
     //runtimeOnly fg.deobf('vazkii.quark:Quark:r2.1-245.1160')
 }
